@@ -180,7 +180,7 @@ export default function AdminPanel({ onLogout }) {
         {/* Logo */}
         <div style={{ padding: "20px 16px", borderBottom: "1px solid rgba(255,255,255,0.1)", display: "flex", alignItems: "center", gap: 10 }}>
           <span style={{ width: 36, height: 36, borderRadius: 10, background: "linear-gradient(135deg,var(--accent),var(--sun))", display: "grid", placeItems: "center", fontWeight: 700, color: "#fff", flexShrink: 0 }}>AB</span>
-          {sidebarOpen && <div><div style={{ color: "#fff", fontWeight: 700, fontSize: 14 }}>Andaman Bliss</div><div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11 }}>Admin Panel</div></div>}
+          {sidebarOpen && <div><div style={{ color: "#fff", fontWeight: 700, fontSize: 14 }}>Andaman Treek Holidays </div><div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11 }}>Admin Panel</div></div>}
         </div>
 
         {/* Nav items */}

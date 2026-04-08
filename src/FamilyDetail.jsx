@@ -26,7 +26,7 @@ export default function FamilyDetail({ id }) {
         <div className="brand">
           <span className="brand-mark">AB</span>
           <div>
-            <div className="brand-title">Andaman Bliss</div>
+            <div className="brand-title">Andaman Treek Holidays </div>
             <div className="brand-sub">Tours and Experiences</div>
           </div>
         </div>
@@ -144,7 +144,7 @@ export default function FamilyDetail({ id }) {
       </div>
 
       <footer className="footer">
-        <div>Andaman Bliss</div>
+        <div>Andaman Treek Holidays </div>
         <div><a href="/#family" style={{ color: "var(--muted)" }}>← All Family Packages</a></div>
       </footer>
     </div>

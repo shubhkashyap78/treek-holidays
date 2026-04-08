@@ -64,7 +64,7 @@ export default function App() {
         <div className="brand">
           <span className="brand-mark">AB</span>
           <div>
-            <div className="brand-title">Andaman Bliss</div>
+            <div className="brand-title">Andaman Treek Holidays </div>
             <div className="brand-sub">Tours and Experiences</div>
           </div>
         </div>
@@ -225,7 +225,7 @@ export default function App() {
       </section>
 
       <footer className="footer">
-        <div>Andaman Bliss Dynamic Site</div>
+        <div>Andaman Treek Holidays  Dynamic Site</div>
         <div>Built with Vite, React, Express, and MongoDB</div>
       </footer>
     </div>

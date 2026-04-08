@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { createItem, deleteItem, fetchList, logout, updateItem } from "./api.js";
 import { fallbackActivities, fallbackFamily, fallbackGroup, fallbackHoneymoon, fallbackIslands, fallbackLtc, fallbackPackages, fallbackFerry } from "./fallbackData.js";
 
+const fallbackContacts = [];
+
 const emptyForms = {
   packages:  { _id: "", title: "", duration: "", category: "", priceFrom: "", image: "", description: "", location: "", tags: "" },
   activities:{ _id: "", title: "", category: "", priceFrom: "", image: "", description: "", duration: "", location: "", tags: "" },
@@ -10,7 +12,8 @@ const emptyForms = {
   family:    { _id: "", title: "", subtitle: "", duration: "", priceFrom: "", image: "", description: "", highlights: "", tags: "" },
   ltc:       { _id: "", title: "", subtitle: "", duration: "", priceFrom: "", image: "", description: "", highlights: "", tags: "" },
   group:     { _id: "", title: "", subtitle: "", duration: "", priceFrom: "", image: "", description: "", highlights: "", tags: "" },
-  ferry:     { _id: "", name: "", type: "", description: "", duration: "", image: "", features: "", priceFrom: "" }
+  ferry:     { _id: "", name: "", type: "", description: "", duration: "", image: "", features: "", priceFrom: "" },
+  contact:   { _id: "", status: "new" }
 };
 
 const tabIcons = {
@@ -21,7 +24,8 @@ const tabIcons = {
   family:     "👨👩👧👦",
   ltc:        "🏛️",
   group:      "👥",
-  ferry:      "⛴️"
+  ferry:      "⛴️",
+  contact:    "📬"
 };
 
 function formatPrice(value) {
@@ -42,6 +46,7 @@ export default function AdminPanel({ onLogout }) {
   const [ltc,        setLtc]        = useState([]);
   const [group,      setGroup]      = useState([]);
   const [ferry,      setFerry]      = useState([]);
+  const [contact,    setContact]    = useState([]);
   const [loading,    setLoading]    = useState(true);
   const [adminTab,   setAdminTab]   = useState("packages");
   const [adminForm,  setAdminForm]  = useState(emptyForms.packages);
@@ -56,19 +61,20 @@ export default function AdminPanel({ onLogout }) {
     family:    { title: "Family",     path: "/api/family" },
     ltc:       { title: "LTC",        path: "/api/ltc" },
     group:     { title: "Group",      path: "/api/group" },
-    ferry:     { title: "Ferry",      path: "/api/ferry" }
+    ferry:     { title: "Ferry",      path: "/api/ferry" },
+    contact:   { title: "Enquiries",  path: "/api/contact" }
   }), []);
 
   const counts = {
     packages: packages.length, activities: activities.length,
     islands: islands.length, honeymoon: honeymoon.length,
     family: family.length, ltc: ltc.length, group: group.length,
-    ferry: ferry.length
+    ferry: ferry.length, contact: contact.length
   };
 
   async function loadAll() {
     setLoading(true);
-    const [p, a, i, h, f, l, g, fe] = await Promise.all([
+    const [p, a, i, h, f, l, g, fe, c] = await Promise.all([
       fetchList("/api/packages",  {}, fallbackPackages),
       fetchList("/api/activities",{}, fallbackActivities),
       fetchList("/api/islands",   {}, fallbackIslands),
@@ -76,10 +82,11 @@ export default function AdminPanel({ onLogout }) {
       fetchList("/api/family",    {}, fallbackFamily),
       fetchList("/api/ltc",       {}, fallbackLtc),
       fetchList("/api/group",     {}, fallbackGroup),
-      fetchList("/api/ferry",     {}, fallbackFerry)
+      fetchList("/api/ferry",     {}, fallbackFerry),
+      fetchList("/api/contact",   {}, fallbackContacts)
     ]);
     setPackages(p); setActivities(a); setIslands(i);
-    setHoneymoon(h); setFamily(f); setLtc(l); setGroup(g); setFerry(fe);
+    setHoneymoon(h); setFamily(f); setLtc(l); setGroup(g); setFerry(fe); setContact(c);
     setLoading(false);
   }
 
@@ -98,6 +105,8 @@ export default function AdminPanel({ onLogout }) {
     } else if (adminTab === "ferry") {
       payload.priceFrom = payload.priceFrom ? Number(payload.priceFrom) : 0;
       payload.features = payload.features ? payload.features.split(",").map((t) => t.trim()) : [];
+    } else if (adminTab === "contact") {
+      // Contact form doesn't need transformation, just update status
     } else if (["honeymoon", "family", "ltc", "group"].includes(adminTab)) {
       payload.priceFrom  = payload.priceFrom ? Number(payload.priceFrom) : 0;
       payload.highlights = payload.highlights ? payload.highlights.split(",").map((t) => t.trim()) : [];
@@ -151,6 +160,8 @@ export default function AdminPanel({ onLogout }) {
       setAdminForm({ _id: item._id, name: item.name || "", tagline: item.tagline || "", image: item.image || "", description: item.description || "", highlights: Array.isArray(item.highlights) ? item.highlights.join(", ") : "", tags: Array.isArray(item.tags) ? item.tags.join(", ") : "" });
     } else if (adminTab === "ferry") {
       setAdminForm({ _id: item._id, name: item.name || "", type: item.type || "", description: item.description || "", duration: item.duration || "", image: item.image || "", features: Array.isArray(item.features) ? item.features.join(", ") : "", priceFrom: item.priceFrom || "" });
+    } else if (adminTab === "contact") {
+      setAdminForm({ _id: item._id, status: item.status || "new" });
     } else if (["honeymoon", "family", "ltc", "group"].includes(adminTab)) {
       setAdminForm({ _id: item._id, title: item.title || "", subtitle: item.subtitle || "", duration: item.duration || "", priceFrom: item.priceFrom || "", image: item.image || "", description: item.description || "", highlights: Array.isArray(item.highlights) ? item.highlights.join(", ") : "", offer: adminTab === "honeymoon" ? (item.offer || "") : undefined, tags: Array.isArray(item.tags) ? item.tags.join(", ") : "" });
     } else {
@@ -166,7 +177,8 @@ export default function AdminPanel({ onLogout }) {
     adminTab === "family"     ? family :
     adminTab === "ltc"        ? ltc :
     adminTab === "group"      ? group :
-    adminTab === "ferry"      ? ferry : islands;
+    adminTab === "ferry"      ? ferry :
+    adminTab === "contact"    ? contact : islands;
 
   return (
     <div style={{ display: "flex", minHeight: "100vh", background: "var(--bg)" }}>
@@ -214,13 +226,33 @@ export default function AdminPanel({ onLogout }) {
                   <div key={item._id} style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 20px", borderBottom: idx < adminItems.length - 1 ? "1px solid rgba(0,0,0,0.06)" : "none" }}>
                     {item.image && <div style={{ width: 48, height: 48, borderRadius: 10, backgroundImage: `url(${item.image})`, backgroundSize: "cover", backgroundPosition: "center", flexShrink: 0 }} />}
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontWeight: 600, fontSize: 14, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{item.title || item.name}</div>
-                      <div style={{ color: "var(--muted)", fontSize: 12 }}>{item.subtitle || item.category || item.tagline || item.type || item.duration || ""}</div>
+                      <div style={{ fontWeight: 600, fontSize: 14, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                        {adminTab === "contact" ? item.name : (item.title || item.name)}
+                      </div>
+                      <div style={{ color: "var(--muted)", fontSize: 12 }}>
+                        {adminTab === "contact" ? `${item.email} | ${item.packageType || 'No package'}` : (item.subtitle || item.category || item.tagline || item.type || item.duration || "")}
+                      </div>
+                      {adminTab === "contact" && (
+                        <div style={{ fontSize: 11, marginTop: 2, color: item.status === 'new' ? '#dc2626' : item.status === 'contacted' ? '#f59e0b' : '#16a34a' }}>
+                          {item.status === 'new' ? '🔴 New' : item.status === 'contacted' ? '🟡 Contacted' : '🟢 Closed'}
+                        </div>
+                      )}
                     </div>
-                    <div style={{ color: "var(--accent-dark)", fontWeight: 700, fontSize: 13, flexShrink: 0 }}>{formatPrice(item.priceFrom)}</div>
+                    <div style={{ color: "var(--accent-dark)", fontWeight: 700, fontSize: 13, flexShrink: 0 }}>
+                      {adminTab === "contact" ? new Date(item.createdAt).toLocaleDateString() : formatPrice(item.priceFrom)}
+                    </div>
                     <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
-                      <button onClick={() => handleEdit(item)} style={{ padding: "5px 12px", borderRadius: 8, border: "1px solid rgba(0,0,0,0.15)", background: "#fff", cursor: "pointer", fontSize: 12, fontWeight: 600 }}>Edit</button>
-                      <button onClick={() => handleDelete(item._id)} style={{ padding: "5px 12px", borderRadius: 8, border: "1px solid #fca5a5", background: "#fff5f5", cursor: "pointer", fontSize: 12, fontWeight: 600, color: "#dc2626" }}>Delete</button>
+                      {adminTab === "contact" ? (
+                        <>
+                          <button onClick={() => handleEdit(item)} style={{ padding: "5px 12px", borderRadius: 8, border: "1px solid rgba(0,0,0,0.15)", background: "#fff", cursor: "pointer", fontSize: 12, fontWeight: 600 }}>Update Status</button>
+                          <button onClick={() => handleDelete(item._id)} style={{ padding: "5px 12px", borderRadius: 8, border: "1px solid #fca5a5", background: "#fff5f5", cursor: "pointer", fontSize: 12, fontWeight: 600, color: "#dc2626" }}>Delete</button>
+                        </>
+                      ) : (
+                        <>
+                          <button onClick={() => handleEdit(item)} style={{ padding: "5px 12px", borderRadius: 8, border: "1px solid rgba(0,0,0,0.15)", background: "#fff", cursor: "pointer", fontSize: 12, fontWeight: 600 }}>Edit</button>
+                          <button onClick={() => handleDelete(item._id)} style={{ padding: "5px 12px", borderRadius: 8, border: "1px solid #fca5a5", background: "#fff5f5", cursor: "pointer", fontSize: 12, fontWeight: 600, color: "#dc2626" }}>Delete</button>
+                        </>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -231,7 +263,27 @@ export default function AdminPanel({ onLogout }) {
                   {adminForm._id ? `Edit ${adminConfig[adminTab].title}` : `New ${adminConfig[adminTab].title}`}
                 </div>
 
-                {adminTab === "islands" ? (
+                {adminTab === "contact" ? (
+                  <>
+                    <div style={{ padding: "16px 20px", background: "#f9fafb", borderRadius: 12, marginBottom: 12 }}>
+                      <div style={{ fontWeight: 600, marginBottom: 8 }}>Contact Details:</div>
+                      <div style={{ fontSize: 13, color: "var(--muted)", lineHeight: 1.5 }}>
+                        <div><strong>Name:</strong> {adminItems.find(item => item._id === adminForm._id)?.name || 'N/A'}</div>
+                        <div><strong>Email:</strong> {adminItems.find(item => item._id === adminForm._id)?.email || 'N/A'}</div>
+                        <div><strong>Phone:</strong> {adminItems.find(item => item._id === adminForm._id)?.phone || 'N/A'}</div>
+                        <div><strong>Package:</strong> {adminItems.find(item => item._id === adminForm._id)?.packageType || 'N/A'}</div>
+                        <div><strong>Travel Month:</strong> {adminItems.find(item => item._id === adminForm._id)?.travelMonth || 'N/A'}</div>
+                        <div><strong>Travelers:</strong> {adminItems.find(item => item._id === adminForm._id)?.numberOfTravelers || 'N/A'}</div>
+                        <div><strong>Message:</strong> {adminItems.find(item => item._id === adminForm._id)?.message || 'N/A'}</div>
+                      </div>
+                    </div>
+                    <select className="input" value={adminForm.status} onChange={(e) => setAdminForm({ ...adminForm, status: e.target.value })}>
+                      <option value="new">🔴 New</option>
+                      <option value="contacted">🟡 Contacted</option>
+                      <option value="closed">🟢 Closed</option>
+                    </select>
+                  </>
+                ) : adminTab === "islands" ? (
                   <>
                     <input className="input" placeholder="Name" value={adminForm.name} onChange={(e) => setAdminForm({ ...adminForm, name: e.target.value })} />
                     <input className="input" placeholder="Tagline" value={adminForm.tagline} onChange={(e) => setAdminForm({ ...adminForm, tagline: e.target.value })} />

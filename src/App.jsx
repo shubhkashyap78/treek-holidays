@@ -88,6 +88,7 @@ function HomePage() {
           </div>
         </div>
         <nav className="nav">
+          <a href="#home" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>Home</a>
           <div 
             className="nav-dropdown"
             onMouseEnter={() => setShowPackageDropdown(true)}
@@ -99,34 +100,30 @@ function HomePage() {
                 <div className="dropdown-section">
                   <div className="dropdown-title">Honeymoon</div>
                   <Link to="/honeymoon" className="dropdown-item">View All Packages</Link>
-                  <Link to="/honeymoon/3n4d" className="dropdown-item">3 Nights 4 Days</Link>
-                  <Link to="/honeymoon/4n5d" className="dropdown-item">4 Nights 5 Days</Link>
-                  <Link to="/honeymoon/5n6d" className="dropdown-item">5 Nights 6 Days</Link>
-                  <Link to="/honeymoon/6n7d" className="dropdown-item">6 Nights 7 Days</Link>
+                  <Link to="/honeymoon" className="dropdown-item">3 Nights 4 Days</Link>
+                  <Link to="/honeymoon" className="dropdown-item">4 Nights 5 Days</Link>
+                  <Link to="/honeymoon" className="dropdown-item">5 Nights 6 Days</Link>
                 </div>
                 <div className="dropdown-section">
                   <div className="dropdown-title">Family</div>
                   <Link to="/family" className="dropdown-item">View All Packages</Link>
-                  <Link to="/family/6n7d" className="dropdown-item">6 Nights 7 Days</Link>
-                  <Link to="/family/7n8d" className="dropdown-item">7 Nights 8 Days</Link>
-                  <Link to="/family/8n9d" className="dropdown-item">8 Nights 9 Days</Link>
-                  <Link to="/family/9n10d" className="dropdown-item">9 Nights 10 Days</Link>
+                  <Link to="/family" className="dropdown-item">6 Nights 7 Days</Link>
+                  <Link to="/family" className="dropdown-item">7 Nights 8 Days</Link>
+                  <Link to="/family" className="dropdown-item">8 Nights 9 Days</Link>
                 </div>
                 <div className="dropdown-section">
                   <div className="dropdown-title">LTC</div>
                   <Link to="/ltc" className="dropdown-item">View All Packages</Link>
-                  <Link to="/ltc/3n4d" className="dropdown-item">3 Nights 4 Days</Link>
-                  <Link to="/ltc/4n5d" className="dropdown-item">4 Nights 5 Days</Link>
-                  <Link to="/ltc/5n6d" className="dropdown-item">5 Nights 6 Days</Link>
-                  <Link to="/ltc/6n7d" className="dropdown-item">6 Nights 7 Days</Link>
+                  <Link to="/ltc" className="dropdown-item">3 Nights 4 Days</Link>
+                  <Link to="/ltc" className="dropdown-item">4 Nights 5 Days</Link>
+                  <Link to="/ltc" className="dropdown-item">5 Nights 6 Days</Link>
                 </div>
                 <div className="dropdown-section">
                   <div className="dropdown-title">Group</div>
                   <Link to="/group" className="dropdown-item">View All Packages</Link>
-                  <Link to="/group/3n4d" className="dropdown-item">3 Nights 4 Days</Link>
-                  <Link to="/group/4n5d" className="dropdown-item">4 Nights 5 Days</Link>
-                  <Link to="/group/5n6d" className="dropdown-item">5 Nights 6 Days</Link>
-                  <Link to="/group/6n7d" className="dropdown-item">6 Nights 7 Days</Link>
+                  <Link to="/group" className="dropdown-item">3 Nights 4 Days</Link>
+                  <Link to="/group" className="dropdown-item">4 Nights 5 Days</Link>
+                  <Link to="/group" className="dropdown-item">5 Nights 6 Days</Link>
                 </div>
               </div>
             )}
@@ -137,11 +134,11 @@ function HomePage() {
             onMouseLeave={() => setShowActivityDropdown(false)}
           >
             <a href="#activities" className="nav-link">Activities ▾</a>
-            {showActivityDropdown && (
+            {showActivityDropdown && activities.length > 0 && (
               <div className="dropdown-menu dropdown-menu-activities">
-                {activities.slice(0, 12).map((activity, index) => (
+                {activities.slice(0, 12).map((activity) => (
                   <div key={activity._id} className="dropdown-section">
-                    <a href="#activities" className="dropdown-item">{activity.title}</a>
+                    <a href="#activities" className="dropdown-item" onClick={(e) => { e.preventDefault(); document.getElementById('activities').scrollIntoView({ behavior: 'smooth' }); }}>{activity.title}</a>
                   </div>
                 ))}
               </div>
@@ -153,17 +150,19 @@ function HomePage() {
             onMouseLeave={() => setShowIslandDropdown(false)}
           >
             <a href="#islands" className="nav-link">Islands ▾</a>
-            {showIslandDropdown && (
+            {showIslandDropdown && islands.length > 0 && (
               <div className="dropdown-menu dropdown-menu-islands">
-                {islands.slice(0, 12).map((island, index) => (
+                {islands.slice(0, 12).map((island) => (
                   <div key={island._id} className="dropdown-section">
-                    <a href="#islands" className="dropdown-item">{island.name}</a>
+                    <a href="#islands" className="dropdown-item" onClick={(e) => { e.preventDefault(); document.getElementById('islands').scrollIntoView({ behavior: 'smooth' }); }}>{island.name}</a>
                   </div>
                 ))}
               </div>
             )}
           </div>
-          <a href="#contact">Contact</a>
+          <a href="#ferry" onClick={(e) => { e.preventDefault(); document.getElementById('ferry').scrollIntoView({ behavior: 'smooth' }); }}>Ferry</a>
+          <a href="#about" onClick={(e) => { e.preventDefault(); document.getElementById('about').scrollIntoView({ behavior: 'smooth' }); }}>About</a>
+          <a href="#contact" onClick={(e) => { e.preventDefault(); document.getElementById('contact').scrollIntoView({ behavior: 'smooth' }); }}>Contact</a>
         </nav>
         <button className="cta" onClick={() => window.location.href = "/admin"}>Admin</button>
       </header>
@@ -179,8 +178,9 @@ function HomePage() {
             <button className="ghost" onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}>Get Free Quote</button>
           </div>
           <div className="hero-stats">
-            <div><div className="stat-value">500+</div><div className="stat-label">Happy Travelers</div></div>
-            <div><div className="stat-value">50+</div><div className="stat-label">Tour Packages</div></div>
+            <div><div className="stat-value">{loading ? "..." : packages.length + honeymoon.length + family.length + ltc.length + group.length}+</div><div className="stat-label">Tour Packages</div></div>
+            <div><div className="stat-value">{loading ? "..." : activities.length}+</div><div className="stat-label">Activities</div></div>
+            <div><div className="stat-value">{loading ? "..." : islands.length}+</div><div className="stat-label">Islands</div></div>
             <div><div className="stat-value">4.9★</div><div className="stat-label">Customer Rating</div></div>
           </div>
         </div>
@@ -497,28 +497,146 @@ function HomePage() {
         </div>
       </section>
 
-      <section id="contact" className="section alt">
-        <div className="section-head"><h2>Plan Your Trip</h2><p>Get a custom itinerary in under 24 hours.</p></div>
-        <div className="contact">
-          <div>
-            <div className="contact-title">Talk to our travel expert</div>
-            <div className="contact-text">Phone: +91-90000-00000</div>
-            <div className="contact-text">Email: hello@andamanbliss.com</div>
-            <div className="contact-text">Office: Port Blair, Andaman</div>
+      <section className="contact-cta">
+        <div className="contact-cta-content">
+          <h2 className="contact-cta-title">Ready to Start Your Andaman Adventure?</h2>
+          <p className="contact-cta-text">Get in touch with our travel experts and let us create your perfect island getaway</p>
+          <div className="contact-cta-buttons">
+            <button className="cta" onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}>Plan My Trip</button>
+            <a href="tel:+919000000000" className="ghost" style={{ textDecoration: 'none', display: 'inline-block' }}>📞 Call Us Now</a>
           </div>
-          <form className="form">
-            <input className="input" placeholder="Name" />
-            <input className="input" placeholder="Phone" />
-            <input className="input" placeholder="Travel Month" />
-            <textarea className="input" rows="4" placeholder="Tell us your plan"></textarea>
-            <button className="cta block" type="button">Send Enquiry</button>
+        </div>
+      </section>
+
+      <section id="contact" className="section alt">
+        <div className="section-head"><h2>Plan Your Trip</h2><p>Get a custom itinerary in under 24 hours</p></div>
+        <div className="contact">
+          <div className="contact-info">
+            <div className="contact-title">Talk to our travel expert</div>
+            <div className="contact-details">
+              <div className="contact-detail-item">
+                <span className="contact-icon">📞</span>
+                <div>
+                  <div className="contact-label">Phone</div>
+                  <a href="tel:+919000000000" className="contact-value">+91-90000-00000</a>
+                </div>
+              </div>
+              <div className="contact-detail-item">
+                <span className="contact-icon">✉️</span>
+                <div>
+                  <div className="contact-label">Email</div>
+                  <a href="mailto:hello@andamantreekholidays.com" className="contact-value">hello@andamantreekholidays.com</a>
+                </div>
+              </div>
+              <div className="contact-detail-item">
+                <span className="contact-icon">📍</span>
+                <div>
+                  <div className="contact-label">Office</div>
+                  <div className="contact-value">Port Blair, Andaman & Nicobar Islands</div>
+                </div>
+              </div>
+              <div className="contact-detail-item">
+                <span className="contact-icon">⏰</span>
+                <div>
+                  <div className="contact-label">Working Hours</div>
+                  <div className="contact-value">Mon - Sat: 9:00 AM - 7:00 PM</div>
+                </div>
+              </div>
+            </div>
+            <div className="contact-social">
+              <a href="#" className="social-link">👍 Facebook</a>
+              <a href="#" className="social-link">📷 Instagram</a>
+              <a href="#" className="social-link">🐦 Twitter</a>
+              <a href="#" className="social-link">📹 YouTube</a>
+            </div>
+          </div>
+          <form className="form" onSubmit={async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = {
+              name: formData.get('name'),
+              email: formData.get('email'),
+              phone: formData.get('phone'),
+              packageType: formData.get('packageType'),
+              travelMonth: formData.get('travelMonth'),
+              numberOfTravelers: parseInt(formData.get('numberOfTravelers')) || 1,
+              message: formData.get('message')
+            };
+            
+            try {
+              const response = await fetch(`${import.meta.env.VITE_API_URL || ""}/api/contact`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+              });
+              
+              if (response.ok) {
+                alert('Thank you! Your enquiry has been submitted successfully. We will contact you soon.');
+                e.target.reset();
+              } else {
+                alert('Sorry, there was an error submitting your enquiry. Please try again.');
+              }
+            } catch (error) {
+              alert('Sorry, there was an error submitting your enquiry. Please try again.');
+            }
+          }}>
+            <div className="form-title">Send us a message</div>
+            <input className="input" name="name" placeholder="Your Name *" required />
+            <input className="input" name="email" type="email" placeholder="Email Address *" required />
+            <input className="input" name="phone" type="tel" placeholder="Phone Number *" required />
+            <select className="input" name="packageType" required>
+              <option value="">Select Package Type</option>
+              <option value="honeymoon">Honeymoon</option>
+              <option value="family">Family</option>
+              <option value="group">Group</option>
+              <option value="ltc">LTC</option>
+              <option value="custom">Custom Package</option>
+            </select>
+            <input className="input" name="travelMonth" placeholder="Travel Month" />
+            <input className="input" name="numberOfTravelers" type="number" placeholder="Number of Travelers" min="1" />
+            <textarea className="input" name="message" rows="4" placeholder="Tell us about your travel plans..."></textarea>
+            <button className="cta block" type="submit">Send Enquiry</button>
           </form>
         </div>
       </section>
 
       <footer className="footer">
-        <div>Andaman Treek Holidays Dynamic Site</div>
-        <div>Built with Vite, React, Express, and MongoDB</div>
+        <div className="footer-content">
+          <div className="footer-section">
+            <div className="footer-brand">
+              <span className="brand-mark">AB</span>
+              <div>
+                <div className="brand-title">Andaman Treek Holidays</div>
+                <div className="brand-sub">Tours and Experiences</div>
+              </div>
+            </div>
+            <p className="footer-desc">Your trusted partner for unforgettable Andaman adventures. Creating memories since 2015.</p>
+          </div>
+          <div className="footer-section">
+            <div className="footer-title">Quick Links</div>
+            <a href="#packages" className="footer-link">Packages</a>
+            <a href="#activities" className="footer-link">Activities</a>
+            <a href="#islands" className="footer-link">Islands</a>
+            <a href="#ferry" className="footer-link">Ferry Services</a>
+          </div>
+          <div className="footer-section">
+            <div className="footer-title">Categories</div>
+            <Link to="/honeymoon" className="footer-link">Honeymoon</Link>
+            <Link to="/family" className="footer-link">Family</Link>
+            <Link to="/group" className="footer-link">Group Tours</Link>
+            <Link to="/ltc" className="footer-link">LTC Packages</Link>
+          </div>
+          <div className="footer-section">
+            <div className="footer-title">Contact Us</div>
+            <a href="tel:+919000000000" className="footer-link">📞 +91-90000-00000</a>
+            <a href="mailto:hello@andamantreekholidays.com" className="footer-link">✉️ hello@andamantreekholidays.com</a>
+            <div className="footer-link">📍 Port Blair, Andaman</div>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <div>© 2024 Andaman Treek Holidays. All rights reserved.</div>
+          <div>Built with ❤️ using React, Express & MongoDB</div>
+        </div>
       </footer>
     </div>
   );

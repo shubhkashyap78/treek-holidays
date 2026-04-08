@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchList } from "./api.js";
-import { fallbackActivities, fallbackFamily, fallbackHoneymoon, fallbackIslands, fallbackLtc, fallbackPackages } from "./fallbackData.js";
+import { fallbackActivities, fallbackFamily, fallbackGroup, fallbackHoneymoon, fallbackIslands, fallbackLtc, fallbackPackages } from "./fallbackData.js";
 
 function formatPrice(value) {
   if (!value) return "On Request";
@@ -14,6 +14,7 @@ export default function App() {
   const [honeymoon,  setHoneymoon]  = useState([]);
   const [family,     setFamily]     = useState([]);
   const [ltc,        setLtc]        = useState([]);
+  const [group,      setGroup]      = useState([]);
   const [loading,    setLoading]    = useState(true);
 
   const [packageFilters,  setPackageFilters]  = useState({ q: "", category: "", minPrice: "", maxPrice: "" });
@@ -22,16 +23,17 @@ export default function App() {
 
   async function loadAll() {
     setLoading(true);
-    const [p, a, i, h, f, l] = await Promise.all([
+    const [p, a, i, h, f, l, g] = await Promise.all([
       fetchList("/api/packages",  packageFilters,  fallbackPackages),
       fetchList("/api/activities", activityFilters, fallbackActivities),
       fetchList("/api/islands",   islandFilters,   fallbackIslands),
       fetchList("/api/honeymoon", {}, fallbackHoneymoon),
       fetchList("/api/family",    {}, fallbackFamily),
-      fetchList("/api/ltc",       {}, fallbackLtc)
+      fetchList("/api/ltc",       {}, fallbackLtc),
+      fetchList("/api/group",     {}, fallbackGroup)
     ]);
     setPackages(p); setActivities(a); setIslands(i);
-    setHoneymoon(h); setFamily(f); setLtc(l);
+    setHoneymoon(h); setFamily(f); setLtc(l); setGroup(g);
     setLoading(false);
   }
 
@@ -64,7 +66,7 @@ export default function App() {
         <div className="brand">
           <span className="brand-mark">AB</span>
           <div>
-            <div className="brand-title">Andaman Treek Holidays </div>
+            <div className="brand-title">Andaman Treek Holidays</div>
             <div className="brand-sub">Tours and Experiences</div>
           </div>
         </div>
@@ -75,6 +77,7 @@ export default function App() {
           <a href="#honeymoon">Honeymoon</a>
           <a href="#family">Family</a>
           <a href="#ltc">LTC</a>
+          <a href="#group">Group</a>
           <a href="#contact">Contact</a>
         </nav>
         <button className="cta" onClick={() => window.location.href = "/admin"}>Admin</button>
@@ -104,6 +107,7 @@ export default function App() {
             <option>Honeymoon</option>
             <option>Adventure</option>
             <option>LTC</option>
+            <option>Group</option>
           </select>
           <button className="cta block">Search</button>
           <div className="search-note">Wire it to your MongoDB filters later.</div>
@@ -202,7 +206,46 @@ export default function App() {
 
       <section id="ltc" className="section alt">
         <div className="section-head"><h2>LTC Packages</h2><p>Leave Travel Concession packages for government employees.</p></div>
-        {loading ? <div className="loading">Loading...</div> : <CardGrid items={ltc} />}
+        {loading ? <div className="loading">Loading...</div> : (
+          <div className="grid">
+            {ltc.map((item) => (
+              <article key={item._id} className="card">
+                <div className="card-image" style={{ backgroundImage: `url(${item.image})` }} />
+                <div className="card-body">
+                  <div className="card-title">{item.title}</div>
+                  <div className="card-meta">{item.subtitle || item.duration}</div>
+                  <p className="card-text">{item.description}</p>
+                  <div className="card-foot">
+                    <span className="price">{formatPrice(item.priceFrom)}</span>
+                    <button className="ghost" onClick={() => window.location.href = `/ltc/${item._id}`}>View Details</button>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+      </section>
+
+      <section id="group" className="section">
+        <div className="section-head"><h2>Group Packages</h2><p>Fun-filled group tours for friends, families and corporates.</p></div>
+        {loading ? <div className="loading">Loading...</div> : (
+          <div className="grid">
+            {group.map((item) => (
+              <article key={item._id} className="card">
+                <div className="card-image" style={{ backgroundImage: `url(${item.image})` }} />
+                <div className="card-body">
+                  <div className="card-title">{item.title}</div>
+                  <div className="card-meta">{item.subtitle || item.duration}</div>
+                  <p className="card-text">{item.description}</p>
+                  <div className="card-foot">
+                    <span className="price">{formatPrice(item.priceFrom)}</span>
+                    <button className="ghost" onClick={() => window.location.href = `/group/${item._id}`}>View Details</button>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
       </section>
 
       <section id="contact" className="section alt">
@@ -225,7 +268,7 @@ export default function App() {
       </section>
 
       <footer className="footer">
-        <div>Andaman Treek Holidays  Dynamic Site</div>
+        <div>Andaman Treek Holidays Dynamic Site</div>
         <div>Built with Vite, React, Express, and MongoDB</div>
       </footer>
     </div>

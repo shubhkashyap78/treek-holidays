@@ -80,6 +80,14 @@ export const fallbackLtc = [
   { _id: "l6", title: "LTC Extended 7N/8D", subtitle: "Maximum coverage", duration: "7 Nights / 8 Days", priceFrom: 38999, image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e", description: "Full Andaman circuit with Baratang, Neil, Havelock, and Port Blair." }
 ];
 
+export const fallbackGroup = [
+  { _id: "g1", title: "Group Escape 5N/6D", subtitle: "Perfect for friend groups", duration: "5 Nights / 6 Days", priceFrom: 18999, image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e", description: "Port Blair, Havelock, and Neil with group-friendly activities and stays." },
+  { _id: "g2", title: "Corporate Group 4N/5D", subtitle: "Team outing special", duration: "4 Nights / 5 Days", priceFrom: 16999, image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee", description: "Ideal for corporate teams with team bonding activities." },
+  { _id: "g3", title: "Budget Group 3N/4D", subtitle: "Affordable group fun", duration: "3 Nights / 4 Days", priceFrom: 12999, image: "https://images.unsplash.com/photo-1493558103817-58b2924bce98", description: "Best value group trip covering key Andaman attractions." },
+  { _id: "g4", title: "Adventure Group 5N/6D", subtitle: "Thrills for the whole group", duration: "5 Nights / 6 Days", priceFrom: 22999, image: "https://images.unsplash.com/photo-1469474968028-56623f02e42e", description: "Scuba, kayaking, trekking — the ultimate group adventure." },
+  { _id: "g5", title: "Premium Group 6N/7D", subtitle: "Luxury group experience", duration: "6 Nights / 7 Days", priceFrom: 28999, image: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429", description: "Premium hotels, private transfers, and exclusive island experiences for groups." }
+];
+
 export const fallbackIslands = [
   {
     _id: "i1",

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { createItem, deleteItem, fetchList, logout, updateItem } from "./api.js";
-import { fallbackActivities, fallbackFamily, fallbackHoneymoon, fallbackIslands, fallbackLtc, fallbackPackages } from "./fallbackData.js";
+import { fallbackActivities, fallbackFamily, fallbackGroup, fallbackHoneymoon, fallbackIslands, fallbackLtc, fallbackPackages } from "./fallbackData.js";
 
 const emptyForms = {
   packages:  { _id: "", title: "", duration: "", category: "", priceFrom: "", image: "", description: "", location: "", tags: "" },
@@ -8,7 +8,8 @@ const emptyForms = {
   islands:   { _id: "", name: "", tagline: "", image: "", description: "", highlights: "", tags: "" },
   honeymoon: { _id: "", title: "", subtitle: "", duration: "", priceFrom: "", image: "", description: "", highlights: "", offer: "", tags: "" },
   family:    { _id: "", title: "", subtitle: "", duration: "", priceFrom: "", image: "", description: "", highlights: "", tags: "" },
-  ltc:       { _id: "", title: "", subtitle: "", duration: "", priceFrom: "", image: "", description: "", highlights: "", tags: "" }
+  ltc:       { _id: "", title: "", subtitle: "", duration: "", priceFrom: "", image: "", description: "", highlights: "", tags: "" },
+  group:     { _id: "", title: "", subtitle: "", duration: "", priceFrom: "", image: "", description: "", highlights: "", tags: "" }
 };
 
 const tabIcons = {
@@ -17,7 +18,8 @@ const tabIcons = {
   islands:    "🏝️",
   honeymoon:  "💑",
   family:     "👨‍👩‍👧‍👦",
-  ltc:        "🏛️"
+  ltc:        "🏛️",
+  group:      "👥"
 };
 
 function formatPrice(value) {
@@ -36,6 +38,7 @@ export default function AdminPanel({ onLogout }) {
   const [honeymoon,  setHoneymoon]  = useState([]);
   const [family,     setFamily]     = useState([]);
   const [ltc,        setLtc]        = useState([]);
+  const [group,      setGroup]      = useState([]);
   const [loading,    setLoading]    = useState(true);
   const [adminTab,   setAdminTab]   = useState("packages");
   const [adminForm,  setAdminForm]  = useState(emptyForms.packages);
@@ -48,30 +51,29 @@ export default function AdminPanel({ onLogout }) {
     islands:   { title: "Islands",    path: "/api/islands" },
     honeymoon: { title: "Honeymoon",  path: "/api/honeymoon" },
     family:    { title: "Family",     path: "/api/family" },
-    ltc:       { title: "LTC",        path: "/api/ltc" }
+    ltc:       { title: "LTC",        path: "/api/ltc" },
+    group:     { title: "Group",      path: "/api/group" }
   }), []);
 
   const counts = {
-    packages: packages.length,
-    activities: activities.length,
-    islands: islands.length,
-    honeymoon: honeymoon.length,
-    family: family.length,
-    ltc: ltc.length
+    packages: packages.length, activities: activities.length,
+    islands: islands.length, honeymoon: honeymoon.length,
+    family: family.length, ltc: ltc.length, group: group.length
   };
 
   async function loadAll() {
     setLoading(true);
-    const [p, a, i, h, f, l] = await Promise.all([
+    const [p, a, i, h, f, l, g] = await Promise.all([
       fetchList("/api/packages",  {}, fallbackPackages),
       fetchList("/api/activities",{}, fallbackActivities),
       fetchList("/api/islands",   {}, fallbackIslands),
       fetchList("/api/honeymoon", {}, fallbackHoneymoon),
       fetchList("/api/family",    {}, fallbackFamily),
-      fetchList("/api/ltc",       {}, fallbackLtc)
+      fetchList("/api/ltc",       {}, fallbackLtc),
+      fetchList("/api/group",     {}, fallbackGroup)
     ]);
     setPackages(p); setActivities(a); setIslands(i);
-    setHoneymoon(h); setFamily(f); setLtc(l);
+    setHoneymoon(h); setFamily(f); setLtc(l); setGroup(g);
     setLoading(false);
   }
 
@@ -87,13 +89,11 @@ export default function AdminPanel({ onLogout }) {
     if (adminTab === "packages" || adminTab === "activities") {
       payload.priceFrom = payload.priceFrom ? Number(payload.priceFrom) : 0;
       payload.tags = payload.tags ? payload.tags.split(",").map((t) => t.trim()) : [];
-    } else if (["honeymoon", "family", "ltc"].includes(adminTab)) {
+    } else if (["honeymoon", "family", "ltc", "group"].includes(adminTab)) {
       payload.priceFrom  = payload.priceFrom ? Number(payload.priceFrom) : 0;
       payload.highlights = payload.highlights ? payload.highlights.split(",").map((t) => t.trim()) : [];
       payload.tags       = payload.tags ? payload.tags.split(",").map((t) => t.trim()) : [];
-      if (adminTab === "honeymoon") {
-        payload.offer = payload.offer || "";
-      }
+      if (adminTab === "honeymoon") payload.offer = payload.offer || "";
     } else {
       payload.highlights = payload.highlights ? payload.highlights.split(",").map((t) => t.trim()) : [];
       payload.tags       = payload.tags ? payload.tags.split(",").map((t) => t.trim()) : [];
@@ -120,10 +120,7 @@ export default function AdminPanel({ onLogout }) {
   }
 
   async function handleDelete(id) {
-    if (!isRealId(id)) {
-      setAdminMessage("⚠️ Cannot delete fallback data. Seed the database first.");
-      return;
-    }
+    if (!isRealId(id)) { setAdminMessage("⚠️ Cannot delete fallback data. Seed the database first."); return; }
     if (!window.confirm("Are you sure you want to delete this item?")) return;
     try {
       await deleteItem(adminConfig[adminTab].path, id);
@@ -140,13 +137,10 @@ export default function AdminPanel({ onLogout }) {
   }
 
   function handleEdit(item) {
-    if (!isRealId(item._id)) {
-      setAdminMessage("⚠️ Cannot edit fallback data. Seed the database first.");
-      return;
-    }
+    if (!isRealId(item._id)) { setAdminMessage("⚠️ Cannot edit fallback data. Seed the database first."); return; }
     if (adminTab === "islands") {
       setAdminForm({ _id: item._id, name: item.name || "", tagline: item.tagline || "", image: item.image || "", description: item.description || "", highlights: Array.isArray(item.highlights) ? item.highlights.join(", ") : "", tags: Array.isArray(item.tags) ? item.tags.join(", ") : "" });
-    } else if (["honeymoon", "family", "ltc"].includes(adminTab)) {
+    } else if (["honeymoon", "family", "ltc", "group"].includes(adminTab)) {
       setAdminForm({ _id: item._id, title: item.title || "", subtitle: item.subtitle || "", duration: item.duration || "", priceFrom: item.priceFrom || "", image: item.image || "", description: item.description || "", highlights: Array.isArray(item.highlights) ? item.highlights.join(", ") : "", offer: adminTab === "honeymoon" ? (item.offer || "") : undefined, tags: Array.isArray(item.tags) ? item.tags.join(", ") : "" });
     } else {
       setAdminForm({ _id: item._id, title: item.title || "", duration: item.duration || "", category: item.category || "", priceFrom: item.priceFrom || "", image: item.image || "", description: item.description || "", location: item.location || "", tags: Array.isArray(item.tags) ? item.tags.join(", ") : "" });
@@ -159,73 +153,34 @@ export default function AdminPanel({ onLogout }) {
     adminTab === "activities" ? activities :
     adminTab === "honeymoon"  ? honeymoon :
     adminTab === "family"     ? family :
-    adminTab === "ltc"        ? ltc : islands;
+    adminTab === "ltc"        ? ltc :
+    adminTab === "group"      ? group : islands;
 
   return (
     <div style={{ display: "flex", minHeight: "100vh", background: "var(--bg)" }}>
-
-      {/* Sidebar */}
-      <aside style={{
-        width: sidebarOpen ? 240 : 64,
-        background: "var(--accent-dark)",
-        display: "flex",
-        flexDirection: "column",
-        transition: "width 0.25s ease",
-        flexShrink: 0,
-        position: "sticky",
-        top: 0,
-        height: "100vh",
-        overflowY: "auto"
-      }}>
-        {/* Logo */}
+      <aside style={{ width: sidebarOpen ? 240 : 64, background: "var(--accent-dark)", display: "flex", flexDirection: "column", transition: "width 0.25s ease", flexShrink: 0, position: "sticky", top: 0, height: "100vh", overflowY: "auto" }}>
         <div style={{ padding: "20px 16px", borderBottom: "1px solid rgba(255,255,255,0.1)", display: "flex", alignItems: "center", gap: 10 }}>
           <span style={{ width: 36, height: 36, borderRadius: 10, background: "linear-gradient(135deg,var(--accent),var(--sun))", display: "grid", placeItems: "center", fontWeight: 700, color: "#fff", flexShrink: 0 }}>AB</span>
-          {sidebarOpen && <div><div style={{ color: "#fff", fontWeight: 700, fontSize: 14 }}>Andaman Treek Holidays </div><div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11 }}>Admin Panel</div></div>}
+          {sidebarOpen && <div><div style={{ color: "#fff", fontWeight: 700, fontSize: 14 }}>Andaman Treek Holidays</div><div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11 }}>Admin Panel</div></div>}
         </div>
-
-        {/* Nav items */}
         <nav style={{ flex: 1, padding: "12px 8px" }}>
           {Object.keys(adminConfig).map((key) => (
-            <button
-              key={key}
-              onClick={() => setAdminTab(key)}
-              style={{
-                width: "100%", display: "flex", alignItems: "center", gap: 10,
-                padding: "10px 12px", borderRadius: 10, border: "none", cursor: "pointer",
-                marginBottom: 4, textAlign: "left",
-                background: adminTab === key ? "rgba(255,255,255,0.15)" : "transparent",
-                color: adminTab === key ? "#fff" : "rgba(255,255,255,0.65)",
-                fontWeight: adminTab === key ? 700 : 400,
-                transition: "background 0.15s"
-              }}
-            >
+            <button key={key} onClick={() => setAdminTab(key)} style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 10, border: "none", cursor: "pointer", marginBottom: 4, textAlign: "left", background: adminTab === key ? "rgba(255,255,255,0.15)" : "transparent", color: adminTab === key ? "#fff" : "rgba(255,255,255,0.65)", fontWeight: adminTab === key ? 700 : 400, transition: "background 0.15s" }}>
               <span style={{ fontSize: 18, flexShrink: 0 }}>{tabIcons[key]}</span>
-              {sidebarOpen && (
-                <span style={{ flex: 1, fontSize: 14 }}>{adminConfig[key].title}</span>
-              )}
-              {sidebarOpen && (
-                <span style={{ background: "rgba(255,255,255,0.2)", borderRadius: 999, padding: "1px 8px", fontSize: 11, color: "#fff" }}>{counts[key]}</span>
-              )}
+              {sidebarOpen && <span style={{ flex: 1, fontSize: 14 }}>{adminConfig[key].title}</span>}
+              {sidebarOpen && <span style={{ background: "rgba(255,255,255,0.2)", borderRadius: 999, padding: "1px 8px", fontSize: 11, color: "#fff" }}>{counts[key]}</span>}
             </button>
           ))}
         </nav>
-
-        {/* Logout */}
         <div style={{ padding: "12px 8px", borderTop: "1px solid rgba(255,255,255,0.1)" }}>
-          <button
-            onClick={() => { logout(); onLogout(); }}
-            style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 10, border: "none", cursor: "pointer", background: "transparent", color: "rgba(255,255,255,0.65)", fontSize: 14 }}
-          >
+          <button onClick={() => { logout(); onLogout(); }} style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 10, border: "none", cursor: "pointer", background: "transparent", color: "rgba(255,255,255,0.65)", fontSize: 14 }}>
             <span style={{ fontSize: 18 }}>🚪</span>
             {sidebarOpen && <span>Logout</span>}
           </button>
         </div>
       </aside>
 
-      {/* Main content */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
-
-        {/* Topbar */}
         <header style={{ background: "#fff", padding: "14px 24px", display: "flex", alignItems: "center", gap: 16, borderBottom: "1px solid rgba(0,0,0,0.08)", position: "sticky", top: 0, zIndex: 10 }}>
           <button onClick={() => setSidebarOpen(!sidebarOpen)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 20, padding: 4 }}>☰</button>
           <div style={{ flex: 1 }}>
@@ -235,28 +190,17 @@ export default function AdminPanel({ onLogout }) {
           <a href="/" style={{ color: "var(--muted)", fontSize: 13, textDecoration: "none" }}>← Back to Site</a>
         </header>
 
-        {/* Content */}
         <main style={{ flex: 1, padding: 24 }}>
-          {adminMessage && (
-            <div style={{ background: "#fff", border: "1px solid rgba(0,0,0,0.1)", borderRadius: 12, padding: "10px 16px", marginBottom: 16, fontSize: 13 }}>
-              {adminMessage}
-            </div>
-          )}
+          {adminMessage && <div style={{ background: "#fff", border: "1px solid rgba(0,0,0,0.1)", borderRadius: 12, padding: "10px 16px", marginBottom: 16, fontSize: 13 }}>{adminMessage}</div>}
 
           {loading ? <div className="loading">Loading...</div> : (
             <div style={{ display: "grid", gridTemplateColumns: "1fr 380px", gap: 20, alignItems: "start" }}>
-
-              {/* List */}
               <div style={{ background: "#fff", borderRadius: 16, boxShadow: "var(--shadow)", overflow: "hidden" }}>
-                <div style={{ padding: "14px 20px", borderBottom: "1px solid rgba(0,0,0,0.07)", fontWeight: 700, fontSize: 14 }}>
-                  All {adminConfig[adminTab].title}
-                </div>
+                <div style={{ padding: "14px 20px", borderBottom: "1px solid rgba(0,0,0,0.07)", fontWeight: 700, fontSize: 14 }}>All {adminConfig[adminTab].title}</div>
                 {adminItems.length === 0 && <div style={{ padding: 20, color: "var(--muted)", fontSize: 13 }}>No items yet. Create one →</div>}
                 {adminItems.map((item, idx) => (
                   <div key={item._id} style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 20px", borderBottom: idx < adminItems.length - 1 ? "1px solid rgba(0,0,0,0.06)" : "none" }}>
-                    {item.image && (
-                      <div style={{ width: 48, height: 48, borderRadius: 10, backgroundImage: `url(${item.image})`, backgroundSize: "cover", backgroundPosition: "center", flexShrink: 0 }} />
-                    )}
+                    {item.image && <div style={{ width: 48, height: 48, borderRadius: 10, backgroundImage: `url(${item.image})`, backgroundSize: "cover", backgroundPosition: "center", flexShrink: 0 }} />}
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontWeight: 600, fontSize: 14, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{item.title || item.name}</div>
                       <div style={{ color: "var(--muted)", fontSize: 12 }}>{item.subtitle || item.category || item.tagline || item.duration || ""}</div>
@@ -270,7 +214,6 @@ export default function AdminPanel({ onLogout }) {
                 ))}
               </div>
 
-              {/* Form */}
               <form onSubmit={handleSubmit} style={{ background: "#fff", borderRadius: 16, boxShadow: "var(--shadow)", padding: 20, display: "grid", gap: 10, position: "sticky", top: 80 }}>
                 <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 4, textTransform: "capitalize" }}>
                   {adminForm._id ? `Edit ${adminConfig[adminTab].title}` : `New ${adminConfig[adminTab].title}`}
@@ -297,7 +240,7 @@ export default function AdminPanel({ onLogout }) {
                     <input className="input" placeholder="Offer (e.g. 10% off, Free candle light dinner)" value={adminForm.offer || ""} onChange={(e) => setAdminForm({ ...adminForm, offer: e.target.value })} />
                     <input className="input" placeholder="Tags (comma separated)" value={adminForm.tags} onChange={(e) => setAdminForm({ ...adminForm, tags: e.target.value })} />
                   </>
-                ) : ["family", "ltc"].includes(adminTab) ? (
+                ) : ["family", "ltc", "group"].includes(adminTab) ? (
                   <>
                     <input className="input" placeholder="Title" value={adminForm.title} onChange={(e) => setAdminForm({ ...adminForm, title: e.target.value })} />
                     <input className="input" placeholder="Subtitle" value={adminForm.subtitle} onChange={(e) => setAdminForm({ ...adminForm, subtitle: e.target.value })} />
@@ -321,14 +264,9 @@ export default function AdminPanel({ onLogout }) {
                   </>
                 )}
 
-                <button className="cta block" type="submit" style={{ marginTop: 4 }}>
-                  {adminForm._id ? "Update" : "Create"}
-                </button>
-                {adminForm._id && (
-                  <button className="ghost block" type="button" onClick={() => setAdminForm(emptyForms[adminTab])}>Cancel Edit</button>
-                )}
+                <button className="cta block" type="submit" style={{ marginTop: 4 }}>{adminForm._id ? "Update" : "Create"}</button>
+                {adminForm._id && <button className="ghost block" type="button" onClick={() => setAdminForm(emptyForms[adminTab])}>Cancel Edit</button>}
               </form>
-
             </div>
           )}
         </main>

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { createItem, deleteItem, fetchList, logout, updateItem } from "./api.js";
-import { fallbackActivities, fallbackFamily, fallbackGroup, fallbackHoneymoon, fallbackIslands, fallbackLtc, fallbackPackages } from "./fallbackData.js";
+import { fallbackActivities, fallbackFamily, fallbackGroup, fallbackHoneymoon, fallbackIslands, fallbackLtc, fallbackPackages, fallbackFerry } from "./fallbackData.js";
 
 const emptyForms = {
   packages:  { _id: "", title: "", duration: "", category: "", priceFrom: "", image: "", description: "", location: "", tags: "" },
@@ -9,7 +9,8 @@ const emptyForms = {
   honeymoon: { _id: "", title: "", subtitle: "", duration: "", priceFrom: "", image: "", description: "", highlights: "", offer: "", tags: "" },
   family:    { _id: "", title: "", subtitle: "", duration: "", priceFrom: "", image: "", description: "", highlights: "", tags: "" },
   ltc:       { _id: "", title: "", subtitle: "", duration: "", priceFrom: "", image: "", description: "", highlights: "", tags: "" },
-  group:     { _id: "", title: "", subtitle: "", duration: "", priceFrom: "", image: "", description: "", highlights: "", tags: "" }
+  group:     { _id: "", title: "", subtitle: "", duration: "", priceFrom: "", image: "", description: "", highlights: "", tags: "" },
+  ferry:     { _id: "", name: "", type: "", description: "", duration: "", image: "", features: "", priceFrom: "" }
 };
 
 const tabIcons = {
@@ -17,9 +18,10 @@ const tabIcons = {
   activities: "🤿",
   islands:    "🏝️",
   honeymoon:  "💑",
-  family:     "👨‍👩‍👧‍👦",
+  family:     "👨👩👧👦",
   ltc:        "🏛️",
-  group:      "👥"
+  group:      "👥",
+  ferry:      "⛴️"
 };
 
 function formatPrice(value) {
@@ -39,6 +41,7 @@ export default function AdminPanel({ onLogout }) {
   const [family,     setFamily]     = useState([]);
   const [ltc,        setLtc]        = useState([]);
   const [group,      setGroup]      = useState([]);
+  const [ferry,      setFerry]      = useState([]);
   const [loading,    setLoading]    = useState(true);
   const [adminTab,   setAdminTab]   = useState("packages");
   const [adminForm,  setAdminForm]  = useState(emptyForms.packages);
@@ -52,28 +55,31 @@ export default function AdminPanel({ onLogout }) {
     honeymoon: { title: "Honeymoon",  path: "/api/honeymoon" },
     family:    { title: "Family",     path: "/api/family" },
     ltc:       { title: "LTC",        path: "/api/ltc" },
-    group:     { title: "Group",      path: "/api/group" }
+    group:     { title: "Group",      path: "/api/group" },
+    ferry:     { title: "Ferry",      path: "/api/ferry" }
   }), []);
 
   const counts = {
     packages: packages.length, activities: activities.length,
     islands: islands.length, honeymoon: honeymoon.length,
-    family: family.length, ltc: ltc.length, group: group.length
+    family: family.length, ltc: ltc.length, group: group.length,
+    ferry: ferry.length
   };
 
   async function loadAll() {
     setLoading(true);
-    const [p, a, i, h, f, l, g] = await Promise.all([
+    const [p, a, i, h, f, l, g, fe] = await Promise.all([
       fetchList("/api/packages",  {}, fallbackPackages),
       fetchList("/api/activities",{}, fallbackActivities),
       fetchList("/api/islands",   {}, fallbackIslands),
       fetchList("/api/honeymoon", {}, fallbackHoneymoon),
       fetchList("/api/family",    {}, fallbackFamily),
       fetchList("/api/ltc",       {}, fallbackLtc),
-      fetchList("/api/group",     {}, fallbackGroup)
+      fetchList("/api/group",     {}, fallbackGroup),
+      fetchList("/api/ferry",     {}, fallbackFerry)
     ]);
     setPackages(p); setActivities(a); setIslands(i);
-    setHoneymoon(h); setFamily(f); setLtc(l); setGroup(g);
+    setHoneymoon(h); setFamily(f); setLtc(l); setGroup(g); setFerry(fe);
     setLoading(false);
   }
 
@@ -89,6 +95,9 @@ export default function AdminPanel({ onLogout }) {
     if (adminTab === "packages" || adminTab === "activities") {
       payload.priceFrom = payload.priceFrom ? Number(payload.priceFrom) : 0;
       payload.tags = payload.tags ? payload.tags.split(",").map((t) => t.trim()) : [];
+    } else if (adminTab === "ferry") {
+      payload.priceFrom = payload.priceFrom ? Number(payload.priceFrom) : 0;
+      payload.features = payload.features ? payload.features.split(",").map((t) => t.trim()) : [];
     } else if (["honeymoon", "family", "ltc", "group"].includes(adminTab)) {
       payload.priceFrom  = payload.priceFrom ? Number(payload.priceFrom) : 0;
       payload.highlights = payload.highlights ? payload.highlights.split(",").map((t) => t.trim()) : [];
@@ -140,6 +149,8 @@ export default function AdminPanel({ onLogout }) {
     if (!isRealId(item._id)) { setAdminMessage("⚠️ Cannot edit fallback data. Seed the database first."); return; }
     if (adminTab === "islands") {
       setAdminForm({ _id: item._id, name: item.name || "", tagline: item.tagline || "", image: item.image || "", description: item.description || "", highlights: Array.isArray(item.highlights) ? item.highlights.join(", ") : "", tags: Array.isArray(item.tags) ? item.tags.join(", ") : "" });
+    } else if (adminTab === "ferry") {
+      setAdminForm({ _id: item._id, name: item.name || "", type: item.type || "", description: item.description || "", duration: item.duration || "", image: item.image || "", features: Array.isArray(item.features) ? item.features.join(", ") : "", priceFrom: item.priceFrom || "" });
     } else if (["honeymoon", "family", "ltc", "group"].includes(adminTab)) {
       setAdminForm({ _id: item._id, title: item.title || "", subtitle: item.subtitle || "", duration: item.duration || "", priceFrom: item.priceFrom || "", image: item.image || "", description: item.description || "", highlights: Array.isArray(item.highlights) ? item.highlights.join(", ") : "", offer: adminTab === "honeymoon" ? (item.offer || "") : undefined, tags: Array.isArray(item.tags) ? item.tags.join(", ") : "" });
     } else {
@@ -154,7 +165,8 @@ export default function AdminPanel({ onLogout }) {
     adminTab === "honeymoon"  ? honeymoon :
     adminTab === "family"     ? family :
     adminTab === "ltc"        ? ltc :
-    adminTab === "group"      ? group : islands;
+    adminTab === "group"      ? group :
+    adminTab === "ferry"      ? ferry : islands;
 
   return (
     <div style={{ display: "flex", minHeight: "100vh", background: "var(--bg)" }}>
@@ -203,7 +215,7 @@ export default function AdminPanel({ onLogout }) {
                     {item.image && <div style={{ width: 48, height: 48, borderRadius: 10, backgroundImage: `url(${item.image})`, backgroundSize: "cover", backgroundPosition: "center", flexShrink: 0 }} />}
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontWeight: 600, fontSize: 14, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{item.title || item.name}</div>
-                      <div style={{ color: "var(--muted)", fontSize: 12 }}>{item.subtitle || item.category || item.tagline || item.duration || ""}</div>
+                      <div style={{ color: "var(--muted)", fontSize: 12 }}>{item.subtitle || item.category || item.tagline || item.type || item.duration || ""}</div>
                     </div>
                     <div style={{ color: "var(--accent-dark)", fontWeight: 700, fontSize: 13, flexShrink: 0 }}>{formatPrice(item.priceFrom)}</div>
                     <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
@@ -227,6 +239,16 @@ export default function AdminPanel({ onLogout }) {
                     <textarea className="input" rows="3" placeholder="Description" value={adminForm.description} onChange={(e) => setAdminForm({ ...adminForm, description: e.target.value })} />
                     <input className="input" placeholder="Highlights (comma separated)" value={adminForm.highlights} onChange={(e) => setAdminForm({ ...adminForm, highlights: e.target.value })} />
                     <input className="input" placeholder="Tags (comma separated)" value={adminForm.tags} onChange={(e) => setAdminForm({ ...adminForm, tags: e.target.value })} />
+                  </>
+                ) : adminTab === "ferry" ? (
+                  <>
+                    <input className="input" placeholder="Name" value={adminForm.name} onChange={(e) => setAdminForm({ ...adminForm, name: e.target.value })} />
+                    <input className="input" placeholder="Type (e.g. Luxury, Budget)" value={adminForm.type} onChange={(e) => setAdminForm({ ...adminForm, type: e.target.value })} />
+                    <input className="input" placeholder="Duration (e.g. 2 Hours)" value={adminForm.duration} onChange={(e) => setAdminForm({ ...adminForm, duration: e.target.value })} />
+                    <input className="input" placeholder="Price from" value={adminForm.priceFrom} onChange={(e) => setAdminForm({ ...adminForm, priceFrom: e.target.value })} />
+                    <input className="input" placeholder="Image URL" value={adminForm.image} onChange={(e) => setAdminForm({ ...adminForm, image: e.target.value })} />
+                    <textarea className="input" rows="3" placeholder="Description" value={adminForm.description} onChange={(e) => setAdminForm({ ...adminForm, description: e.target.value })} />
+                    <input className="input" placeholder="Features (comma separated, e.g. AC, WiFi, Meals)" value={adminForm.features} onChange={(e) => setAdminForm({ ...adminForm, features: e.target.value })} />
                   </>
                 ) : adminTab === "honeymoon" ? (
                   <>

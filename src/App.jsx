@@ -10,6 +10,8 @@ import LtcList from "./LtcList.jsx";
 import LtcDetail from "./LtcDetail.jsx";
 import GroupList from "./GroupList.jsx";
 import GroupDetail from "./GroupDetail.jsx";
+import ActivityList from "./ActivityList.jsx";
+import ActivityDetail from "./ActivityDetail.jsx";
 import AdminLogin from "./AdminLogin.jsx";
 import AdminPanel from "./AdminPanel.jsx";
 
@@ -142,12 +144,15 @@ function HomePage() {
             onMouseLeave={() => !showMobileMenu && setShowActivityDropdown(false)}
             onClick={() => showMobileMenu && setShowActivityDropdown(!showActivityDropdown)}
           >
-            <a href="#activities" className="nav-link">Activities ▾</a>
+            <Link to="/activities" className="nav-link">Activities ▾</Link>
             {(showActivityDropdown || (showMobileMenu && showActivityDropdown)) && activities.length > 0 && (
               <div className="dropdown-menu dropdown-menu-activities">
-                {activities.slice(0, 12).map((activity) => (
+                <div className="dropdown-section">
+                  <Link to="/activities" className="dropdown-item" onClick={() => setShowMobileMenu(false)}>View All Activities</Link>
+                </div>
+                {activities.slice(0, 8).map((activity) => (
                   <div key={activity._id} className="dropdown-section">
-                    <a href="#activities" className="dropdown-item" onClick={(e) => { e.preventDefault(); document.getElementById('activities').scrollIntoView({ behavior: 'smooth' }); setShowMobileMenu(false); }}>{activity.title}</a>
+                    <Link to={`/activities/${activity._id}`} className="dropdown-item" onClick={() => setShowMobileMenu(false)}>{activity.title}</Link>
                   </div>
                 ))}
               </div>
@@ -300,14 +305,35 @@ function HomePage() {
       </section>
 
       <section id="activities" className="section alt">
-        <div className="section-head"><h2>Water Activities</h2><p>Scuba, kayaking, sea walk, and more.</p></div>
+        <div className="section-head">
+          <h2>Water Activities</h2>
+          <p>Scuba, kayaking, sea walk, and more adventures await you.</p>
+          <Link to="/activities" className="section-link">View All Activities →</Link>
+        </div>
         <div className="filters">
           <input className="input" placeholder="Search title" value={activityFilters.q} onChange={(e) => setActivityFilters({ ...activityFilters, q: e.target.value })} />
           <input className="input" placeholder="Category" value={activityFilters.category} onChange={(e) => setActivityFilters({ ...activityFilters, category: e.target.value })} />
           <input className="input" placeholder="Location" value={activityFilters.location} onChange={(e) => setActivityFilters({ ...activityFilters, location: e.target.value })} />
           <button className="ghost" onClick={loadAll}>Apply</button>
         </div>
-        {loading ? <div className="loading">Loading activities...</div> : <CardGrid items={activities} metaKey="category" />}
+        {loading ? <div className="loading">Loading activities...</div> : (
+          <div className="grid">
+            {activities.slice(0, 6).map((item) => (
+              <Link key={item._id} to={`/activities/${item._id}`} className="card">
+                <div className="card-image" style={{ backgroundImage: `url(${item.image})` }} />
+                <div className="card-body">
+                  <div className="card-title">{item.title}</div>
+                  <div className="card-meta">{item.category}</div>
+                  <p className="card-text">{item.description}</p>
+                  <div className="card-foot">
+                    <span className="price">{formatPrice(item.priceFrom)}</span>
+                    <span className="card-link">View Details →</span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
       </section>
 
       <section id="islands" className="section">
@@ -676,6 +702,8 @@ export default function App() {
     <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/activities" element={<ActivityList />} />
+        <Route path="/activities/:id" element={<ActivityDetail />} />
         <Route path="/honeymoon" element={<HoneymoonList />} />
         <Route path="/honeymoon/:id" element={<HoneymoonDetail />} />
         <Route path="/family" element={<FamilyList />} />

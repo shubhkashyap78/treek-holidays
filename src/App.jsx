@@ -679,7 +679,7 @@ function HomePage() {
         </div>
         <div className="footer-bottom">
           <div>© 2024 Andaman Treek Holidays. All rights reserved.</div>
-          <div>Built with ❤️ using React, Express & MongoDB</div>
+          <div>Built with ❤️ JR Technology</div>
         </div>
       </footer>
     </div>

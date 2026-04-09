@@ -589,11 +589,16 @@ function HomePage() {
                 body: JSON.stringify(data)
               });
               
+              console.log('Contact form response:', response.status, response.statusText);
+              
               if (response.ok) {
+                const result = await response.json();
+                console.log('Contact saved successfully:', result);
                 alert('✅ Thank you! Your enquiry has been submitted successfully. We will contact you within 24 hours.');
                 e.target.reset();
               } else {
                 const errorData = await response.json().catch(() => ({}));
+                console.error('Contact form error response:', errorData);
                 throw new Error(errorData.error || `Server error: ${response.status}`);
               }
             } catch (error) {

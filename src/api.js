@@ -38,8 +38,8 @@ export function getToken() {
 export async function fetchList(path, params, fallback) {
   try {
     const headers = {};
-    // Only add auth headers for admin endpoints (GET requests to contact)
-    if (path.includes('/contact') && !params) {
+    // Add auth headers for contact endpoint when fetching (admin panel)
+    if (path.includes('/contact')) {
       const token = localStorage.getItem("admin_token");
       if (token) headers.Authorization = `Bearer ${token}`;
     }
@@ -50,6 +50,7 @@ export async function fetchList(path, params, fallback) {
     if (Array.isArray(data) && data.length > 0) return data;
     return fallback;
   } catch (err) {
+    console.error('fetchList error:', err);
     return fallback;
   }
 }

@@ -8,13 +8,18 @@ export default function HoneymoonDetail() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL || ""}/api/honeymoon/${id}`)
+    const apiUrl = import.meta.env.VITE_API_URL || "https://andaman-treek-holidays-backend.onrender.com";
+    fetch(`${apiUrl}/api/honeymoon/${id}`)
       .then((r) => {
         if (!r.ok) throw new Error("Not found");
         return r.json();
       })
       .then((data) => { setItem(data); setLoading(false); })
-      .catch(() => { setError("Package not found."); setLoading(false); });
+      .catch((err) => { 
+        console.error('API Error:', err);
+        setError("Package not found."); 
+        setLoading(false); 
+      });
   }, [id]);
 
   const isAdmin = !!localStorage.getItem("admin_token");

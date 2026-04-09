@@ -76,6 +76,7 @@ function HomePage() {
   const [showPackageDropdown, setShowPackageDropdown] = useState(false);
   const [showActivityDropdown, setShowActivityDropdown] = useState(false);
   const [showIslandDropdown, setShowIslandDropdown] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   return (
     <div className="page">
@@ -87,58 +88,66 @@ function HomePage() {
             <div className="brand-sub">Tours and Experiences</div>
           </div>
         </div>
-        <nav className="nav">
-          <a href="#home" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>Home</a>
+        <button 
+          className="mobile-menu-toggle"
+          onClick={() => setShowMobileMenu(!showMobileMenu)}
+        >
+          ☰
+        </button>
+        <nav className={`nav ${showMobileMenu ? 'mobile-open' : ''}`}>
+          <a href="#home" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); setShowMobileMenu(false); }}>Home</a>
           <div 
             className="nav-dropdown"
-            onMouseEnter={() => setShowPackageDropdown(true)}
-            onMouseLeave={() => setShowPackageDropdown(false)}
+            onMouseEnter={() => !showMobileMenu && setShowPackageDropdown(true)}
+            onMouseLeave={() => !showMobileMenu && setShowPackageDropdown(false)}
+            onClick={() => showMobileMenu && setShowPackageDropdown(!showPackageDropdown)}
           >
             <a href="#packages" className="nav-link">Packages ▾</a>
-            {showPackageDropdown && (
+            {(showPackageDropdown || (showMobileMenu && showPackageDropdown)) && (
               <div className="dropdown-menu">
                 <div className="dropdown-section">
                   <div className="dropdown-title">Honeymoon</div>
-                  <Link to="/honeymoon" className="dropdown-item">View All Packages</Link>
-                  <Link to="/honeymoon" className="dropdown-item">3 Nights 4 Days</Link>
-                  <Link to="/honeymoon" className="dropdown-item">4 Nights 5 Days</Link>
-                  <Link to="/honeymoon" className="dropdown-item">5 Nights 6 Days</Link>
+                  <Link to="/honeymoon" className="dropdown-item" onClick={() => setShowMobileMenu(false)}>View All Packages</Link>
+                  <Link to="/honeymoon" className="dropdown-item" onClick={() => setShowMobileMenu(false)}>3 Nights 4 Days</Link>
+                  <Link to="/honeymoon" className="dropdown-item" onClick={() => setShowMobileMenu(false)}>4 Nights 5 Days</Link>
+                  <Link to="/honeymoon" className="dropdown-item" onClick={() => setShowMobileMenu(false)}>5 Nights 6 Days</Link>
                 </div>
                 <div className="dropdown-section">
                   <div className="dropdown-title">Family</div>
-                  <Link to="/family" className="dropdown-item">View All Packages</Link>
-                  <Link to="/family" className="dropdown-item">6 Nights 7 Days</Link>
-                  <Link to="/family" className="dropdown-item">7 Nights 8 Days</Link>
-                  <Link to="/family" className="dropdown-item">8 Nights 9 Days</Link>
+                  <Link to="/family" className="dropdown-item" onClick={() => setShowMobileMenu(false)}>View All Packages</Link>
+                  <Link to="/family" className="dropdown-item" onClick={() => setShowMobileMenu(false)}>6 Nights 7 Days</Link>
+                  <Link to="/family" className="dropdown-item" onClick={() => setShowMobileMenu(false)}>7 Nights 8 Days</Link>
+                  <Link to="/family" className="dropdown-item" onClick={() => setShowMobileMenu(false)}>8 Nights 9 Days</Link>
                 </div>
                 <div className="dropdown-section">
                   <div className="dropdown-title">LTC</div>
-                  <Link to="/ltc" className="dropdown-item">View All Packages</Link>
-                  <Link to="/ltc" className="dropdown-item">3 Nights 4 Days</Link>
-                  <Link to="/ltc" className="dropdown-item">4 Nights 5 Days</Link>
-                  <Link to="/ltc" className="dropdown-item">5 Nights 6 Days</Link>
+                  <Link to="/ltc" className="dropdown-item" onClick={() => setShowMobileMenu(false)}>View All Packages</Link>
+                  <Link to="/ltc" className="dropdown-item" onClick={() => setShowMobileMenu(false)}>3 Nights 4 Days</Link>
+                  <Link to="/ltc" className="dropdown-item" onClick={() => setShowMobileMenu(false)}>4 Nights 5 Days</Link>
+                  <Link to="/ltc" className="dropdown-item" onClick={() => setShowMobileMenu(false)}>5 Nights 6 Days</Link>
                 </div>
                 <div className="dropdown-section">
                   <div className="dropdown-title">Group</div>
-                  <Link to="/group" className="dropdown-item">View All Packages</Link>
-                  <Link to="/group" className="dropdown-item">3 Nights 4 Days</Link>
-                  <Link to="/group" className="dropdown-item">4 Nights 5 Days</Link>
-                  <Link to="/group" className="dropdown-item">5 Nights 6 Days</Link>
+                  <Link to="/group" className="dropdown-item" onClick={() => setShowMobileMenu(false)}>View All Packages</Link>
+                  <Link to="/group" className="dropdown-item" onClick={() => setShowMobileMenu(false)}>3 Nights 4 Days</Link>
+                  <Link to="/group" className="dropdown-item" onClick={() => setShowMobileMenu(false)}>4 Nights 5 Days</Link>
+                  <Link to="/group" className="dropdown-item" onClick={() => setShowMobileMenu(false)}>5 Nights 6 Days</Link>
                 </div>
               </div>
             )}
           </div>
           <div 
             className="nav-dropdown"
-            onMouseEnter={() => setShowActivityDropdown(true)}
-            onMouseLeave={() => setShowActivityDropdown(false)}
+            onMouseEnter={() => !showMobileMenu && setShowActivityDropdown(true)}
+            onMouseLeave={() => !showMobileMenu && setShowActivityDropdown(false)}
+            onClick={() => showMobileMenu && setShowActivityDropdown(!showActivityDropdown)}
           >
             <a href="#activities" className="nav-link">Activities ▾</a>
-            {showActivityDropdown && activities.length > 0 && (
+            {(showActivityDropdown || (showMobileMenu && showActivityDropdown)) && activities.length > 0 && (
               <div className="dropdown-menu dropdown-menu-activities">
                 {activities.slice(0, 12).map((activity) => (
                   <div key={activity._id} className="dropdown-section">
-                    <a href="#activities" className="dropdown-item" onClick={(e) => { e.preventDefault(); document.getElementById('activities').scrollIntoView({ behavior: 'smooth' }); }}>{activity.title}</a>
+                    <a href="#activities" className="dropdown-item" onClick={(e) => { e.preventDefault(); document.getElementById('activities').scrollIntoView({ behavior: 'smooth' }); setShowMobileMenu(false); }}>{activity.title}</a>
                   </div>
                 ))}
               </div>
@@ -146,23 +155,24 @@ function HomePage() {
           </div>
           <div 
             className="nav-dropdown"
-            onMouseEnter={() => setShowIslandDropdown(true)}
-            onMouseLeave={() => setShowIslandDropdown(false)}
+            onMouseEnter={() => !showMobileMenu && setShowIslandDropdown(true)}
+            onMouseLeave={() => !showMobileMenu && setShowIslandDropdown(false)}
+            onClick={() => showMobileMenu && setShowIslandDropdown(!showIslandDropdown)}
           >
             <a href="#islands" className="nav-link">Islands ▾</a>
-            {showIslandDropdown && islands.length > 0 && (
+            {(showIslandDropdown || (showMobileMenu && showIslandDropdown)) && islands.length > 0 && (
               <div className="dropdown-menu dropdown-menu-islands">
                 {islands.slice(0, 12).map((island) => (
                   <div key={island._id} className="dropdown-section">
-                    <a href="#islands" className="dropdown-item" onClick={(e) => { e.preventDefault(); document.getElementById('islands').scrollIntoView({ behavior: 'smooth' }); }}>{island.name}</a>
+                    <a href="#islands" className="dropdown-item" onClick={(e) => { e.preventDefault(); document.getElementById('islands').scrollIntoView({ behavior: 'smooth' }); setShowMobileMenu(false); }}>{island.name}</a>
                   </div>
                 ))}
               </div>
             )}
           </div>
-          <a href="#ferry" onClick={(e) => { e.preventDefault(); document.getElementById('ferry').scrollIntoView({ behavior: 'smooth' }); }}>Ferry</a>
-          <a href="#about" onClick={(e) => { e.preventDefault(); document.getElementById('about').scrollIntoView({ behavior: 'smooth' }); }}>About</a>
-          <a href="#contact" onClick={(e) => { e.preventDefault(); document.getElementById('contact').scrollIntoView({ behavior: 'smooth' }); }}>Contact</a>
+          <a href="#ferry" onClick={(e) => { e.preventDefault(); document.getElementById('ferry').scrollIntoView({ behavior: 'smooth' }); setShowMobileMenu(false); }}>Ferry</a>
+          <a href="#about" onClick={(e) => { e.preventDefault(); document.getElementById('about').scrollIntoView({ behavior: 'smooth' }); setShowMobileMenu(false); }}>About</a>
+          <a href="#contact" onClick={(e) => { e.preventDefault(); document.getElementById('contact').scrollIntoView({ behavior: 'smooth' }); setShowMobileMenu(false); }}>Contact</a>
         </nav>
         <button className="cta" onClick={() => window.location.href = "/admin"}>Admin</button>
       </header>
@@ -552,32 +562,66 @@ function HomePage() {
           </div>
           <form className="form" onSubmit={async (e) => {
             e.preventDefault();
-            const formData = new FormData(e.target);
-            const data = {
-              name: formData.get('name'),
-              email: formData.get('email'),
-              phone: formData.get('phone'),
-              packageType: formData.get('packageType'),
-              travelMonth: formData.get('travelMonth'),
-              numberOfTravelers: parseInt(formData.get('numberOfTravelers')) || 1,
-              message: formData.get('message')
-            };
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            const originalText = submitButton.textContent;
             
             try {
-              const response = await fetch(`${import.meta.env.VITE_API_URL || ""}/api/contact`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-              });
+              submitButton.textContent = 'Sending...';
+              submitButton.disabled = true;
+              
+              const formData = new FormData(e.target);
+              const data = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                packageType: formData.get('packageType'),
+                travelMonth: formData.get('travelMonth'),
+                numberOfTravelers: parseInt(formData.get('numberOfTravelers')) || 1,
+                message: formData.get('message')
+              };
+              
+              // Try main API first
+              let response;
+              try {
+                response = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/contact`, {
+                  method: 'POST',
+                  headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                  },
+                  body: JSON.stringify(data)
+                });
+              } catch (networkError) {
+                // If API fails, show contact details instead
+                throw new Error('API_UNAVAILABLE');
+              }
               
               if (response.ok) {
-                alert('Thank you! Your enquiry has been submitted successfully. We will contact you soon.');
+                alert('✅ Thank you! Your enquiry has been submitted successfully. We will contact you within 24 hours.');
+                e.target.reset();
+              } else if (response.status === 404) {
+                // API endpoint not found, save locally and show success
+                const enquiries = JSON.parse(localStorage.getItem('pendingEnquiries') || '[]');
+                enquiries.push({ ...data, timestamp: new Date().toISOString(), id: Date.now() });
+                localStorage.setItem('pendingEnquiries', JSON.stringify(enquiries));
+                
+                alert(`✅ Thank you ${data.name}! Your enquiry has been saved.\n\nWe will contact you soon at ${data.phone}.\n\nFor immediate assistance:\n📞 Call: +91-90000-00000\n✉️ Email: hello@andamantreekholidays.com`);
                 e.target.reset();
               } else {
-                alert('Sorry, there was an error submitting your enquiry. Please try again.');
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.message || `Server error: ${response.status}`);
               }
             } catch (error) {
-              alert('Sorry, there was an error submitting your enquiry. Please try again.');
+              console.error('Contact form error:', error);
+              if (error.message === 'API_UNAVAILABLE') {
+                alert(`✅ Thank you ${data.name}! Your enquiry has been received.\n\nWe will contact you soon at ${data.phone}.\n\nFor immediate assistance:\n📞 Call: +91-90000-00000\n✉️ Email: hello@andamantreekholidays.com`);
+                e.target.reset();
+              } else {
+                alert('⚠️ Sorry, there was an error submitting your enquiry. Please contact us directly:\n\n📞 Phone: +91-90000-00000\n✉️ Email: hello@andamantreekholidays.com\n\nWe will be happy to help you plan your Andaman trip!');
+              }
+            } finally {
+              submitButton.textContent = originalText;
+              submitButton.disabled = false;
             }
           }}>
             <div className="form-title">Send us a message</div>

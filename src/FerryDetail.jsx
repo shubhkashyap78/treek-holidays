@@ -105,21 +105,27 @@ export default function FerryDetail() {
 
           <section className="detail-section">
             <h2>Ferry Routes & Schedule</h2>
-            <div style={{ background: "#f0f9ff", border: "1px solid #0ea5e9", borderRadius: 12, padding: 16, marginBottom: 16 }}>
-              <h4 style={{ margin: "0 0 8px", color: "#0369a1" }}>Popular Routes</h4>
-              <ul style={{ margin: 0, paddingLeft: 20, color: "#0369a1" }}>
-                <li>Port Blair ↔ Havelock Island</li>
-                <li>Port Blair ↔ Neil Island</li>
-                <li>Havelock ↔ Neil Island</li>
-              </ul>
-            </div>
-            <div style={{ background: "#fef3c7", border: "1px solid #f59e0b", borderRadius: 12, padding: 16 }}>
-              <h4 style={{ margin: "0 0 8px", color: "#92400e" }}>Important Notes</h4>
-              <ul style={{ margin: 0, paddingLeft: 20, color: "#92400e", fontSize: 14 }}>
-                <li>Ferry schedules may change due to weather conditions</li>
-                <li>Advance booking recommended during peak season</li>
-                <li>Arrive 30 minutes before departure time</li>
-              </ul>
+            <div className="route-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 16, marginBottom: 16 }}>
+              <div style={{ background: "#f0f9ff", border: "1px solid #0ea5e9", borderRadius: 12, padding: 16 }}>
+                <h4 style={{ margin: "0 0 8px", color: "#0369a1", display: "flex", alignItems: "center", gap: 8 }}>
+                  🗺️ Popular Routes
+                </h4>
+                <ul style={{ margin: 0, paddingLeft: 20, color: "#0369a1" }}>
+                  <li>Port Blair ↔ Havelock Island</li>
+                  <li>Port Blair ↔ Neil Island</li>
+                  <li>Havelock ↔ Neil Island</li>
+                </ul>
+              </div>
+              <div style={{ background: "#fef3c7", border: "1px solid #f59e0b", borderRadius: 12, padding: 16 }}>
+                <h4 style={{ margin: "0 0 8px", color: "#92400e", display: "flex", alignItems: "center", gap: 8 }}>
+                  ⚠️ Important Notes
+                </h4>
+                <ul style={{ margin: 0, paddingLeft: 20, color: "#92400e", fontSize: 14 }}>
+                  <li>Weather-dependent schedules</li>
+                  <li>Advance booking recommended</li>
+                  <li>Arrive 30 min early</li>
+                </ul>
+              </div>
             </div>
           </section>
 

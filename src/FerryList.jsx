@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchList } from "./api.js";
 import { fallbackFerry } from "./fallbackData.js";
+import Navigation from "./Navigation.jsx";
 
 function formatPrice(value) {
   if (!value) return "On Request";
@@ -11,7 +12,7 @@ function formatPrice(value) {
 export default function FerryList() {
   const [ferries, setFerries] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filters, setFilters] = useState({ q: "", type: "" });
+  const [filters, setFilters] = useState({ q: "", type: "", route: "" });
 
   async function loadFerries() {
     setLoading(true);
@@ -26,38 +27,23 @@ export default function FerryList() {
 
   return (
     <div className="page">
-      <header className="topbar">
-        <div className="brand">
-          <span className="brand-mark">AB</span>
-          <div>
-            <div className="brand-title">Andaman Treek Holidays</div>
-            <div className="brand-sub">Tours and Experiences</div>
-          </div>
-        </div>
-        <nav className="nav">
-          <a href="/">Home</a>
-          <a href="/#packages">Packages</a>
-          <a href="/activities">Activities</a>
-          <a href="/islands">Islands</a>
-          <a href="/ferries">Ferry</a>
-          <a href="/#contact">Contact</a>
-        </nav>
-        <div style={{ display: "flex", gap: 8 }}>
-          {isAdmin && <button className="ghost" onClick={() => window.location.href = "/admin"}>Admin</button>}
-          <button className="cta" onClick={() => window.location.href = "/#contact"}>Book Now</button>
-        </div>
-      </header>
+      <Navigation isAdmin={isAdmin} />
 
-      <div className="list-hero">
-        <div className="list-hero-content">
-          <div className="pill">⛴️ Ferry Services</div>
-          <h1>Andaman Ferry Services</h1>
-          <p>Comfortable and safe ferry rides connecting the beautiful islands of Andaman with premium amenities</p>
+      <section className="list-hero">
+        <div className="list-hero-overlay">
+          <div className="pill" style={{ marginBottom: 12 }}>⛴️ Ferry Services</div>
+          <h1 className="list-hero-title">Andaman Ferry Services</h1>
+          <p className="list-hero-desc">Comfortable and safe ferry rides connecting the beautiful islands of Andaman with premium amenities</p>
         </div>
-      </div>
+      </section>
 
-      <div className="list-body">
-        <div className="list-filters">
+      <section className="section">
+        <div className="section-head">
+          <h2>All Ferry Services</h2>
+          <p>Choose from our reliable and comfortable ferry services</p>
+        </div>
+        
+        <div className="filters">
           <input 
             className="input" 
             placeholder="Search ferries..." 
@@ -70,29 +56,35 @@ export default function FerryList() {
             value={filters.type} 
             onChange={(e) => setFilters({ ...filters, type: e.target.value })} 
           />
-          <button className="cta" onClick={loadFerries}>Search</button>
+          <input 
+            className="input" 
+            placeholder="Route" 
+            value={filters.route} 
+            onChange={(e) => setFilters({ ...filters, route: e.target.value })} 
+          />
+          <button className="ghost" onClick={loadFerries}>Search</button>
         </div>
 
         {loading ? (
           <div className="loading">Loading ferries...</div>
         ) : (
-          <div className="list-grid">
+          <div className="grid">
             {ferries.map((ferry) => (
-              <Link key={ferry._id} to={`/ferries/${ferry._id}`} className="list-card">
-                <div className="list-card-image" style={{ backgroundImage: `url(${ferry.image})` }} />
-                <div className="list-card-body">
-                  <div className="list-card-category">{ferry.type}</div>
-                  <h3 className="list-card-title">{ferry.name}</h3>
-                  <p className="list-card-description">{ferry.description}</p>
-                  <div className="list-card-meta">
-                    <span>⏱ {ferry.duration}</span>
+              <Link key={ferry._id} to={`/ferries/${ferry._id}`} className="card">
+                <div className="card-image" style={{ backgroundImage: `url(${ferry.image})` }} />
+                <div className="card-body">
+                  <div className="card-title">{ferry.name}</div>
+                  <div className="card-meta">{ferry.type}</div>
+                  <p className="card-text">{ferry.description}</p>
+                  <div className="activity-meta">
+                    {ferry.duration && <span>⏱ {ferry.duration}</span>}
                     {ferry.features && ferry.features.length > 0 && (
-                      <span>✓ {ferry.features[0]}</span>
+                      <span>✓ {ferry.features.slice(0, 2).join(", ")}</span>
                     )}
                   </div>
-                  <div className="list-card-footer">
-                    <div className="list-card-price">{formatPrice(ferry.priceFrom)}</div>
-                    <div className="list-card-button">View Details →</div>
+                  <div className="card-foot">
+                    <span className="price">{formatPrice(ferry.priceFrom)}</span>
+                    <span className="card-link">View Details →</span>
                   </div>
                 </div>
               </Link>
@@ -106,7 +98,7 @@ export default function FerryList() {
             <p>Try adjusting your search filters</p>
           </div>
         )}
-      </div>
+      </section>
 
       <footer className="footer">
         <div className="footer-content">

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchList } from "./api.js";
 import { fallbackIslands } from "./fallbackData.js";
+import Navigation from "./Navigation.jsx";
 
 export default function IslandList() {
   const [islands, setIslands] = useState([]);
@@ -23,64 +24,46 @@ export default function IslandList() {
 
   return (
     <div className="page">
-      <header className="topbar">
-        <div className="brand">
-          <span className="brand-mark">AB</span>
-          <div>
-            <div className="brand-title">Andaman Treek Holidays</div>
-            <div className="brand-sub">Tours and Experiences</div>
-          </div>
-        </div>
-        <nav className="nav">
-          <a href="/">Home</a>
-          <a href="/#packages">Packages</a>
-          <Link to="/activities">Activities</Link>
-          <Link to="/islands">Islands</Link>
-          <Link to="/ferries">Ferry</Link>
-          <a href="/#contact">Contact</a>
-        </nav>
-        <div style={{ display: "flex", gap: 8 }}>
-          {isAdmin && <button className="ghost" onClick={() => window.location.href = "/admin"}>Admin</button>}
-          <button className="cta" onClick={() => window.location.href = "/#contact"}>Book Now</button>
-        </div>
-      </header>
+      <Navigation isAdmin={isAdmin} />
 
-      <div className="list-hero">
-        <div className="list-hero-content">
-          <div className="pill">🏝️ Paradise Islands</div>
-          <h1>Andaman Islands</h1>
-          <p>Discover pristine beaches, crystal-clear waters, and untouched natural beauty across the stunning Andaman archipelago</p>
+      <section className="list-hero">
+        <div className="list-hero-overlay">
+          <div className="pill" style={{ marginBottom: 12 }}>🏝️ Paradise Islands</div>
+          <h1 className="list-hero-title">Andaman Islands</h1>
+          <p className="list-hero-desc">Discover pristine beaches, crystal-clear waters, and untouched natural beauty across the stunning Andaman archipelago</p>
         </div>
-      </div>
+      </section>
 
-      <div className="list-body">
-        <div className="list-filters">
+      <section className="section">
+        <div className="section-head">
+          <h2>All Islands</h2>
+          <p>Explore the most beautiful islands of Andaman & Nicobar</p>
+        </div>
+        
+        <div className="filters">
           <input 
             className="input" 
             placeholder="Search islands..." 
             value={filters.q} 
             onChange={(e) => setFilters({ ...filters, q: e.target.value })} 
           />
-          <button className="cta" onClick={loadIslands}>Search</button>
+          <button className="ghost" onClick={loadIslands}>Search</button>
         </div>
 
         {loading ? (
           <div className="loading">Loading islands...</div>
         ) : (
-          <div className="list-grid">
+          <div className="grid">
             {islands.map((island) => (
-              <Link key={island._id} to={`/islands/${island._id}`} className="list-card">
-                <div className="list-card-image" style={{ backgroundImage: `url(${island.image})` }} />
-                <div className="list-card-body">
-                  <div className="list-card-category">Island</div>
-                  <h3 className="list-card-title">{island.name}</h3>
-                  <p className="list-card-description">{island.description}</p>
-                  <div className="list-card-meta">
-                    <span>🏖️ {island.tagline}</span>
-                  </div>
-                  <div className="list-card-footer">
-                    <div className="list-card-price">Explore</div>
-                    <div className="list-card-button">View Details →</div>
+              <Link key={island._id} to={`/islands/${island._id}`} className="card">
+                <div className="card-image" style={{ backgroundImage: `url(${island.image})` }} />
+                <div className="card-body">
+                  <div className="card-title">{island.name}</div>
+                  <div className="card-meta">{island.tagline}</div>
+                  <p className="card-text">{island.description}</p>
+                  <div className="card-foot">
+                    <span className="price">Explore</span>
+                    <span className="card-link">View Island →</span>
                   </div>
                 </div>
               </Link>
@@ -94,7 +77,7 @@ export default function IslandList() {
             <p>Try adjusting your search filters</p>
           </div>
         )}
-      </div>
+      </section>
 
       <footer className="footer">
         <div className="footer-content">

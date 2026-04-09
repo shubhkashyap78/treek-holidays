@@ -1,32 +1,42 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fallbackHoneymoon } from "./fallbackData.js";
+import { fallbackIslands } from "./fallbackData.js";
 
-export default function HoneymoonDetail() {
+export default function IslandDetail() {
   const { id } = useParams();
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    // Check if API is available, otherwise use fallback data
-    const fallbackItem = fallbackHoneymoon.find(item => item._id === id);
+    console.log('Fetching island with ID:', id);
     
     const apiUrl = import.meta.env.VITE_API_URL || "https://andaman-treek-holidays-backend.onrender.com";
-    fetch(`${apiUrl}/api/honeymoon/${id}`)
+    fetch(`${apiUrl}/api/islands/${id}`)
       .then((r) => {
-        if (!r.ok) throw new Error("Not found");
+        console.log('API Response status:', r.status);
+        if (!r.ok) throw new Error(`HTTP ${r.status}: Not found`);
         return r.json();
       })
-      .then((data) => { setItem(data); setLoading(false); })
+      .then((data) => { 
+        console.log('Island data received:', data);
+        setItem(data); 
+        setLoading(false); 
+      })
       .catch((err) => { 
         console.error('API Error:', err);
-        // Use fallback data if API fails
+        console.log('Trying fallback data for ID:', id);
+        
+        // Fallback to static data if API fails
+        const fallbackItem = fallbackIslands.find(item => item._id === id);
+        console.log('Fallback item found:', fallbackItem);
+        
         if (fallbackItem) {
           setItem(fallbackItem);
           setLoading(false);
         } else {
-          setError("Package not found."); 
+          console.log('Available fallback IDs:', fallbackIslands.map(item => item._id));
+          setError(`Island not found. ID: ${id}`);
           setLoading(false);
         }
       });
@@ -35,7 +45,24 @@ export default function HoneymoonDetail() {
   const isAdmin = !!localStorage.getItem("admin_token");
 
   if (loading) return <div className="detail-loading">Loading...</div>;
-  if (error)   return <div className="detail-loading">{error} <a href="/#honeymoon">← Go back</a></div>;
+  if (error) return (
+    <div className="detail-loading">
+      <div>{error}</div>
+      <div style={{ marginTop: 16, fontSize: 14, color: "var(--muted)" }}>
+        <div>Available Island IDs:</div>
+        <ul style={{ marginTop: 8, paddingLeft: 20 }}>
+          {fallbackIslands.map(item => (
+            <li key={item._id}>
+              <a href={`/islands/${item._id}`} style={{ color: "var(--accent)" }}>
+                {item._id} - {item.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <a href="/islands" style={{ marginTop: 16, display: "inline-block" }}>← Go back to Islands</a>
+    </div>
+  );
 
   return (
     <div className="page">
@@ -43,7 +70,7 @@ export default function HoneymoonDetail() {
         <div className="brand">
           <span className="brand-mark">AB</span>
           <div>
-            <div className="brand-title">Andaman Treek Holidays </div>
+            <div className="brand-title">Andaman Treek Holidays</div>
             <div className="brand-sub">Tours and Experiences</div>
           </div>
         </div>
@@ -56,67 +83,57 @@ export default function HoneymoonDetail() {
           <a href="/#contact">Contact</a>
         </nav>
         <div style={{ display: "flex", gap: 8 }}>
-          {isAdmin && (
-            <button className="ghost" onClick={() => window.location.href = "/admin"}>Admin</button>
-          )}
+          {isAdmin && <button className="ghost" onClick={() => window.location.href = "/admin"}>Admin</button>}
           <button className="cta" onClick={() => window.location.href = "/#contact"}>Book Now</button>
         </div>
       </header>
 
       <div className="detail-hero" style={{ backgroundImage: `url(${item.image})` }}>
         <div className="detail-hero-overlay">
-          <div className="pill" style={{ marginBottom: 12 }}>Honeymoon Package</div>
-          <h1 className="detail-title">{item.title}</h1>
-          {item.subtitle && <p className="detail-subtitle">{item.subtitle}</p>}
-          <div className="detail-meta-row">
-            {item.duration && <span className="detail-badge">🕐 {item.duration}</span>}
-            {item.priceFrom > 0 && <span className="detail-badge">💰 INR {item.priceFrom.toLocaleString("en-IN")}</span>}
-          </div>
+          <div className="pill" style={{ marginBottom: 12 }}>🏝️ Island Paradise</div>
+          <h1 className="detail-title">{item.name}</h1>
+          {item.tagline && <p className="detail-subtitle">{item.tagline}</p>}
         </div>
       </div>
 
       <div className="detail-body">
         <div className="detail-main">
           <section className="detail-section">
-            <h2>About this Package</h2>
+            <h2>About {item.name}</h2>
             <p>{item.description || "No description available."}</p>
           </section>
 
           {Array.isArray(item.highlights) && item.highlights.length > 0 && (
             <section className="detail-section">
-              <h2>Highlights</h2>
+              <h2>Key Attractions</h2>
               <ul className="detail-highlights">
-                {item.highlights.map((h, i) => (
-                  <li key={i}>✅ {h}</li>
-                ))}
+                {item.highlights.map((h, i) => <li key={i}>🌟 {h}</li>)}
               </ul>
             </section>
           )}
 
           <section className="detail-section">
-            <h2>Inclusions</h2>
+            <h2>What to Expect</h2>
             <ul className="detail-highlights">
-              <li>✅ Return airfare (Delhi / Mumbai to Port Blair)</li>
-              <li>✅ Hotel accommodation (as per package)</li>
-              <li>✅ Daily breakfast & dinner</li>
-              <li>✅ All transfers by private AC vehicle</li>
-              <li>✅ Ferry tickets (Port Blair ↔ Havelock ↔ Neil)</li>
-              <li>✅ Sightseeing as per itinerary</li>
-              <li>✅ Welcome drink on arrival</li>
-              <li>✅ All applicable taxes</li>
+              <li>🏖️ Pristine white sand beaches</li>
+              <li>🌊 Crystal-clear turquoise waters</li>
+              <li>🐠 Rich marine life and coral reefs</li>
+              <li>🌴 Lush tropical vegetation</li>
+              <li>📸 Perfect spots for photography</li>
+              <li>🌅 Stunning sunrise and sunset views</li>
             </ul>
           </section>
 
           <section className="detail-section">
-            <h2>Exclusions</h2>
-            <ul className="detail-highlights">
-              <li>❌ Personal expenses & tips</li>
-              <li>❌ Water sports & adventure activities</li>
-              <li>❌ Travel insurance</li>
-              <li>❌ Any meals not mentioned in inclusions</li>
-              <li>❌ Entry fees to monuments</li>
-              <li>❌ Anything not mentioned in inclusions</li>
-            </ul>
+            <h2>Best Time to Visit</h2>
+            <div style={{ background: "#f0f9ff", border: "1px solid #0ea5e9", borderRadius: 12, padding: 16, marginBottom: 16 }}>
+              <h4 style={{ margin: "0 0 8px", color: "#0369a1" }}>Peak Season (October - May)</h4>
+              <p style={{ margin: 0, fontSize: 14, color: "#0369a1" }}>Perfect weather with calm seas and clear skies. Ideal for water activities and beach exploration.</p>
+            </div>
+            <div style={{ background: "#fef3c7", border: "1px solid #f59e0b", borderRadius: 12, padding: 16 }}>
+              <h4 style={{ margin: "0 0 8px", color: "#92400e" }}>Monsoon Season (June - September)</h4>
+              <p style={{ margin: 0, fontSize: 14, color: "#92400e" }}>Heavy rainfall and rough seas. Limited water activities but lush green landscapes.</p>
+            </div>
           </section>
 
           {Array.isArray(item.tags) && item.tags.length > 0 && (
@@ -130,36 +147,35 @@ export default function HoneymoonDetail() {
 
         <aside className="detail-sidebar">
           <div className="detail-card">
-            <div className="detail-price-label">Starting From</div>
-            <div className="detail-price">
-              {item.priceFrom > 0 ? `INR ${item.priceFrom.toLocaleString("en-IN")}` : "On Request"}
-            </div>
-            <div className="detail-price-sub">per person (approx)</div>
+            <div className="detail-price-label">Island Experience</div>
+            <div className="detail-price">Free to Explore</div>
+            <div className="detail-price-sub">Natural Paradise</div>
             <div className="detail-divider" />
-            {item.duration && (
-              <div className="detail-info-row">
-                <span className="detail-info-label">Duration</span>
-                <span className="detail-info-value">{item.duration}</span>
-              </div>
-            )}
-            {item.offer && (
-              <div style={{ background: "#fff8e1", border: "1px solid #f2b241", borderRadius: 10, padding: "10px 14px", margin: "12px 0", fontSize: 13, fontWeight: 600, color: "#b45309" }}>
-                🎁 {item.offer}
-              </div>
-            )}
-            {item.subtitle && (
-              <div className="detail-info-row">
-                <span className="detail-info-label">Type</span>
-                <span className="detail-info-value">{item.subtitle}</span>
-              </div>
-            )}
             <div className="detail-info-row">
-              <span className="detail-info-label">Category</span>
-              <span className="detail-info-value">Honeymoon</span>
+              <span className="detail-info-label">Type</span>
+              <span className="detail-info-value">Tropical Island</span>
+            </div>
+            <div className="detail-info-row">
+              <span className="detail-info-label">Best For</span>
+              <span className="detail-info-value">Beach Lovers</span>
+            </div>
+            <div className="detail-info-row">
+              <span className="detail-info-label">Activities</span>
+              <span className="detail-info-value">Swimming, Snorkeling</span>
             </div>
             <div className="detail-btn-group">
-              <button className="cta block" onClick={() => window.location.href = "/#contact"}>Book Now</button>
-              <button className="ghost" onClick={() => window.location.href = "/#contact"}>Send Enquiry</button>
+              <button className="cta block" onClick={() => window.location.href = "/#contact"}>Plan Visit</button>
+              <button className="ghost" onClick={() => window.location.href = "/#contact"}>Get Packages</button>
+            </div>
+          </div>
+
+          <div className="detail-card" style={{ marginTop: 20 }}>
+            <h3 style={{ marginBottom: 12, fontSize: 16 }}>Travel Tips</h3>
+            <div style={{ fontSize: 13, color: "var(--muted)", lineHeight: 1.5 }}>
+              <p>🚤 <strong>Ferry Services:</strong> Regular ferries connect major islands</p>
+              <p>🏨 <strong>Accommodation:</strong> Book in advance during peak season</p>
+              <p>💧 <strong>Water:</strong> Carry drinking water and stay hydrated</p>
+              <p>🧴 <strong>Sun Protection:</strong> Use sunscreen and protective clothing</p>
             </div>
           </div>
         </aside>

@@ -10,21 +10,34 @@ export default function ActivityDetail() {
 
   useEffect(() => {
     const apiUrl = import.meta.env.VITE_API_URL || "https://andaman-treek-holidays-backend.onrender.com";
+    
+    console.log('Fetching activity with ID:', id);
+    
     fetch(`${apiUrl}/api/activities/${id}`)
       .then((r) => {
-        if (!r.ok) throw new Error("Not found");
+        console.log('API Response status:', r.status);
+        if (!r.ok) throw new Error(`HTTP ${r.status}: Not found`);
         return r.json();
       })
-      .then((data) => { setItem(data); setLoading(false); })
+      .then((data) => { 
+        console.log('Activity data received:', data);
+        setItem(data); 
+        setLoading(false); 
+      })
       .catch((err) => { 
         console.error('API Error:', err);
+        console.log('Trying fallback data for ID:', id);
+        
         // Fallback to static data if API fails
         const fallbackItem = fallbackActivities.find(item => item._id === id);
+        console.log('Fallback item found:', fallbackItem);
+        
         if (fallbackItem) {
           setItem(fallbackItem);
           setLoading(false);
         } else {
-          setError("Activity not found."); 
+          console.log('Available fallback IDs:', fallbackActivities.map(item => item._id));
+          setError(`Activity not found. ID: ${id}`);
           setLoading(false);
         }
       });
@@ -33,7 +46,24 @@ export default function ActivityDetail() {
   const isAdmin = !!localStorage.getItem("admin_token");
 
   if (loading) return <div className="detail-loading">Loading...</div>;
-  if (error) return <div className="detail-loading">{error} <a href="/activities">← Go back</a></div>;
+  if (error) return (
+    <div className="detail-loading">
+      <div>{error}</div>
+      <div style={{ marginTop: 16, fontSize: 14, color: "var(--muted)" }}>
+        <div>Available Activity IDs:</div>
+        <ul style={{ marginTop: 8, paddingLeft: 20 }}>
+          {fallbackActivities.map(item => (
+            <li key={item._id}>
+              <a href={`/activities/${item._id}`} style={{ color: "var(--accent)" }}>
+                {item._id} - {item.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <a href="/activities" style={{ marginTop: 16, display: "inline-block" }}>← Go back to Activities</a>
+    </div>
+  );
 
   return (
     <div className="page">
@@ -49,8 +79,8 @@ export default function ActivityDetail() {
           <a href="/">Home</a>
           <a href="/#packages">Packages</a>
           <a href="/activities">Activities</a>
-          <a href="/#islands">Islands</a>
-          <a href="/#ferry">Ferry</a>
+          <a href="/islands">Islands</a>
+          <a href="/ferries">Ferry</a>
           <a href="/#contact">Contact</a>
         </nav>
         <div style={{ display: "flex", gap: 8 }}>
@@ -154,8 +184,42 @@ export default function ActivityDetail() {
       </div>
 
       <footer className="footer">
-        <div>Andaman Treek Holidays</div>
-        <div><a href="/activities" style={{ color: "var(--muted)" }}>← All Water Activities</a></div>
+        <div className="footer-content">
+          <div className="footer-section">
+            <div className="footer-brand">
+              <span className="brand-mark">AB</span>
+              <div>
+                <div className="brand-title">Andaman Treek Holidays</div>
+                <div className="brand-sub">Tours and Experiences</div>
+              </div>
+            </div>
+            <p className="footer-desc">Your trusted partner for unforgettable Andaman adventures.</p>
+          </div>
+          <div className="footer-section">
+            <div className="footer-title">Quick Links</div>
+            <a href="/activities" className="footer-link">Activities</a>
+            <a href="/islands" className="footer-link">Islands</a>
+            <a href="/ferries" className="footer-link">Ferry Services</a>
+            <a href="/#contact" className="footer-link">Contact</a>
+          </div>
+          <div className="footer-section">
+            <div className="footer-title">Packages</div>
+            <a href="/honeymoon" className="footer-link">Honeymoon</a>
+            <a href="/family" className="footer-link">Family</a>
+            <a href="/group" className="footer-link">Group Tours</a>
+            <a href="/ltc" className="footer-link">LTC Packages</a>
+          </div>
+          <div className="footer-section">
+            <div className="footer-title">Contact Us</div>
+            <a href="tel:+919000000000" className="footer-link">📞 +91-90000-00000</a>
+            <a href="mailto:hello@andamantreekholidays.com" className="footer-link">✉️ hello@andamantreekholidays.com</a>
+            <div className="footer-link">📍 Port Blair, Andaman</div>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <div>© 2026 Andaman Treek Holidays. All rights reserved.</div>
+          <div>Built with ❤️ JR Technology</div>
+        </div>
       </footer>
     </div>
   );

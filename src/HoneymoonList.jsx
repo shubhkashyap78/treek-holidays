@@ -35,8 +35,9 @@ export default function HoneymoonList() {
         <nav className="nav">
           <Link to="/">Home</Link>
           <a href="/#packages">Packages</a>
-          <a href="/#activities">Activities</a>
-          <a href="/#islands">Islands</a>
+          <Link to="/activities">Activities</Link>
+          <Link to="/islands">Islands</Link>
+          <Link to="/ferries">Ferry</Link>
           <a href="/#contact">Contact</a>
         </nav>
         <button className="cta" onClick={() => window.location.href = "/admin"}>Admin</button>
@@ -80,8 +81,42 @@ export default function HoneymoonList() {
       </section>
 
       <footer className="footer">
-        <div>Andaman Treek Holidays</div>
-        <div><Link to="/" style={{ color: "var(--muted)" }}>← Back to Home</Link></div>
+        <div className="footer-content">
+          <div className="footer-section">
+            <div className="footer-brand">
+              <span className="brand-mark">AB</span>
+              <div>
+                <div className="brand-title">Andaman Treek Holidays</div>
+                <div className="brand-sub">Tours and Experiences</div>
+              </div>
+            </div>
+            <p className="footer-desc">Your trusted partner for unforgettable Andaman adventures.</p>
+          </div>
+          <div className="footer-section">
+            <div className="footer-title">Quick Links</div>
+            <Link to="/activities" className="footer-link">Activities</Link>
+            <Link to="/islands" className="footer-link">Islands</Link>
+            <Link to="/ferries" className="footer-link">Ferry Services</Link>
+            <a href="/#contact" className="footer-link">Contact</a>
+          </div>
+          <div className="footer-section">
+            <div className="footer-title">Packages</div>
+            <Link to="/honeymoon" className="footer-link">Honeymoon</Link>
+            <Link to="/family" className="footer-link">Family</Link>
+            <Link to="/group" className="footer-link">Group Tours</Link>
+            <Link to="/ltc" className="footer-link">LTC Packages</Link>
+          </div>
+          <div className="footer-section">
+            <div className="footer-title">Contact Us</div>
+            <a href="tel:+919000000000" className="footer-link">📞 +91-90000-00000</a>
+            <a href="mailto:hello@andamantreekholidays.com" className="footer-link">✉️ hello@andamantreekholidays.com</a>
+            <div className="footer-link">📍 Port Blair, Andaman</div>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <div>© 2026 Andaman Treek Holidays. All rights reserved.</div>
+          <div>Built with ❤️ JR Technology</div>
+        </div>
       </footer>
     </div>
   );

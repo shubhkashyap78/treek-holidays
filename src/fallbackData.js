@@ -35,7 +35,10 @@ export const fallbackActivities = [
     category: "Scuba",
     priceFrom: 4500,
     image: "/assests/scubadiving.jpg",
-    description: "Beginner friendly shore dive with instructor."
+    description: "Beginner friendly shore dive with instructor.",
+    duration: "2-3 Hours",
+    location: "Havelock",
+    tags: ["scuba", "water"]
   },
   {
     _id: "a2",
@@ -43,7 +46,10 @@ export const fallbackActivities = [
     category: "Sea Walk",
     priceFrom: 3500,
     image: "/assests/snorkeling.jpg",
-    description: "Walk under water with helmet at coral reef."
+    description: "Walk under water with helmet at coral reef.",
+    duration: "30-45 Min",
+    location: "North Bay",
+    tags: ["sea walk"]
   },
   {
     _id: "a3",
@@ -51,16 +57,53 @@ export const fallbackActivities = [
     category: "Kayaking",
     priceFrom: 2800,
     image: "/assests/kayaking.jpg",
-    description: "Paddle at night and see glowing water."
+    description: "Paddle at night and see glowing water.",
+    duration: "2 Hours",
+    location: "Havelock",
+    tags: ["kayak", "night"]
+  },
+  {
+    _id: "69d770e35e7571706b5646a3",
+    title: "Jet Ski Ride",
+    category: "Water Sports",
+    priceFrom: 2000,
+    image: "/assests/jetskiride.jpg",
+    description: "High-speed jet ski adventure in open waters.",
+    duration: "15-20 Min",
+    location: "Port Blair",
+    tags: ["jetski", "speed"]
+  },
+  {
+    _id: "a5",
+    title: "Parasailing Adventure",
+    category: "Adventure",
+    priceFrom: 3000,
+    image: "/assests/parasailing1.jpg",
+    description: "Soar high above the crystal-clear waters.",
+    duration: "10-15 Min",
+    location: "Port Blair",
+    tags: ["parasailing", "flying"]
+  },
+  {
+    _id: "a6",
+    title: "Banana Boat Ride",
+    category: "Fun Activity",
+    priceFrom: 800,
+    image: "/assests/bananaride.jpg",
+    description: "Fun group activity on inflatable banana boat.",
+    duration: "10-15 Min",
+    location: "North Bay",
+    tags: ["banana boat", "group"]
   }
 ];
 
 export const fallbackHoneymoon = [
-  { _id: "h1", title: "Romantic Bliss 4N/5D", subtitle: "Perfect for newlyweds", duration: "4 Nights / 5 Days", priceFrom: 32999, image: "/assests/honeymoon1.jpeg", description: "Private cab, candle light dinner, and island hopping for two." },
+  { _id: "h1", title: "Romantic Bliss 4N/5D", subtitle: "Perfect for newlyweds", duration: "4 Nights / 5 Days", priceFrom: 32999, image: "/assests/Honeymoon1.jpeg", description: "Private cab, candle light dinner, and island hopping for two." },
   { _id: "h2", title: "Island Escape 5N/6D", subtitle: "Havelock & Neil combo", duration: "5 Nights / 6 Days", priceFrom: 38999, image: "/assests/honeymoon2.jpeg", description: "Explore Radhanagar Beach and Neil Island with your partner." },
   { _id: "h3", title: "Luxury Honeymoon 6N/7D", subtitle: "Premium resort stay", duration: "6 Nights / 7 Days", priceFrom: 55999, image: "/assests/honeymoon3.jpeg", description: "Luxury resort, spa, and private island tour." },
   { _id: "h4", title: "Adventure Couple 5N/6D", subtitle: "For adventurous couples", duration: "5 Nights / 6 Days", priceFrom: 42999, image: "/assests/honeymoon4.jpeg", description: "Scuba diving, kayaking, and trekking together." },
-  { _id: "h5", title: "Budget Honeymoon 3N/4D", subtitle: "Sweet & affordable", duration: "3 Nights / 4 Days", priceFrom: 22999, image: "/assests/honeymoon5.jpeg", description: "Port Blair and Havelock with all essentials covered." }
+  { _id: "h5", title: "Budget Honeymoon 3N/4D", subtitle: "Sweet & affordable", duration: "3 Nights / 4 Days", priceFrom: 22999, image: "/assests/honeymoon5.jpeg", description: "Port Blair and Havelock with all essentials covered." },
+  { _id: "h6", title: "Premium Honeymoon 7N/8D", subtitle: "Ultimate romantic experience", duration: "7 Nights / 8 Days", priceFrom: 65999, image: "/assests/honeymoon6.jpeg", description: "Luxury resorts, private beach dinners, helicopter rides, and spa treatments." }
 ];
 
 export const fallbackFamily = [
@@ -94,21 +137,36 @@ export const fallbackIslands = [
     name: "Port Blair",
     tagline: "Capital gateway to the islands",
     image: "/assests/cellualar jai.jpg",
-    description: "Museums, Cellular Jail, and nearby beaches."
+    description: "Museums, Cellular Jail, and nearby beaches.",
+    highlights: ["Cellular Jail", "Corbyns Cove", "Ross Island"],
+    tags: ["gateway"]
   },
   {
-    _id: "i2",
+    _id: "69d771ab07c7b6db4af56cd7",
     name: "Havelock (Swaraj Dweep)",
     tagline: "Turquoise waters and white sands",
     image: "/assests/Elephant-beach-2.jpg",
-    description: "Famous for Radhanagar Beach and water sports."
+    description: "Famous for Radhanagar Beach and water sports.",
+    highlights: ["Radhanagar Beach", "Elephant Beach", "Scuba Diving"],
+    tags: ["beach", "water sports"]
   },
   {
     _id: "i3",
     name: "Neil (Shaheed Dweep)",
     tagline: "Peaceful, slow, and scenic",
     image: "/assests/kalapathar.jpg",
-    description: "Natural Rock, Bharatpur Beach, and calm lagoons."
+    description: "Natural Rock, Bharatpur Beach, and calm lagoons.",
+    highlights: ["Bharatpur Beach", "Natural Rock", "Laxmanpur Beach"],
+    tags: ["calm", "peaceful"]
+  },
+  {
+    _id: "i4",
+    name: "Baratang Island",
+    tagline: "Limestone caves and mangrove creeks",
+    image: "/assests/chidiya tapu.jpg",
+    description: "Famous for limestone caves and mud volcanoes.",
+    highlights: ["Limestone Caves", "Mud Volcanoes", "Mangrove Creek"],
+    tags: ["caves", "adventure"]
   }
 ];
 

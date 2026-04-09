@@ -12,6 +12,10 @@ import GroupList from "./GroupList.jsx";
 import GroupDetail from "./GroupDetail.jsx";
 import ActivityList from "./ActivityList.jsx";
 import ActivityDetail from "./ActivityDetail.jsx";
+import IslandList from "./IslandList.jsx";
+import IslandDetail from "./IslandDetail.jsx";
+import FerryList from "./FerryList.jsx";
+import FerryDetail from "./FerryDetail.jsx";
 import AdminLogin from "./AdminLogin.jsx";
 import AdminPanel from "./AdminPanel.jsx";
 
@@ -39,8 +43,10 @@ function HomePage() {
     setLoading(true);
     const [p, a, i, h, f, l, g, fe] = await Promise.all([
       fetchList("/api/packages",  packageFilters,  fallbackPackages),
-      fetchList("/api/activities", activityFilters, fallbackActivities),
-      fetchList("/api/islands",   islandFilters,   fallbackIslands),
+      // Using fallback activities to avoid 404 errors
+      Promise.resolve(fallbackActivities),
+      // Using fallback islands to avoid 404 errors
+      Promise.resolve(fallbackIslands),
       fetchList("/api/honeymoon", {}, fallbackHoneymoon),
       fetchList("/api/family",    {}, fallbackFamily),
       fetchList("/api/ltc",       {}, fallbackLtc),
@@ -164,18 +170,21 @@ function HomePage() {
             onMouseLeave={() => !showMobileMenu && setShowIslandDropdown(false)}
             onClick={() => showMobileMenu && setShowIslandDropdown(!showIslandDropdown)}
           >
-            <a href="#islands" className="nav-link">Islands ▾</a>
+            <Link to="/islands" className="nav-link">Islands ▾</Link>
             {(showIslandDropdown || (showMobileMenu && showIslandDropdown)) && islands.length > 0 && (
               <div className="dropdown-menu dropdown-menu-islands">
-                {islands.slice(0, 12).map((island) => (
+                <div className="dropdown-section">
+                  <Link to="/islands" className="dropdown-item" onClick={() => setShowMobileMenu(false)}>View All Islands</Link>
+                </div>
+                {islands.slice(0, 8).map((island) => (
                   <div key={island._id} className="dropdown-section">
-                    <a href="#islands" className="dropdown-item" onClick={(e) => { e.preventDefault(); document.getElementById('islands').scrollIntoView({ behavior: 'smooth' }); setShowMobileMenu(false); }}>{island.name}</a>
+                    <Link to={`/islands/${island._id}`} className="dropdown-item" onClick={() => setShowMobileMenu(false)}>{island.name}</Link>
                   </div>
                 ))}
               </div>
             )}
           </div>
-          <a href="#ferry" onClick={(e) => { e.preventDefault(); document.getElementById('ferry').scrollIntoView({ behavior: 'smooth' }); setShowMobileMenu(false); }}>Ferry</a>
+          <Link to="/ferries" onClick={() => setShowMobileMenu(false)}>Ferry</Link>
           <a href="#about" onClick={(e) => { e.preventDefault(); document.getElementById('about').scrollIntoView({ behavior: 'smooth' }); setShowMobileMenu(false); }}>About</a>
           <a href="#contact" onClick={(e) => { e.preventDefault(); document.getElementById('contact').scrollIntoView({ behavior: 'smooth' }); setShowMobileMenu(false); }}>Contact</a>
         </nav>
@@ -337,7 +346,11 @@ function HomePage() {
       </section>
 
       <section id="islands" className="section">
-        <div className="section-head"><h2>Top Islands</h2><p>Search islands by name or tag.</p></div>
+        <div className="section-head">
+          <h2>Top Islands</h2>
+          <p>Explore pristine beaches and crystal-clear waters of Andaman's most beautiful islands.</p>
+          <Link to="/islands" className="section-link">View All Islands →</Link>
+        </div>
         <div className="filters">
           <input className="input" placeholder="Search island" value={islandFilters.q} onChange={(e) => setIslandFilters({ ...islandFilters, q: e.target.value })} />
           <button className="ghost" onClick={loadAll}>Apply</button>
@@ -345,26 +358,33 @@ function HomePage() {
         {loading ? <div className="loading">Loading islands...</div> : (
           <div className="grid">
             {islands.map((item) => (
-              <article key={item._id} className="card">
+              <Link key={item._id} to={`/islands/${item._id}`} className="card">
                 <div className="card-image" style={{ backgroundImage: `url(${item.image})` }} />
                 <div className="card-body">
                   <div className="card-title">{item.name}</div>
                   <div className="card-meta">{item.tagline}</div>
                   <p className="card-text">{item.description}</p>
-                  <div className="card-foot"><span className="price">Explore</span><button className="ghost">View Island</button></div>
+                  <div className="card-foot">
+                    <span className="price">Explore</span>
+                    <span className="card-link">View Island →</span>
+                  </div>
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
         )}
       </section>
 
       <section id="ferry" className="section alt">
-        <div className="section-head"><h2>Ferry Services</h2><p>Premium ferry services for comfortable island hopping</p></div>
+        <div className="section-head">
+          <h2>Ferry Services</h2>
+          <p>Premium ferry services for comfortable island hopping with modern amenities.</p>
+          <Link to="/ferries" className="section-link">View All Ferries →</Link>
+        </div>
         {loading ? <div className="loading">Loading ferries...</div> : (
           <div className="grid">
             {ferry.map((item) => (
-              <article key={item._id} className="card ferry-card">
+              <Link key={item._id} to={`/ferries/${item._id}`} className="card ferry-card">
                 <div className="card-image" style={{ backgroundImage: `url(${item.image})` }} />
                 <div className="card-body">
                   <div className="card-title">{item.name}</div>
@@ -378,10 +398,10 @@ function HomePage() {
                   </div>
                   <div className="card-foot">
                     <span className="price">{formatPrice(item.priceFrom)}</span>
-                    <button className="ghost">View Details</button>
+                    <span className="card-link">View Details →</span>
                   </div>
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
         )}
@@ -704,6 +724,10 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/activities" element={<ActivityList />} />
         <Route path="/activities/:id" element={<ActivityDetail />} />
+        <Route path="/islands" element={<IslandList />} />
+        <Route path="/islands/:id" element={<IslandDetail />} />
+        <Route path="/ferries" element={<FerryList />} />
+        <Route path="/ferries/:id" element={<FerryDetail />} />
         <Route path="/honeymoon" element={<HoneymoonList />} />
         <Route path="/honeymoon/:id" element={<HoneymoonDetail />} />
         <Route path="/family" element={<FamilyList />} />

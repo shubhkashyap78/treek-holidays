@@ -85,6 +85,7 @@ export default function AdminPanel({ onLogout }) {
       fetchList("/api/ferry",     {}, fallbackFerry),
       fetchList("/api/contact",   {}, fallbackContacts)
     ]);
+    
     setPackages(p); setActivities(a); setIslands(i);
     setHoneymoon(h); setFamily(f); setLtc(l); setGroup(g); setFerry(fe); setContact(c);
     setLoading(false);

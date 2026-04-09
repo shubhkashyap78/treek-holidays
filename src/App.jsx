@@ -580,45 +580,25 @@ function HomePage() {
                 message: formData.get('message')
               };
               
-              // Try main API first
-              let response;
-              try {
-                response = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/contact`, {
-                  method: 'POST',
-                  headers: { 
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                  },
-                  body: JSON.stringify(data)
-                });
-              } catch (networkError) {
-                // If API fails, show contact details instead
-                throw new Error('API_UNAVAILABLE');
-              }
+              const response = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/contact`, {
+                method: 'POST',
+                headers: { 
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json'
+                },
+                body: JSON.stringify(data)
+              });
               
               if (response.ok) {
                 alert('✅ Thank you! Your enquiry has been submitted successfully. We will contact you within 24 hours.');
                 e.target.reset();
-              } else if (response.status === 404) {
-                // API endpoint not found, save locally and show success
-                const enquiries = JSON.parse(localStorage.getItem('pendingEnquiries') || '[]');
-                enquiries.push({ ...data, timestamp: new Date().toISOString(), id: Date.now() });
-                localStorage.setItem('pendingEnquiries', JSON.stringify(enquiries));
-                
-                alert(`✅ Thank you ${data.name}! Your enquiry has been saved.\n\nWe will contact you soon at ${data.phone}.\n\nFor immediate assistance:\n📞 Call: +91-90000-00000\n✉️ Email: hello@andamantreekholidays.com`);
-                e.target.reset();
               } else {
                 const errorData = await response.json().catch(() => ({}));
-                throw new Error(errorData.message || `Server error: ${response.status}`);
+                throw new Error(errorData.error || `Server error: ${response.status}`);
               }
             } catch (error) {
               console.error('Contact form error:', error);
-              if (error.message === 'API_UNAVAILABLE') {
-                alert(`✅ Thank you ${data.name}! Your enquiry has been received.\n\nWe will contact you soon at ${data.phone}.\n\nFor immediate assistance:\n📞 Call: +91-90000-00000\n✉️ Email: hello@andamantreekholidays.com`);
-                e.target.reset();
-              } else {
-                alert('⚠️ Sorry, there was an error submitting your enquiry. Please contact us directly:\n\n📞 Phone: +91-90000-00000\n✉️ Email: hello@andamantreekholidays.com\n\nWe will be happy to help you plan your Andaman trip!');
-              }
+              alert('❌ Sorry, there was an error submitting your enquiry. Please try again or call us directly at +91-90000-00000');
             } finally {
               submitButton.textContent = originalText;
               submitButton.disabled = false;

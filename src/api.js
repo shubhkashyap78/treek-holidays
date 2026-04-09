@@ -37,7 +37,14 @@ export function getToken() {
 
 export async function fetchList(path, params, fallback) {
   try {
-    const res = await fetch(`${BASE_URL}${path}${toQuery(params)}`);
+    const headers = {};
+    // Only add auth headers for admin endpoints (GET requests to contact)
+    if (path.includes('/contact') && !params) {
+      const token = localStorage.getItem("admin_token");
+      if (token) headers.Authorization = `Bearer ${token}`;
+    }
+    
+    const res = await fetch(`${BASE_URL}${path}${toQuery(params)}`, { headers });
     if (!res.ok) throw new Error("Request failed");
     const data = await res.json();
     if (Array.isArray(data) && data.length > 0) return data;

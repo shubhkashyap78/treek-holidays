@@ -678,7 +678,7 @@ function HomePage() {
           </div>
         </div>
         <div className="footer-bottom">
-          <div>© 2024 Andaman Treek Holidays. All rights reserved.</div>
+          <div>© 2026 Andaman Treek Holidays. All rights reserved.</div>
           <div>Built with ❤️ JR Technology</div>
         </div>
       </footer>

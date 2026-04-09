@@ -226,7 +226,7 @@ function HomePage() {
         </div>
         <div className="package-categories">
           <Link to="/honeymoon" className="category-card honeymoon-card">
-            <div className="category-image" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&q=80)' }}></div>
+            <div className="category-image" style={{ backgroundImage: 'url(/assests/honeymoon1.jpeg)' }}></div>
             <div className="category-content">
               <div className="category-icon">💑</div>
               <h3 className="category-title">Honeymoon Packages</h3>
@@ -244,7 +244,7 @@ function HomePage() {
           </Link>
 
           <Link to="/family" className="category-card family-card">
-            <div className="category-image" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800&q=80)' }}></div>
+            <div className="category-image" style={{ backgroundImage: 'url(/assests/family1.jpeg)' }}></div>
             <div className="category-content">
               <div className="category-icon">👨‍👩‍👧‍👦</div>
               <h3 className="category-title">Family Packages</h3>
@@ -262,7 +262,7 @@ function HomePage() {
           </Link>
 
           <Link to="/group" className="category-card group-card">
-            <div className="category-image" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1530789253388-582c481c54b0?w=800&q=80)' }}></div>
+            <div className="category-image" style={{ backgroundImage: 'url(/assests/andaman1.jpg)' }}></div>
             <div className="category-content">
               <div className="category-icon">👥</div>
               <h3 className="category-title">Group Packages</h3>
@@ -280,7 +280,7 @@ function HomePage() {
           </Link>
 
           <Link to="/ltc" className="category-card ltc-card">
-            <div className="category-image" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80)' }}></div>
+            <div className="category-image" style={{ backgroundImage: 'url(/assests/andaman2.jpg)' }}></div>
             <div className="category-content">
               <div className="category-icon">🏛️</div>
               <h3 className="category-title">LTC Packages</h3>
@@ -410,7 +410,7 @@ function HomePage() {
             </div>
           </div>
           <div className="about-image">
-            <img src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80" alt="Andaman Islands" />
+            <img src="/assests/andaman3.jpg" alt="Andaman Islands" />
           </div>
         </div>
       </section>

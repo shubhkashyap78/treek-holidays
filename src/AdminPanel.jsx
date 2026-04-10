@@ -40,7 +40,7 @@ function formatPrice(value) {
 }
 
 function isRealId(id) {
-  return /^[a-f\d]{24}$/i.test(id);
+  return !!id && id !== "";
 }
 
 export default function AdminPanel({ onLogout }) {

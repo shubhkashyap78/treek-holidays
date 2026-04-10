@@ -133,7 +133,7 @@ export const fallbackIslands = [
     _id: "i1",
     name: "Port Blair",
     tagline: "Capital gateway to the islands",
-    image: "/assests/cellualar jai.jpg",
+    image: "/assests/cellualar-jai.jpg",
     description: "Museums, Cellular Jail, and nearby beaches.",
     highlights: ["Cellular Jail", "Corbyns Cove", "Ross Island"],
     tags: ["gateway"]
@@ -160,7 +160,7 @@ export const fallbackIslands = [
     _id: "i4",
     name: "Baratang Island",
     tagline: "Limestone caves and mangrove creeks",
-    image: "/assests/chidiya tapu.jpg",
+    image: "/assests/chidiya-tapu.jpg",
     description: "Famous for limestone caves and mud volcanoes.",
     highlights: ["Limestone Caves", "Mud Volcanoes", "Mangrove Creek"],
     tags: ["caves", "adventure"]

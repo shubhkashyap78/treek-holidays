@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { fallbackFamily } from "./fallbackData.js";
 
 export default function FamilyDetail() {
@@ -16,15 +16,13 @@ export default function FamilyDetail() {
     fetch(`${apiUrl}/api/family/${id}`)
       .then((r) => { if (!r.ok) throw new Error("Not found"); return r.json(); })
       .then((data) => { setItem(data); setLoading(false); })
-      .catch(() => {
-        if (!fallback) { setError("Package not found."); setLoading(false); }
-      });
+      .catch(() => { if (!fallback) { setError("Package not found."); setLoading(false); } });
   }, [id]);
 
   const isAdmin = !!localStorage.getItem("admin_token");
 
   if (loading) return <div className="detail-loading">Loading...</div>;
-  if (error)   return <div className="detail-loading">{error} <a href="/#family">← Go back</a></div>;
+  if (error)   return <div className="detail-loading">{error} <a href="/family">← Go back</a></div>;
 
   return (
     <div className="page">
@@ -32,22 +30,20 @@ export default function FamilyDetail() {
         <div className="brand">
           <span className="brand-mark">AB</span>
           <div>
-            <div className="brand-title">Andaman Treek Holidays </div>
+            <div className="brand-title">Andaman Treek Holidays</div>
             <div className="brand-sub">Tours and Experiences</div>
           </div>
         </div>
         <nav className="nav">
-          <a href="/">Home</a>
+          <Link to="/">Home</Link>
           <a href="/#packages">Packages</a>
-          <a href="/activities">Activities</a>
-          <a href="/islands">Islands</a>
-          <a href="/ferries">Ferry</a>
+          <Link to="/activities">Activities</Link>
+          <Link to="/islands">Islands</Link>
+          <Link to="/ferries">Ferry</Link>
           <a href="/#contact">Contact</a>
         </nav>
         <div style={{ display: "flex", gap: 8 }}>
-          {isAdmin && (
-            <button className="ghost" onClick={() => window.location.href = "/admin"}>Admin</button>
-          )}
+          {isAdmin && <button className="ghost" onClick={() => window.location.href = "/admin"}>Admin</button>}
           <button className="cta" onClick={() => window.location.href = "/#contact"}>Book Now</button>
         </div>
       </header>
@@ -80,31 +76,92 @@ export default function FamilyDetail() {
             </section>
           )}
 
-          <section className="detail-section">
-            <h2>Inclusions</h2>
-            <ul className="detail-highlights">
-              <li>✅ Return airfare (Delhi / Mumbai to Port Blair)</li>
-              <li>✅ Hotel accommodation (as per package)</li>
-              <li>✅ Daily breakfast & dinner</li>
-              <li>✅ All transfers by private AC vehicle</li>
-              <li>✅ Ferry tickets (Port Blair ↔ Havelock ↔ Neil)</li>
-              <li>✅ Sightseeing as per itinerary</li>
-              <li>✅ Welcome drink on arrival</li>
-              <li>✅ All applicable taxes</li>
-            </ul>
-          </section>
+          {Array.isArray(item.itinerary) && item.itinerary.length > 0 && (
+            <section className="detail-section">
+              <h2>📅 Day-wise Itinerary</h2>
+              <div className="itinerary-timeline">
+                {item.itinerary.map((day, index) => (
+                  <div key={index} className="itinerary-day">
+                    <div className="itinerary-day-number"><span>Day {day.day}</span></div>
+                    <div className="itinerary-day-content">
+                      <h3 className="itinerary-day-title">{day.title}</h3>
+                      {day.description && <p className="itinerary-day-description">{day.description}</p>}
+                      {Array.isArray(day.activities) && day.activities.length > 0 && (
+                        <div className="itinerary-section">
+                          <h4>🎯 Activities</h4>
+                          <ul>{day.activities.map((a, i) => <li key={i}>{a}</li>)}</ul>
+                        </div>
+                      )}
+                      {Array.isArray(day.meals) && day.meals.length > 0 && (
+                        <div className="itinerary-section">
+                          <h4>🍽️ Meals</h4>
+                          <ul>{day.meals.map((m, i) => <li key={i}>{m}</li>)}</ul>
+                        </div>
+                      )}
+                      <div className="itinerary-details">
+                        {day.accommodation && (
+                          <div className="itinerary-detail">
+                            <span className="itinerary-detail-icon">🏨</span>
+                            <span>{day.accommodation}</span>
+                          </div>
+                        )}
+                        {day.transport && (
+                          <div className="itinerary-detail">
+                            <span className="itinerary-detail-icon">🚗</span>
+                            <span>{day.transport}</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
 
-          <section className="detail-section">
-            <h2>Exclusions</h2>
-            <ul className="detail-highlights">
-              <li>❌ Personal expenses & tips</li>
-              <li>❌ Water sports & adventure activities</li>
-              <li>❌ Travel insurance</li>
-              <li>❌ Any meals not mentioned in inclusions</li>
-              <li>❌ Entry fees to monuments</li>
-              <li>❌ Anything not mentioned in inclusions</li>
-            </ul>
-          </section>
+          {Array.isArray(item.inclusions) && item.inclusions.length > 0 ? (
+            <section className="detail-section">
+              <h2>Inclusions</h2>
+              <ul className="detail-highlights">
+                {item.inclusions.map((inc, i) => <li key={i}>✅ {inc}</li>)}
+              </ul>
+            </section>
+          ) : (
+            <section className="detail-section">
+              <h2>Inclusions</h2>
+              <ul className="detail-highlights">
+                <li>✅ Return airfare (Delhi / Mumbai to Port Blair)</li>
+                <li>✅ Hotel accommodation (as per package)</li>
+                <li>✅ Daily breakfast & dinner</li>
+                <li>✅ All transfers by private AC vehicle</li>
+                <li>✅ Ferry tickets (Port Blair ↔ Havelock ↔ Neil)</li>
+                <li>✅ Sightseeing as per itinerary</li>
+                <li>✅ Welcome drink on arrival</li>
+                <li>✅ All applicable taxes</li>
+              </ul>
+            </section>
+          )}
+
+          {Array.isArray(item.exclusions) && item.exclusions.length > 0 ? (
+            <section className="detail-section">
+              <h2>Exclusions</h2>
+              <ul className="detail-highlights">
+                {item.exclusions.map((exc, i) => <li key={i}>❌ {exc}</li>)}
+              </ul>
+            </section>
+          ) : (
+            <section className="detail-section">
+              <h2>Exclusions</h2>
+              <ul className="detail-highlights">
+                <li>❌ Personal expenses & tips</li>
+                <li>❌ Water sports & adventure activities</li>
+                <li>❌ Travel insurance</li>
+                <li>❌ Any meals not mentioned in inclusions</li>
+                <li>❌ Entry fees to monuments</li>
+                <li>❌ Anything not mentioned in inclusions</li>
+              </ul>
+            </section>
+          )}
 
           {Array.isArray(item.tags) && item.tags.length > 0 && (
             <section className="detail-section">
@@ -127,6 +184,11 @@ export default function FamilyDetail() {
               <div className="detail-info-row">
                 <span className="detail-info-label">Duration</span>
                 <span className="detail-info-value">{item.duration}</span>
+              </div>
+            )}
+            {item.offer && (
+              <div style={{ background: "#fff8e1", border: "1px solid #f2b241", borderRadius: 10, padding: "10px 14px", margin: "12px 0", fontSize: 13, fontWeight: 600, color: "#b45309" }}>
+                🎁 {item.offer}
               </div>
             )}
             {item.subtitle && (

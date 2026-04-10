@@ -13,32 +13,23 @@ export default function HoneymoonDetail() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   useEffect(() => {
-    // Check if API is available, otherwise use fallback data
-    const fallbackItem = fallbackHoneymoon.find(item => item._id === id);
-    
+    // Pehle fallback se instant data dikhao
+    const fallback = fallbackHoneymoon.find(h => h._id === id);
+    if (fallback) { setItem(fallback); setLoading(false); }
+
+    // Background mein API se fresh data fetch karo
     const apiUrl = import.meta.env.VITE_API_URL || "https://andaman-treek-holidays-backend.onrender.com";
     fetch(`${apiUrl}/api/honeymoon/${id}`)
-      .then((r) => {
-        if (!r.ok) throw new Error("Not found");
-        return r.json();
-      })
+      .then((r) => { if (!r.ok) throw new Error("Not found"); return r.json(); })
       .then((data) => { setItem(data); setLoading(false); })
-      .catch((err) => { 
-        console.error('API Error:', err);
-        // Use fallback data if API fails
-        if (fallbackItem) {
-          setItem(fallbackItem);
-          setLoading(false);
-        } else {
-          setError("Package not found."); 
-          setLoading(false);
-        }
+      .catch(() => {
+        if (!fallback) { setError("Package not found."); setLoading(false); }
       });
   }, [id]);
 
   const isAdmin = !!localStorage.getItem("admin_token");
 
-  if (loading) return <div className="detail-loading">Loading...</div>;
+  if (loading) return <div className="detail-loading">Loading package details... ⏳</div>;
   if (error)   return <div className="detail-loading">{error} <a href="/#honeymoon">← Go back</a></div>;
 
   return (

@@ -98,16 +98,13 @@ export const fallbackActivities = [
 ];
 
 export const fallbackHoneymoon = [
-  { _id: "h1", title: "Romantic Bliss 4N/5D", subtitle: "Perfect for newlyweds", duration: "4 Nights / 5 Days", priceFrom: 32999, image: "/assests/Honeymoon1.jpeg", description: "Private cab, candle light dinner, and island hopping for two." },
-  { _id: "h2", title: "Island Escape 5N/6D", subtitle: "Havelock & Neil combo", duration: "5 Nights / 6 Days", priceFrom: 38999, image: "/assests/honeymoon2.jpeg", description: "Explore Radhanagar Beach and Neil Island with your partner." },
-  { _id: "h3", title: "Luxury Honeymoon 6N/7D", subtitle: "Premium resort stay", duration: "6 Nights / 7 Days", priceFrom: 55999, image: "/assests/honeymoon3.jpeg", description: "Luxury resort, spa, and private island tour." },
-  { _id: "h4", title: "Adventure Couple 5N/6D", subtitle: "For adventurous couples", duration: "5 Nights / 6 Days", priceFrom: 42999, image: "/assests/honeymoon4.jpeg", description: "Scuba diving, kayaking, and trekking together." },
-  { _id: "h5", title: "Budget Honeymoon 3N/4D", subtitle: "Sweet & affordable", duration: "3 Nights / 4 Days", priceFrom: 22999, image: "/assests/honeymoon5.jpeg", description: "Port Blair and Havelock with all essentials covered." },
-  { _id: "h6", title: "Premium Honeymoon 7N/8D", subtitle: "Ultimate romantic experience", duration: "7 Nights / 8 Days", priceFrom: 65999, image: "/assests/honeymoon6.jpeg", description: "Luxury resorts, private beach dinners, helicopter rides, and spa treatments." }
+  { _id: "69d8985cf578d51304c8cf62", title: "Romantic Paradise 4N/5D", subtitle: "Perfect honeymoon escape", duration: "4 Nights / 5 Days", priceFrom: 35999, image: "/assests/honeymoon1.jpeg", description: "Experience the ultimate romantic getaway in the pristine islands of Andaman. This carefully crafted 4N/5D honeymoon package includes luxury stays, candlelight dinners, and unforgettable moments in paradise." },
+  { _id: "69d77c98f578d51304c8cb63", title: "Budget Honeymoon 3N/4D", subtitle: "Sweet & affordable", duration: "3 Nights / 4 Days", priceFrom: 22999, image: "/assests/honeymoon2.jpeg", description: "Port Blair and Havelock with all essentials covered." },
+  { _id: "69d77a51f578d51304c8cadb", title: "Honemoon 10n/11d", subtitle: "Extended romantic escape", duration: "10 Nights / 11 Days", priceFrom: 65999, image: "/assests/honeymoon3.jpeg", description: "Luxury resorts, private beach dinners, and spa treatments across all islands." }
 ];
 
 export const fallbackFamily = [
-  { _id: "f1", title: "Family Fun 5N/6D", subtitle: "Best for kids & parents", duration: "5 Nights / 6 Days", priceFrom: 28999, image: "/assests/family1.jpeg", description: "Port Blair, Havelock, and Neil with relaxed pacing for the whole family." },
+  { _id: "69d77d47f578d51304c8cbd8", title: "Family Fun 5N/6D", subtitle: "Best for kids & parents", duration: "5 Nights / 6 Days", priceFrom: 28999, image: "/assests/family1.jpeg", description: "Port Blair, Havelock, and Neil with relaxed pacing for the whole family." },
   { _id: "f2", title: "Island Explorer 6N/7D", subtitle: "Discover every island", duration: "6 Nights / 7 Days", priceFrom: 35999, image: "/assests/family2.jpeg", description: "Cover Port Blair, Havelock, Neil, and Baratang with family-friendly activities." },
   { _id: "f3", title: "Budget Family 4N/5D", subtitle: "Affordable & complete", duration: "4 Nights / 5 Days", priceFrom: 21999, image: "/assests/family3.jpeg", description: "Best value family trip covering key attractions without breaking the bank." },
   { _id: "f4", title: "Premium Family 7N/8D", subtitle: "Luxury for the whole family", duration: "7 Nights / 8 Days", priceFrom: 52999, image: "/assests/family4.jpeg", description: "Premium hotels, private transfers, and exclusive island experiences." },
@@ -115,20 +112,20 @@ export const fallbackFamily = [
 ];
 
 export const fallbackLtc = [
-  { _id: "l1", title: "LTC Basic 4N/5D", subtitle: "Ideal for govt. employees", duration: "4 Nights / 5 Days", priceFrom: 18999, image: "/assests/andaman4.jpeg", description: "Port Blair sightseeing with LTC-approved hotels and transfers." },
-  { _id: "l2", title: "LTC Standard 5N/6D", subtitle: "Port Blair + Havelock", duration: "5 Nights / 6 Days", priceFrom: 24999, image: "/assests/andaman5.jpeg", description: "Covers Port Blair and Havelock with LTC-compliant billing." },
-  { _id: "l3", title: "LTC Premium 6N/7D", subtitle: "Port Blair + Havelock + Neil", duration: "6 Nights / 7 Days", priceFrom: 31999, image: "/assests/andaman6.jpeg", description: "Three-island LTC package with all documentation support." },
-  { _id: "l4", title: "LTC Family 6N/7D", subtitle: "Family LTC special", duration: "6 Nights / 7 Days", priceFrom: 27999, image: "/assests/andaman7.jpeg", description: "Family-friendly LTC package with kid-safe activities and approved stays." },
-  { _id: "l5", title: "LTC Adventure 5N/6D", subtitle: "For the adventurous govt. traveller", duration: "5 Nights / 6 Days", priceFrom: 28999, image: "/assests/andaman8.jpeg", description: "Scuba, kayaking, and island treks with LTC billing." },
-  { _id: "l6", title: "LTC Extended 7N/8D", subtitle: "Maximum coverage", duration: "7 Nights / 8 Days", priceFrom: 38999, image: "/assests/andaman9.jpeg", description: "Full Andaman circuit with Baratang, Neil, Havelock, and Port Blair." }
+  { _id: "69d7736445b45c8c460c356c", title: "LTC Basic 4N/5D", subtitle: "Ideal for govt. employees", duration: "4 Nights / 5 Days", priceFrom: 18999, image: "/assests/andaman4.jpeg", description: "Port Blair sightseeing with LTC-approved hotels and transfers." },
+  { _id: "69d7736445b45c8c460c356d", title: "LTC Standard 5N/6D", subtitle: "Port Blair + Havelock", duration: "5 Nights / 6 Days", priceFrom: 24999, image: "/assests/andaman5.jpeg", description: "Covers Port Blair and Havelock with LTC-compliant billing." },
+  { _id: "69d7736445b45c8c460c356e", title: "LTC Premium 6N/7D", subtitle: "Port Blair + Havelock + Neil", duration: "6 Nights / 7 Days", priceFrom: 31999, image: "/assests/andaman6.jpeg", description: "Three-island LTC package with all documentation support." },
+  { _id: "69d7736445b45c8c460c356f", title: "LTC Family 6N/7D", subtitle: "Family LTC special", duration: "6 Nights / 7 Days", priceFrom: 27999, image: "/assests/andaman7.jpeg", description: "Family-friendly LTC package with kid-safe activities and approved stays." },
+  { _id: "69d7736445b45c8c460c3570", title: "LTC Adventure 5N/6D", subtitle: "For the adventurous govt. traveller", duration: "5 Nights / 6 Days", priceFrom: 28999, image: "/assests/andaman8.jpeg", description: "Scuba, kayaking, and island treks with LTC billing." },
+  { _id: "69d7736445b45c8c460c3571", title: "LTC Extended 7N/8D", subtitle: "Maximum coverage", duration: "7 Nights / 8 Days", priceFrom: 38999, image: "/assests/andaman9.jpeg", description: "Full Andaman circuit with Baratang, Neil, Havelock, and Port Blair." }
 ];
 
 export const fallbackGroup = [
-  { _id: "g1", title: "Group Escape 5N/6D", subtitle: "Perfect for friend groups", duration: "5 Nights / 6 Days", priceFrom: 18999, image: "/assests/andaman10.jpeg", description: "Port Blair, Havelock, and Neil with group-friendly activities and stays." },
-  { _id: "g2", title: "Corporate Group 4N/5D", subtitle: "Team outing special", duration: "4 Nights / 5 Days", priceFrom: 16999, image: "/assests/andaman11.jpeg", description: "Ideal for corporate teams with team bonding activities." },
-  { _id: "g3", title: "Budget Group 3N/4D", subtitle: "Affordable group fun", duration: "3 Nights / 4 Days", priceFrom: 12999, image: "/assests/andaman12.jpeg", description: "Best value group trip covering key Andaman attractions." },
-  { _id: "g4", title: "Adventure Group 5N/6D", subtitle: "Thrills for the whole group", duration: "5 Nights / 6 Days", priceFrom: 22999, image: "/assests/andaman13.jpg", description: "Scuba, kayaking, trekking — the ultimate group adventure." },
-  { _id: "g5", title: "Premium Group 6N/7D", subtitle: "Luxury group experience", duration: "6 Nights / 7 Days", priceFrom: 28999, image: "/assests/luxury4.jpg", description: "Premium hotels, private transfers, and exclusive island experiences for groups." }
+  { _id: "69d7736445b45c8c460c3574", title: "Group Escape 5N/6D", subtitle: "Perfect for friend groups", duration: "5 Nights / 6 Days", priceFrom: 18999, image: "/assests/andaman10.jpeg", description: "Port Blair, Havelock, and Neil with group-friendly activities and stays." },
+  { _id: "69d7736445b45c8c460c3575", title: "Corporate Group 4N/5D", subtitle: "Team outing special", duration: "4 Nights / 5 Days", priceFrom: 16999, image: "/assests/andaman11.jpeg", description: "Ideal for corporate teams with team bonding activities." },
+  { _id: "69d7736445b45c8c460c3576", title: "Budget Group 3N/4D", subtitle: "Affordable group fun", duration: "3 Nights / 4 Days", priceFrom: 12999, image: "/assests/andaman12.jpeg", description: "Best value group trip covering key Andaman attractions." },
+  { _id: "69d7736445b45c8c460c3577", title: "Adventure Group 5N/6D", subtitle: "Thrills for the whole group", duration: "5 Nights / 6 Days", priceFrom: 22999, image: "/assests/andaman13.jpg", description: "Scuba, kayaking, trekking — the ultimate group adventure." },
+  { _id: "69d7736445b45c8c460c3578", title: "Premium Group 6N/7D", subtitle: "Luxury group experience", duration: "6 Nights / 7 Days", priceFrom: 28999, image: "/assests/luxury4.jpg", description: "Premium hotels, private transfers, and exclusive island experiences for groups." }
 ];
 
 export const fallbackIslands = [

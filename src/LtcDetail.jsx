@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { fallbackLtc } from "./fallbackData.js";
 
 export default function LtcDetail() {
   const { id } = useParams();
@@ -8,14 +9,15 @@ export default function LtcDetail() {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    const fallback = fallbackLtc.find(f => f._id === id);
+    if (fallback) { setItem(fallback); setLoading(false); }
+
     const apiUrl = import.meta.env.VITE_API_URL || "https://andaman-treek-holidays-backend.onrender.com";
     fetch(`${apiUrl}/api/ltc/${id}`)
       .then((r) => { if (!r.ok) throw new Error("Not found"); return r.json(); })
       .then((data) => { setItem(data); setLoading(false); })
-      .catch((err) => { 
-        console.error('API Error:', err);
-        setError("Package not found."); 
-        setLoading(false); 
+      .catch(() => {
+        if (!fallback) { setError("Package not found."); setLoading(false); }
       });
   }, [id]);
 

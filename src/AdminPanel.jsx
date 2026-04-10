@@ -8,7 +8,13 @@ const emptyForms = {
   packages:  { _id: "", title: "", duration: "", category: "", priceFrom: "", image: "", description: "", location: "", tags: "" },
   activities:{ _id: "", title: "", category: "", priceFrom: "", image: "", description: "", duration: "", location: "", tags: "" },
   islands:   { _id: "", name: "", tagline: "", image: "", description: "", highlights: "", tags: "" },
-  honeymoon: { _id: "", title: "", subtitle: "", duration: "", priceFrom: "", image: "", description: "", highlights: "", offer: "", tags: "" },
+  honeymoon: { 
+    _id: "", title: "", subtitle: "", duration: "", priceFrom: "", image: "", description: "", 
+    highlights: "", offer: "", tags: "", 
+    itinerary: [],
+    inclusions: "",
+    exclusions: ""
+  },
   family:    { _id: "", title: "", subtitle: "", duration: "", priceFrom: "", image: "", description: "", highlights: "", tags: "" },
   ltc:       { _id: "", title: "", subtitle: "", duration: "", priceFrom: "", image: "", description: "", highlights: "", tags: "" },
   group:     { _id: "", title: "", subtitle: "", duration: "", priceFrom: "", image: "", description: "", highlights: "", tags: "" },
@@ -100,6 +106,9 @@ export default function AdminPanel({ onLogout }) {
     const { _id, ...rest } = adminForm;
     const payload = { ...rest };
 
+    console.log('Form data before transformation:', adminForm);
+    console.log('Itinerary data:', adminForm.itinerary);
+
     if (adminTab === "packages" || adminTab === "activities") {
       payload.priceFrom = payload.priceFrom ? Number(payload.priceFrom) : 0;
       payload.tags = payload.tags ? payload.tags.split(",").map((t) => t.trim()) : [];
@@ -112,7 +121,21 @@ export default function AdminPanel({ onLogout }) {
       payload.priceFrom  = payload.priceFrom ? Number(payload.priceFrom) : 0;
       payload.highlights = payload.highlights ? payload.highlights.split(",").map((t) => t.trim()) : [];
       payload.tags       = payload.tags ? payload.tags.split(",").map((t) => t.trim()) : [];
-      if (adminTab === "honeymoon") payload.offer = payload.offer || "";
+      if (adminTab === "honeymoon") {
+        payload.offer = payload.offer || "";
+        payload.inclusions = payload.inclusions ? payload.inclusions.split(",").map((t) => t.trim()) : [];
+        payload.exclusions = payload.exclusions ? payload.exclusions.split(",").map((t) => t.trim()) : [];
+        // Itinerary is already an array from the form, keep it as is
+        if (payload.itinerary && Array.isArray(payload.itinerary)) {
+          payload.itinerary = payload.itinerary.map(day => ({
+            ...day,
+            day: Number(day.day),
+            activities: Array.isArray(day.activities) ? day.activities : [],
+            meals: Array.isArray(day.meals) ? day.meals : []
+          }));
+        }
+        console.log('Final honeymoon payload:', payload);
+      }
     } else {
       payload.highlights = payload.highlights ? payload.highlights.split(",").map((t) => t.trim()) : [];
       payload.tags       = payload.tags ? payload.tags.split(",").map((t) => t.trim()) : [];
@@ -164,7 +187,25 @@ export default function AdminPanel({ onLogout }) {
     } else if (adminTab === "contact") {
       setAdminForm({ _id: item._id, status: item.status || "new" });
     } else if (["honeymoon", "family", "ltc", "group"].includes(adminTab)) {
-      setAdminForm({ _id: item._id, title: item.title || "", subtitle: item.subtitle || "", duration: item.duration || "", priceFrom: item.priceFrom || "", image: item.image || "", description: item.description || "", highlights: Array.isArray(item.highlights) ? item.highlights.join(", ") : "", offer: adminTab === "honeymoon" ? (item.offer || "") : undefined, tags: Array.isArray(item.tags) ? item.tags.join(", ") : "" });
+      if (adminTab === "honeymoon") {
+        setAdminForm({ 
+          _id: item._id, 
+          title: item.title || "", 
+          subtitle: item.subtitle || "", 
+          duration: item.duration || "", 
+          priceFrom: item.priceFrom || "", 
+          image: item.image || "", 
+          description: item.description || "", 
+          highlights: Array.isArray(item.highlights) ? item.highlights.join(", ") : "", 
+          offer: item.offer || "", 
+          tags: Array.isArray(item.tags) ? item.tags.join(", ") : "",
+          itinerary: Array.isArray(item.itinerary) ? item.itinerary : [],
+          inclusions: Array.isArray(item.inclusions) ? item.inclusions.join(", ") : "",
+          exclusions: Array.isArray(item.exclusions) ? item.exclusions.join(", ") : ""
+        });
+      } else {
+        setAdminForm({ _id: item._id, title: item.title || "", subtitle: item.subtitle || "", duration: item.duration || "", priceFrom: item.priceFrom || "", image: item.image || "", description: item.description || "", highlights: Array.isArray(item.highlights) ? item.highlights.join(", ") : "", tags: Array.isArray(item.tags) ? item.tags.join(", ") : "" });
+      }
     } else {
       setAdminForm({ _id: item._id, title: item.title || "", duration: item.duration || "", category: item.category || "", priceFrom: item.priceFrom || "", image: item.image || "", description: item.description || "", location: item.location || "", tags: Array.isArray(item.tags) ? item.tags.join(", ") : "" });
     }
@@ -302,6 +343,122 @@ export default function AdminPanel({ onLogout }) {
                     <input className="input" placeholder="Image URL" value={adminForm.image} onChange={(e) => setAdminForm({ ...adminForm, image: e.target.value })} />
                     <textarea className="input" rows="3" placeholder="Description" value={adminForm.description} onChange={(e) => setAdminForm({ ...adminForm, description: e.target.value })} />
                     <input className="input" placeholder="Features (comma separated, e.g. AC, WiFi, Meals)" value={adminForm.features} onChange={(e) => setAdminForm({ ...adminForm, features: e.target.value })} />
+                  </>
+                ) : adminTab === "honeymoon" ? (
+                  <>
+                    <input className="input" placeholder="Title" value={adminForm.title} onChange={(e) => setAdminForm({ ...adminForm, title: e.target.value })} />
+                    <input className="input" placeholder="Subtitle" value={adminForm.subtitle} onChange={(e) => setAdminForm({ ...adminForm, subtitle: e.target.value })} />
+                    <input className="input" placeholder="Duration" value={adminForm.duration} onChange={(e) => setAdminForm({ ...adminForm, duration: e.target.value })} />
+                    <input className="input" placeholder="Price from" value={adminForm.priceFrom} onChange={(e) => setAdminForm({ ...adminForm, priceFrom: e.target.value })} />
+                    <input className="input" placeholder="Image URL" value={adminForm.image} onChange={(e) => setAdminForm({ ...adminForm, image: e.target.value })} />
+                    <textarea className="input" rows="3" placeholder="Description" value={adminForm.description} onChange={(e) => setAdminForm({ ...adminForm, description: e.target.value })} />
+                    <input className="input" placeholder="Highlights (comma separated)" value={adminForm.highlights} onChange={(e) => setAdminForm({ ...adminForm, highlights: e.target.value })} />
+                    <input className="input" placeholder="Offer (e.g. 10% off, Free candle light dinner)" value={adminForm.offer || ""} onChange={(e) => setAdminForm({ ...adminForm, offer: e.target.value })} />
+                    <input className="input" placeholder="Tags (comma separated)" value={adminForm.tags} onChange={(e) => setAdminForm({ ...adminForm, tags: e.target.value })} />
+                    <input className="input" placeholder="Inclusions (comma separated)" value={adminForm.inclusions || ""} onChange={(e) => setAdminForm({ ...adminForm, inclusions: e.target.value })} />
+                    <input className="input" placeholder="Exclusions (comma separated)" value={adminForm.exclusions || ""} onChange={(e) => setAdminForm({ ...adminForm, exclusions: e.target.value })} />
+                    
+                    <div style={{ marginTop: 16, padding: 16, background: "#f9fafb", borderRadius: 12 }}>
+                      <div style={{ fontWeight: 700, marginBottom: 12, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <span>📅 Day-wise Itinerary</span>
+                        <button type="button" onClick={() => {
+                          const newDay = {
+                            day: (adminForm.itinerary?.length || 0) + 1,
+                            title: "",
+                            description: "",
+                            activities: [],
+                            meals: [],
+                            accommodation: "",
+                            transport: ""
+                          };
+                          setAdminForm({ ...adminForm, itinerary: [...(adminForm.itinerary || []), newDay] });
+                        }} style={{ padding: "6px 12px", background: "var(--accent)", color: "#fff", border: "none", borderRadius: 6, fontSize: 12, cursor: "pointer" }}>+ Add Day</button>
+                      </div>
+                      
+                      {adminForm.itinerary?.map((day, index) => (
+                        <div key={index} style={{ background: "#fff", padding: 12, borderRadius: 8, marginBottom: 12, border: "1px solid #e5e7eb" }}>
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                            <span style={{ fontWeight: 600, color: "var(--accent)" }}>Day {day.day}</span>
+                            <button type="button" onClick={() => {
+                              const newItinerary = adminForm.itinerary.filter((_, i) => i !== index);
+                              setAdminForm({ ...adminForm, itinerary: newItinerary });
+                            }} style={{ padding: "4px 8px", background: "#fee2e2", color: "#dc2626", border: "none", borderRadius: 4, fontSize: 11, cursor: "pointer" }}>Remove</button>
+                          </div>
+                          <input 
+                            className="input" 
+                            placeholder="Day title (e.g. Arrival in Port Blair)" 
+                            value={day.title} 
+                            onChange={(e) => {
+                              const newItinerary = [...adminForm.itinerary];
+                              newItinerary[index].title = e.target.value;
+                              setAdminForm({ ...adminForm, itinerary: newItinerary });
+                            }} 
+                            style={{ marginBottom: 8 }}
+                          />
+                          <textarea 
+                            className="input" 
+                            rows="2" 
+                            placeholder="Day description" 
+                            value={day.description} 
+                            onChange={(e) => {
+                              const newItinerary = [...adminForm.itinerary];
+                              newItinerary[index].description = e.target.value;
+                              setAdminForm({ ...adminForm, itinerary: newItinerary });
+                            }}
+                            style={{ marginBottom: 8 }}
+                          />
+                          <input 
+                            className="input" 
+                            placeholder="Activities (comma separated)" 
+                            value={Array.isArray(day.activities) ? day.activities.join(", ") : ""} 
+                            onChange={(e) => {
+                              const newItinerary = [...adminForm.itinerary];
+                              newItinerary[index].activities = e.target.value.split(",").map(a => a.trim()).filter(a => a);
+                              setAdminForm({ ...adminForm, itinerary: newItinerary });
+                            }}
+                            style={{ marginBottom: 8 }}
+                          />
+                          <input 
+                            className="input" 
+                            placeholder="Meals (comma separated)" 
+                            value={Array.isArray(day.meals) ? day.meals.join(", ") : ""} 
+                            onChange={(e) => {
+                              const newItinerary = [...adminForm.itinerary];
+                              newItinerary[index].meals = e.target.value.split(",").map(m => m.trim()).filter(m => m);
+                              setAdminForm({ ...adminForm, itinerary: newItinerary });
+                            }}
+                            style={{ marginBottom: 8 }}
+                          />
+                          <input 
+                            className="input" 
+                            placeholder="Accommodation" 
+                            value={day.accommodation} 
+                            onChange={(e) => {
+                              const newItinerary = [...adminForm.itinerary];
+                              newItinerary[index].accommodation = e.target.value;
+                              setAdminForm({ ...adminForm, itinerary: newItinerary });
+                            }}
+                            style={{ marginBottom: 8 }}
+                          />
+                          <input 
+                            className="input" 
+                            placeholder="Transport" 
+                            value={day.transport} 
+                            onChange={(e) => {
+                              const newItinerary = [...adminForm.itinerary];
+                              newItinerary[index].transport = e.target.value;
+                              setAdminForm({ ...adminForm, itinerary: newItinerary });
+                            }}
+                          />
+                        </div>
+                      ))}
+                      
+                      {(!adminForm.itinerary || adminForm.itinerary.length === 0) && (
+                        <div style={{ textAlign: "center", color: "var(--muted)", fontSize: 13, padding: 20 }}>
+                          No itinerary added yet. Click "Add Day" to start.
+                        </div>
+                      )}
+                    </div>
                   </>
                 ) : adminTab === "honeymoon" ? (
                   <>

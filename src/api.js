@@ -38,14 +38,17 @@ export function getToken() {
 export async function fetchList(path, params, fallback) {
   try {
     const headers = {};
-    // Add auth headers for contact endpoint when fetching (admin panel)
-    if (path.includes('/contact')) {
+    // Add auth headers for admin-only endpoints
+    if (path.includes('/contact') || path.includes('/packages') || path.includes('/honeymoon') || path.includes('/family') || path.includes('/ltc') || path.includes('/group') || path.includes('/ferry')) {
       const token = localStorage.getItem("admin_token");
       if (token) headers.Authorization = `Bearer ${token}`;
     }
     
     const res = await fetch(`${BASE_URL}${path}${toQuery(params)}`, { headers });
-    if (!res.ok) throw new Error("Request failed");
+    if (!res.ok) {
+      console.warn(`fetchList failed for ${path}:`, res.status, res.statusText);
+      return fallback;
+    }
     const data = await res.json();
     if (Array.isArray(data) && data.length > 0) return data;
     return fallback;

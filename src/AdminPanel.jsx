@@ -270,8 +270,8 @@ export default function AdminPanel({ onLogout }) {
         } : {})
       }}>
         <div style={{ padding: "20px 16px", borderBottom: "1px solid rgba(255,255,255,0.1)", display: "flex", alignItems: "center", gap: 10 }}>
-          <span style={{ width: 36, height: 36, borderRadius: 10, background: "linear-gradient(135deg,var(--accent),var(--sun))", display: "grid", placeItems: "center", fontWeight: 700, color: "#fff", flexShrink: 0 }}>AB</span>
-          {sidebarOpen && <div><div style={{ color: "#fff", fontWeight: 700, fontSize: 14 }}>Andaman Treek Holidays</div><div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11 }}>Admin Panel</div></div>}
+          <img src="/assests/logo tour.png" alt="My Andaman Tour" style={{ width: 36, height: 36, borderRadius: 10, flexShrink: 0 }} />
+          {sidebarOpen && <div><div style={{ color: "#fff", fontWeight: 700, fontSize: 14 }}>My Andaman Tour</div><div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11 }}>Admin Panel</div></div>}
         </div>
         <nav style={{ flex: 1, padding: "12px 8px" }}>
           {Object.keys(adminConfig).map((key) => (

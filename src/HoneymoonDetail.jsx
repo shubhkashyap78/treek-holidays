@@ -208,7 +208,7 @@ export default function HoneymoonDetail() {
               <span className="detail-info-value">Honeymoon</span>
             </div>
             <div className="detail-btn-group">
-              <button className="cta block" onClick={() => window.location.href = "/#contact"}>Book Now</button>
+              <a href="https://wa.me/919531944080" className="cta block" style={{ textDecoration: 'none', textAlign: 'center' }}>Book on WhatsApp</a>
               <button className="ghost" onClick={() => window.location.href = "/#contact"}>Send Enquiry</button>
             </div>
           </div>
@@ -219,9 +219,9 @@ export default function HoneymoonDetail() {
         <div className="footer-content">
           <div className="footer-section">
             <div className="footer-brand">
-              <span className="brand-mark">AB</span>
+              <img src="/assests/logo tour.png" alt="My Andaman Tour" style={{ height: 44, width: 'auto', borderRadius: 8 }} />
               <div>
-                <div className="brand-title">Andaman Treek Holidays</div>
+                <div className="brand-title">My Andaman Tour</div>
                 <div className="brand-sub">Tours and Experiences</div>
               </div>
             </div>
@@ -243,13 +243,15 @@ export default function HoneymoonDetail() {
           </div>
           <div className="footer-section">
             <div className="footer-title">Contact Us</div>
-            <a href="tel:+919000000000" className="footer-link">📞 +91-90000-00000</a>
-            <a href="mailto:hello@andamantreekholidays.com" className="footer-link">✉️ hello@andamantreekholidays.com</a>
-            <div className="footer-link">📍 Port Blair, Andaman</div>
+            <a href="tel:+919679527880" className="footer-link">📞 +91-96795-27880</a>
+            <a href="tel:+919531944080" className="footer-link">📞 +91-95319-44080</a>
+            <a href="https://wa.me/919531944080" className="footer-link">💬 WhatsApp: +91-95319-44080</a>
+            <a href="mailto:myandamantour@gmail.com" className="footer-link">✉️ myandamantour@gmail.com</a>
+            <div className="footer-link">📍 22/4, Church Lane, Goalghar, Port Blair</div>
           </div>
         </div>
         <div className="footer-bottom">
-          <div>© 2026 Andaman Treek Holidays. All rights reserved.</div>
+          <div>© 2026 My Andaman Tour. All rights reserved.</div>
           <div>Built with ❤️ JR Technology</div>
         </div>
       </footer>

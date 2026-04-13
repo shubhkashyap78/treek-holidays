@@ -90,19 +90,94 @@ function HomePage() {
 
       <section className="hero">
         <div className="hero-overlay"></div>
-        <div className="hero-content">
-          <div className="pill">🏝️ Trusted Andaman Tour Partner Since 2015</div>
-          <h1>Discover Paradise in the Andaman Islands</h1>
-          <p>Experience crystal-clear waters, pristine beaches, and unforgettable adventures. Your dream tropical escape awaits.</p>
-          <div className="hero-actions">
-            <button className="cta" onClick={() => document.getElementById('packages').scrollIntoView({ behavior: 'smooth' })}>Explore Packages</button>
-            <button className="ghost" onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}>Get Free Quote</button>
+        <div className="hero-content-wrapper">
+          <div className="hero-content">
+            <div className="pill">🏝️ Trusted Andaman Tour Partner Since 2015</div>
+            <h1>Discover Paradise in the Andaman Islands</h1>
+            <p>Experience crystal-clear waters, pristine beaches, and unforgettable adventures. Your dream tropical escape awaits.</p>
+            <div className="hero-actions">
+              <button className="cta" onClick={() => document.getElementById('packages').scrollIntoView({ behavior: 'smooth' })}>Explore Packages</button>
+              <a href="https://wa.me/919531944080" className="ghost" style={{ textDecoration: 'none', display: 'inline-block' }}>WhatsApp Us</a>
+            </div>
+            <div className="hero-stats">
+              <div><div className="stat-value">{loading ? "..." : packages.length + honeymoon.length + family.length + ltc.length + group.length}+</div><div className="stat-label">Tour Packages</div></div>
+              <div><div className="stat-value">{loading ? "..." : activities.length}+</div><div className="stat-label">Activities</div></div>
+              <div><div className="stat-value">{loading ? "..." : islands.length}+</div><div className="stat-label">Islands</div></div>
+              <div><div className="stat-value">4.9★</div><div className="stat-label">Customer Rating</div></div>
+            </div>
           </div>
-          <div className="hero-stats">
-            <div><div className="stat-value">{loading ? "..." : packages.length + honeymoon.length + family.length + ltc.length + group.length}+</div><div className="stat-label">Tour Packages</div></div>
-            <div><div className="stat-value">{loading ? "..." : activities.length}+</div><div className="stat-label">Activities</div></div>
-            <div><div className="stat-value">{loading ? "..." : islands.length}+</div><div className="stat-label">Islands</div></div>
-            <div><div className="stat-value">4.9★</div><div className="stat-label">Customer Rating</div></div>
+          
+          {/* Hero Enquiry Form */}
+          <div className="hero-enquiry-form">
+            <div className="hero-form-header">
+              <h3>🌴 Plan Your Dream Trip</h3>
+              <p>Get personalized itinerary in 24 hours</p>
+            </div>
+            <form className="hero-form" onSubmit={async (e) => {
+              e.preventDefault();
+              const submitButton = e.target.querySelector('button[type="submit"]');
+              const originalText = submitButton.textContent;
+              
+              try {
+                submitButton.textContent = 'Sending...';
+                submitButton.disabled = true;
+                
+                const formData = new FormData(e.target);
+                const data = {
+                  name: formData.get('name'),
+                  email: formData.get('email'),
+                  phone: formData.get('phone'),
+                  packageType: formData.get('packageType'),
+                  travelMonth: formData.get('travelMonth'),
+                  numberOfTravelers: parseInt(formData.get('numberOfTravelers')) || 1,
+                  message: formData.get('message') || 'Enquiry from hero section form'
+                };
+                
+                const response = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/contact`, {
+                  method: 'POST',
+                  headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                  },
+                  body: JSON.stringify(data)
+                });
+                
+                if (response.ok) {
+                  alert('✅ Thank you! Your enquiry has been submitted successfully. We will contact you within 24 hours.');
+                  e.target.reset();
+                } else {
+                  const errorData = await response.json().catch(() => ({}));
+                  throw new Error(errorData.error || `Server error: ${response.status}`);
+                }
+              } catch (error) {
+                console.error('Hero form error:', error);
+                alert('❌ Sorry, there was an error submitting your enquiry. Please try again or call us directly.');
+              } finally {
+                submitButton.textContent = originalText;
+                submitButton.disabled = false;
+              }
+            }}>
+              <input className="hero-input" name="name" placeholder="Your Name *" required />
+              <input className="hero-input" name="email" type="email" placeholder="Email Address *" required />
+              <input className="hero-input" name="phone" type="tel" placeholder="Phone Number *" required />
+              <select className="hero-input" name="packageType" required>
+                <option value="">Select Package Type</option>
+                <option value="honeymoon">Honeymoon</option>
+                <option value="family">Family</option>
+                <option value="group">Group</option>
+                <option value="ltc">LTC</option>
+                <option value="custom">Custom Package</option>
+              </select>
+              <div className="hero-input-row">
+                <input className="hero-input" name="travelMonth" placeholder="Travel Month" />
+                <input className="hero-input" name="numberOfTravelers" type="number" placeholder="Travelers" min="1" />
+              </div>
+              <textarea className="hero-input" name="message" rows="3" placeholder="Tell us about your dream trip..."></textarea>
+              <button className="hero-submit" type="submit">Get Free Quote</button>
+              <div className="hero-form-note">
+                🔒 Your information is safe with us
+              </div>
+            </form>
           </div>
         </div>
       </section>
@@ -310,7 +385,7 @@ function HomePage() {
             <div className="pill" style={{ marginBottom: 16 }}>🌴 About Us</div>
             <h2 className="about-title">Your Trusted Partner for Andaman Adventures</h2>
             <p className="about-text">
-              Welcome to Andaman Treek Holidays, your premier travel companion for exploring the breathtaking Andaman and Nicobar Islands. With over 8 years of experience in crafting unforgettable journeys, we specialize in creating personalized travel experiences that showcase the natural beauty, rich culture, and adventure opportunities of these pristine islands.
+              Welcome to My Andaman Tour, your premier travel companion for exploring the breathtaking Andaman and Nicobar Islands. With over 8 years of experience in crafting unforgettable journeys, we specialize in creating personalized travel experiences that showcase the natural beauty, rich culture, and adventure opportunities of these pristine islands.
             </p>
             <p className="about-text">
               Our team of local experts is passionate about sharing the hidden gems and must-see attractions of the Andaman Islands. From romantic honeymoon getaways to thrilling family adventures, we ensure every trip is seamless, safe, and memorable.
@@ -367,7 +442,7 @@ function HomePage() {
           <div className="testimonial-card">
             <div className="testimonial-rating">★★★★★</div>
             <p className="testimonial-text">
-              "Amazing experience! The team at Andaman Treek Holidays made our honeymoon absolutely perfect. From the beautiful resorts to the exciting water activities, everything was well-organized and memorable."
+              "Amazing experience! The team at My Andaman Tour made our honeymoon absolutely perfect. From the beautiful resorts to the exciting water activities, everything was well-organized and memorable."
             </p>
             <div className="testimonial-author">
               <div className="testimonial-avatar">R</div>
@@ -456,7 +531,7 @@ function HomePage() {
           <p className="contact-cta-text">Get in touch with our travel experts and let us create your perfect island getaway</p>
           <div className="contact-cta-buttons">
             <button className="cta" onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}>Plan My Trip</button>
-            <a href="tel:+919000000000" className="ghost" style={{ textDecoration: 'none', display: 'inline-block' }}>📞 Call Us Now</a>
+            <a href="https://wa.me/919531944080" className="ghost" style={{ textDecoration: 'none', display: 'inline-block' }}>💬 WhatsApp Us</a>
           </div>
         </div>
       </section>
@@ -471,21 +546,45 @@ function HomePage() {
                 <span className="contact-icon">📞</span>
                 <div>
                   <div className="contact-label">Phone</div>
-                  <a href="tel:+919000000000" className="contact-value">+91-90000-00000</a>
+                  <a href="tel:+919679527880" className="contact-value">+91-96795-27880</a>
+                  <div style={{ fontSize: 13, color: "var(--muted)", marginTop: 2 }}>
+                    <a href="tel:+919531944080" style={{ color: "inherit", textDecoration: "none" }}>+91-95319-44080</a> | 
+                    <a href="tel:+917063967678" style={{ color: "inherit", textDecoration: "none" }}>+91-70639-67678</a>
+                  </div>
+                </div>
+              </div>
+              <div className="contact-detail-item">
+                <span className="contact-icon">💬</span>
+                <div>
+                  <div className="contact-label">WhatsApp</div>
+                  <a href="https://wa.me/919531944080" className="contact-value">+91-95319-44080</a>
+                  <div style={{ fontSize: 13, color: "var(--muted)", marginTop: 2 }}>
+                    <a href="https://wa.me/919679527880" style={{ color: "inherit", textDecoration: "none" }}>+91-96795-27880</a>
+                  </div>
+                </div>
+              </div>
+              <div className="contact-detail-item">
+                <span className="contact-icon">☎️</span>
+                <div>
+                  <div className="contact-label">Landline</div>
+                  <a href="tel:+91319223263" className="contact-value">+91-03192-233263</a>
                 </div>
               </div>
               <div className="contact-detail-item">
                 <span className="contact-icon">✉️</span>
                 <div>
                   <div className="contact-label">Email</div>
-                  <a href="mailto:hello@andamantreekholidays.com" className="contact-value">hello@andamantreekholidays.com</a>
+                  <a href="mailto:myandamantour@gmail.com" className="contact-value">myandamantour@gmail.com</a>
+                  <div style={{ fontSize: 13, color: "var(--muted)", marginTop: 2 }}>
+                    <a href="mailto:info@myandamantour.com" style={{ color: "inherit", textDecoration: "none" }}>info@myandamantour.com</a>
+                  </div>
                 </div>
               </div>
               <div className="contact-detail-item">
                 <span className="contact-icon">📍</span>
                 <div>
                   <div className="contact-label">Office</div>
-                  <div className="contact-value">Port Blair, Andaman & Nicobar Islands</div>
+                  <div className="contact-value">22/4, Church Lane, Goalghar<br/>Port Blair, South Andaman - 744103</div>
                 </div>
               </div>
               <div className="contact-detail-item">
@@ -576,9 +675,9 @@ function HomePage() {
         <div className="footer-content">
           <div className="footer-section">
             <div className="footer-brand">
-              <span className="brand-mark">AB</span>
+              <img src="/assests/logo tour.png" alt="My Andaman Tour" style={{ height: 44, width: 'auto', borderRadius: 8 }} />
               <div>
-                <div className="brand-title">Andaman Treek Holidays</div>
+                <div className="brand-title">My Andaman Tour</div>
                 <div className="brand-sub">Tours and Experiences</div>
               </div>
             </div>
@@ -600,13 +699,15 @@ function HomePage() {
           </div>
           <div className="footer-section">
             <div className="footer-title">Contact Us</div>
-            <a href="tel:+919000000000" className="footer-link">📞 +91-90000-00000</a>
-            <a href="mailto:hello@andamantreekholidays.com" className="footer-link">✉️ hello@andamantreekholidays.com</a>
-            <div className="footer-link">📍 Port Blair, Andaman</div>
+            <a href="tel:+919679527880" className="footer-link">📞 +91-96795-27880</a>
+            <a href="tel:+919531944080" className="footer-link">📞 +91-95319-44080</a>
+            <a href="https://wa.me/919531944080" className="footer-link">💬 WhatsApp: +91-95319-44080</a>
+            <a href="mailto:myandamantour@gmail.com" className="footer-link">✉️ myandamantour@gmail.com</a>
+            <div className="footer-link">📍 22/4, Church Lane, Goalghar, Port Blair</div>
           </div>
         </div>
         <div className="footer-bottom">
-          <div>© 2026 Andaman Treek Holidays. All rights reserved.</div>
+          <div>© 2026 My Andaman Tour. All rights reserved.</div>
           <div>Built with ❤️ JR Technology</div>
         </div>
       </footer>

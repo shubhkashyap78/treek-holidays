@@ -119,9 +119,9 @@ export default function Navigation({ isAdmin = false }) {
   return (
     <header className="topbar">
       <div className="brand">
-        <span className="brand-mark">AB</span>
+        <img src="/assests/logo tour.png" alt="My Andaman Tour" style={{ height: 44, width: 'auto', borderRadius: 8 }} />
         <div>
-          <div className="brand-title">Andaman Treek Holidays</div>
+          <div className="brand-title">My Andaman Tour</div>
           <div className="brand-sub">Tours and Experiences</div>
         </div>
       </div>

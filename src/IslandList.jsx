@@ -85,7 +85,7 @@ export default function IslandList() {
             <div className="footer-brand">
               <span className="brand-mark">AB</span>
               <div>
-                <div className="brand-title">Andaman Treek Holidays</div>
+                <div className="brand-title">My Andaman Tour</div>
                 <div className="brand-sub">Tours and Experiences</div>
               </div>
             </div>
@@ -113,7 +113,7 @@ export default function IslandList() {
           </div>
         </div>
         <div className="footer-bottom">
-          <div>© 2026 Andaman Treek Holidays. All rights reserved.</div>
+          <div>© 2026 My Andaman Tour. All rights reserved.</div>
           <div>Built with ❤️ JR Technology</div>
         </div>
       </footer>

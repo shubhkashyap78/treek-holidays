@@ -133,6 +133,7 @@ export default function Navigation({ isAdmin = false }) {
       </button>
       <nav className={`nav ${showMobileMenu ? 'mobile-open' : ''}`}>
         <Link to="/" onClick={() => setShowMobileMenu(false)}>Home</Link>
+        <a href="/#about" onClick={(e) => { e.preventDefault(); window.location.href = '/#about'; setShowMobileMenu(false); }}>About</a>
         <div 
           className="nav-dropdown"
           onMouseEnter={handlePackageEnter}
@@ -263,7 +264,6 @@ export default function Navigation({ isAdmin = false }) {
             </div>
           )}
         </div>
-        <a href="/#about" onClick={(e) => { e.preventDefault(); window.location.href = '/#about'; setShowMobileMenu(false); }}>About</a>
         <a href="/#contact" onClick={(e) => { e.preventDefault(); window.location.href = '/#contact'; setShowMobileMenu(false); }}>Contact</a>
       </nav>
       <div style={{ display: "flex", gap: 8 }}>

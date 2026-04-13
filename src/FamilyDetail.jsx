@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { fallbackFamily } from "./fallbackData.js";
+import Navigation from "./Navigation.jsx";
 
 export default function FamilyDetail() {
   const { id } = useParams();
@@ -26,27 +27,7 @@ export default function FamilyDetail() {
 
   return (
     <div className="page">
-      <header className="topbar">
-        <div className="brand">
-          <span className="brand-mark">AB</span>
-          <div>
-            <div className="brand-title">Andaman Treek Holidays</div>
-            <div className="brand-sub">Tours and Experiences</div>
-          </div>
-        </div>
-        <nav className="nav">
-          <Link to="/">Home</Link>
-          <a href="/#packages">Packages</a>
-          <Link to="/activities">Activities</Link>
-          <Link to="/islands">Islands</Link>
-          <Link to="/ferries">Ferry</Link>
-          <a href="/#contact">Contact</a>
-        </nav>
-        <div style={{ display: "flex", gap: 8 }}>
-          {isAdmin && <button className="ghost" onClick={() => window.location.href = "/admin"}>Admin</button>}
-          <button className="cta" onClick={() => window.location.href = "/#contact"}>Book Now</button>
-        </div>
-      </header>
+      <Navigation isAdmin={isAdmin} />
 
       <div className="detail-hero" style={{ backgroundImage: `url(${item.image})` }}>
         <div className="detail-hero-overlay">

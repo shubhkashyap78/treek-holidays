@@ -54,12 +54,13 @@ export default function AdminPanel({ onLogout }) {
   const [ferry,      setFerry]      = useState([]);
   const [contact,    setContact]    = useState([]);
   const [loading,    setLoading]    = useState(true);
-  const [adminTab,   setAdminTab]   = useState("packages");
-  const [adminForm,  setAdminForm]  = useState(emptyForms.packages);
+  const [adminTab,   setAdminTab]   = useState("contact");
+  const [adminForm,  setAdminForm]  = useState(emptyForms.contact);
   const [adminMessage, setAdminMessage] = useState("");
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth > 768);
 
   const adminConfig = useMemo(() => ({
+    contact:   { title: "Enquiries",  path: "/api/contact" },
     packages:  { title: "Packages",   path: "/api/packages" },
     activities:{ title: "Activities", path: "/api/activities" },
     islands:   { title: "Islands",    path: "/api/islands" },
@@ -67,8 +68,7 @@ export default function AdminPanel({ onLogout }) {
     family:    { title: "Family",     path: "/api/family" },
     ltc:       { title: "LTC",        path: "/api/ltc" },
     group:     { title: "Group",      path: "/api/group" },
-    ferry:     { title: "Ferry",      path: "/api/ferry" },
-    contact:   { title: "Enquiries",  path: "/api/contact" }
+    ferry:     { title: "Ferry",      path: "/api/ferry" }
   }), []);
 
   const counts = {
@@ -236,7 +236,39 @@ export default function AdminPanel({ onLogout }) {
 
   return (
     <div style={{ display: "flex", minHeight: "100vh", background: "var(--bg)" }}>
-      <aside style={{ width: sidebarOpen ? 240 : 64, background: "var(--accent-dark)", display: "flex", flexDirection: "column", transition: "width 0.25s ease", flexShrink: 0, position: "sticky", top: 0, height: "100vh", overflowY: "auto" }}>
+      {/* Mobile overlay */}
+      {window.innerWidth <= 768 && sidebarOpen && (
+        <div 
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: "rgba(0,0,0,0.5)",
+            zIndex: 999
+          }}
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+      
+      <aside style={{ 
+        width: sidebarOpen ? 240 : 64, 
+        background: "var(--accent-dark)", 
+        display: "flex", 
+        flexDirection: "column", 
+        transition: "width 0.25s ease", 
+        flexShrink: 0, 
+        position: "sticky", 
+        top: 0, 
+        height: "100vh", 
+        overflowY: "auto",
+        ...(window.innerWidth <= 768 && sidebarOpen ? {
+          position: "fixed",
+          zIndex: 1000,
+          width: 240
+        } : {})
+      }}>
         <div style={{ padding: "20px 16px", borderBottom: "1px solid rgba(255,255,255,0.1)", display: "flex", alignItems: "center", gap: 10 }}>
           <span style={{ width: 36, height: 36, borderRadius: 10, background: "linear-gradient(135deg,var(--accent),var(--sun))", display: "grid", placeItems: "center", fontWeight: 700, color: "#fff", flexShrink: 0 }}>AB</span>
           {sidebarOpen && <div><div style={{ color: "#fff", fontWeight: 700, fontSize: 14 }}>Andaman Treek Holidays</div><div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11 }}>Admin Panel</div></div>}
@@ -258,7 +290,16 @@ export default function AdminPanel({ onLogout }) {
         </div>
       </aside>
 
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
+      <div style={{ 
+        flex: 1, 
+        display: "flex", 
+        flexDirection: "column", 
+        minWidth: 0,
+        ...(window.innerWidth <= 768 && sidebarOpen ? {
+          marginLeft: 0,
+          position: "relative"
+        } : {})
+      }}>
         <header style={{ background: "#fff", padding: "14px 24px", display: "flex", alignItems: "center", gap: 16, borderBottom: "1px solid rgba(0,0,0,0.08)", position: "sticky", top: 0, zIndex: 10 }}>
           <button onClick={() => setSidebarOpen(!sidebarOpen)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 20, padding: 4 }}>☰</button>
           <div style={{ flex: 1 }}>
@@ -268,11 +309,16 @@ export default function AdminPanel({ onLogout }) {
           <a href="/" style={{ color: "var(--muted)", fontSize: 13, textDecoration: "none" }}>← Back to Site</a>
         </header>
 
-        <main style={{ flex: 1, padding: 24 }}>
+        <main style={{ flex: 1, padding: window.innerWidth <= 768 ? 16 : 24 }}>
           {adminMessage && <div style={{ background: "#fff", border: "1px solid rgba(0,0,0,0.1)", borderRadius: 12, padding: "10px 16px", marginBottom: 16, fontSize: 13 }}>{adminMessage}</div>}
 
           {loading ? <div className="loading">Loading...</div> : (
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 380px", gap: 20, alignItems: "start" }}>
+            <div style={{ 
+              display: "grid", 
+              gridTemplateColumns: window.innerWidth <= 768 ? "1fr" : "1fr 380px", 
+              gap: 20, 
+              alignItems: "start" 
+            }}>
               <div style={{ background: "#fff", borderRadius: 16, boxShadow: "var(--shadow)", overflow: "hidden" }}>
                 <div style={{ padding: "14px 20px", borderBottom: "1px solid rgba(0,0,0,0.07)", fontWeight: 700, fontSize: 14 }}>All {adminConfig[adminTab].title}</div>
                 {adminItems.length === 0 && <div style={{ padding: 20, color: "var(--muted)", fontSize: 13 }}>No items yet. Create one →</div>}
@@ -312,7 +358,17 @@ export default function AdminPanel({ onLogout }) {
                 ))}
               </div>
 
-              <form onSubmit={handleSubmit} style={{ background: "#fff", borderRadius: 16, boxShadow: "var(--shadow)", padding: 20, display: "grid", gap: 10, position: "sticky", top: 80 }}>
+              <form onSubmit={handleSubmit} style={{ 
+                background: "#fff", 
+                borderRadius: 16, 
+                boxShadow: "var(--shadow)", 
+                padding: window.innerWidth <= 768 ? 16 : 20, 
+                display: "grid", 
+                gap: 10, 
+                position: window.innerWidth <= 768 ? "static" : "sticky", 
+                top: window.innerWidth <= 768 ? "auto" : 80,
+                marginTop: window.innerWidth <= 768 ? 20 : 0
+              }}>
                 <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 4, textTransform: "capitalize" }}>
                   {adminForm._id ? `Edit ${adminConfig[adminTab].title}` : `New ${adminConfig[adminTab].title}`}
                 </div>

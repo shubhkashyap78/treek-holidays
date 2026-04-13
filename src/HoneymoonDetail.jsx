@@ -1,16 +1,13 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { fallbackHoneymoon } from "./fallbackData.js";
+import Navigation from "./Navigation.jsx";
 
 export default function HoneymoonDetail() {
   const { id } = useParams();
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [showPackageDropdown, setShowPackageDropdown] = useState(false);
-  const [showActivityDropdown, setShowActivityDropdown] = useState(false);
-  const [showIslandDropdown, setShowIslandDropdown] = useState(false);
-  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   useEffect(() => {
     // Pehle fallback se instant data dikhao
@@ -34,91 +31,7 @@ export default function HoneymoonDetail() {
 
   return (
     <div className="page">
-      <header className="topbar">
-        <div className="brand">
-          <span className="brand-mark">AB</span>
-          <div>
-            <div className="brand-title">Andaman Treek Holidays </div>
-            <div className="brand-sub">Tours and Experiences</div>
-          </div>
-        </div>
-        <button 
-          className="mobile-menu-toggle"
-          onClick={() => setShowMobileMenu(!showMobileMenu)}
-        >
-          ☰
-        </button>
-        <nav className={`nav ${showMobileMenu ? 'mobile-open' : ''}`}>
-          <Link to="/" onClick={() => setShowMobileMenu(false)}>Home</Link>
-          <div 
-            className="nav-dropdown"
-            onMouseEnter={() => !showMobileMenu && setShowPackageDropdown(true)}
-            onMouseLeave={() => !showMobileMenu && setShowPackageDropdown(false)}
-            onClick={() => showMobileMenu && setShowPackageDropdown(!showPackageDropdown)}
-          >
-            <a href="/#packages" className="nav-link">Packages ▾</a>
-            {(showPackageDropdown || (showMobileMenu && showPackageDropdown)) && (
-              <div className="dropdown-menu">
-                <div className="dropdown-section">
-                  <div className="dropdown-title">Honeymoon</div>
-                  <Link to="/honeymoon" className="dropdown-item" onClick={() => setShowMobileMenu(false)}>View All Packages</Link>
-                </div>
-                <div className="dropdown-section">
-                  <div className="dropdown-title">Family</div>
-                  <Link to="/family" className="dropdown-item" onClick={() => setShowMobileMenu(false)}>View All Packages</Link>
-                </div>
-                <div className="dropdown-section">
-                  <div className="dropdown-title">LTC</div>
-                  <Link to="/ltc" className="dropdown-item" onClick={() => setShowMobileMenu(false)}>View All Packages</Link>
-                </div>
-                <div className="dropdown-section">
-                  <div className="dropdown-title">Group</div>
-                  <Link to="/group" className="dropdown-item" onClick={() => setShowMobileMenu(false)}>View All Packages</Link>
-                </div>
-              </div>
-            )}
-          </div>
-          <div 
-            className="nav-dropdown"
-            onMouseEnter={() => !showMobileMenu && setShowActivityDropdown(true)}
-            onMouseLeave={() => !showMobileMenu && setShowActivityDropdown(false)}
-            onClick={() => showMobileMenu && setShowActivityDropdown(!showActivityDropdown)}
-          >
-            <Link to="/activities" className="nav-link">Activities ▾</Link>
-            {(showActivityDropdown || (showMobileMenu && showActivityDropdown)) && (
-              <div className="dropdown-menu dropdown-menu-activities">
-                <div className="dropdown-section">
-                  <Link to="/activities" className="dropdown-item" onClick={() => setShowMobileMenu(false)}>View All Activities</Link>
-                </div>
-              </div>
-            )}
-          </div>
-          <div 
-            className="nav-dropdown"
-            onMouseEnter={() => !showMobileMenu && setShowIslandDropdown(true)}
-            onMouseLeave={() => !showMobileMenu && setShowIslandDropdown(false)}
-            onClick={() => showMobileMenu && setShowIslandDropdown(!showIslandDropdown)}
-          >
-            <Link to="/islands" className="nav-link">Islands ▾</Link>
-            {(showIslandDropdown || (showMobileMenu && showIslandDropdown)) && (
-              <div className="dropdown-menu dropdown-menu-islands">
-                <div className="dropdown-section">
-                  <Link to="/islands" className="dropdown-item" onClick={() => setShowMobileMenu(false)}>View All Islands</Link>
-                </div>
-              </div>
-            )}
-          </div>
-          <Link to="/ferries" onClick={() => setShowMobileMenu(false)}>Ferry</Link>
-          <a href="/#about" onClick={(e) => { e.preventDefault(); window.location.href = '/#about'; setShowMobileMenu(false); }}>About</a>
-          <a href="/#contact" onClick={(e) => { e.preventDefault(); window.location.href = '/#contact'; setShowMobileMenu(false); }}>Contact</a>
-        </nav>
-        <div style={{ display: "flex", gap: 8 }}>
-          {isAdmin && (
-            <button className="ghost" onClick={() => window.location.href = "/admin"}>Admin</button>
-          )}
-          <button className="cta" onClick={() => window.location.href = "/#contact"}>Book Now</button>
-        </div>
-      </header>
+      <Navigation isAdmin={isAdmin} />
 
       <div className="detail-hero" style={{ backgroundImage: `url(${item.image})` }}>
         <div className="detail-hero-overlay">

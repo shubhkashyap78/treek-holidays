@@ -498,7 +498,7 @@ function HomePage() {
           <div className="testimonial-card">
             <div className="testimonial-rating">★★★★★</div>
             <p className="testimonial-text">
-              "Scuba diving in Havelock was a dream come true! The instructors were professional and the entire experience was safe and thrilling. Can't wait to come back!"
+              Vikash bhai, thank you for your services at Andaman.Aapne humara tour bahot hi badiya karaya. Halanki Covid-19 ki wajah se hum Makruzz ka maza nahi utha paaye Candle Light Dinner Havelock mein bahot badiya tha. Humne jaisa socha tha usse dugna maza aya humein. Jaise mujhe mere NCDC office mein suggest kiya gaya tha aapke bare mein, mai wada karta hoon ki mai bhi apko refer karoonga apne NCDC Delhi ke branch mein. Aur Haan apke My Andaman Kitchen ka Khana Lajawaab tha..
             </p>
             <div className="testimonial-author">
               <div className="testimonial-avatar">V</div>
@@ -512,7 +512,9 @@ function HomePage() {
           <div className="testimonial-card">
             <div className="testimonial-rating">★★★★★</div>
             <p className="testimonial-text">
-              "The islands are paradise and this team made it even better! From airport pickup to hotel check-out, everything was smooth. Highly professional and friendly service."
+              
+I along with my wife really had a blast at Andaman.I thank My Andaman Tour for well planed tour.The whole team of My Andaman Tour deserves Kudos!
+
             </p>
             <div className="testimonial-author">
               <div className="testimonial-avatar">N</div>

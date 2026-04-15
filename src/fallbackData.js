@@ -131,39 +131,84 @@ export const fallbackGroup = [
 export const fallbackIslands = [
   {
     _id: "i1",
-    name: "Port Blair",
+    name: "Port Blair (Sri Vijaya Puram)",
     tagline: "Capital gateway to the islands",
     image: "/assests/cellualar-jai.jpg",
-    description: "Museums, Cellular Jail, and nearby beaches.",
-    highlights: ["Cellular Jail", "Corbyns Cove", "Ross Island"],
-    tags: ["gateway"]
+    description: "The capital city and main entry point to Andaman, home to historic Cellular Jail and vibrant local culture.",
+    highlights: ["Cellular Jail", "Corbyns Cove Beach", "Ross Island", "Anthropological Museum"],
+    tags: ["capital", "history", "gateway"]
   },
   {
-    _id: "69d771ab07c7b6db4af56cd7",
+    _id: "i2",
     name: "Havelock (Swaraj Dweep)",
     tagline: "Turquoise waters and white sands",
     image: "/assests/Elephant-beach-2.jpg",
-    description: "Famous for Radhanagar Beach and water sports.",
-    highlights: ["Radhanagar Beach", "Elephant Beach", "Scuba Diving"],
-    tags: ["beach", "water sports"]
+    description: "Most popular tourist destination famous for pristine Radhanagar Beach and world-class water sports.",
+    highlights: ["Radhanagar Beach", "Elephant Beach", "Scuba Diving", "Snorkeling"],
+    tags: ["beach", "water sports", "diving"]
   },
   {
     _id: "i3",
     name: "Neil (Shaheed Dweep)",
     tagline: "Peaceful, slow, and scenic",
     image: "/assests/kalapathar.jpg",
-    description: "Natural Rock, Bharatpur Beach, and calm lagoons.",
-    highlights: ["Bharatpur Beach", "Natural Rock", "Laxmanpur Beach"],
-    tags: ["calm", "peaceful"]
+    description: "Tranquil island perfect for relaxation with stunning natural rock formations and coral reefs.",
+    highlights: ["Bharatpur Beach", "Natural Rock Formation", "Laxmanpur Beach", "Coral Reefs"],
+    tags: ["peaceful", "coral", "relaxation"]
   },
   {
     _id: "i4",
     name: "Baratang Island",
     tagline: "Limestone caves and mangrove creeks",
     image: "/assests/chidiya-tapu.jpg",
-    description: "Famous for limestone caves and mud volcanoes.",
-    highlights: ["Limestone Caves", "Mud Volcanoes", "Mangrove Creek"],
-    tags: ["caves", "adventure"]
+    description: "Adventure destination famous for limestone caves, mud volcanoes, and mangrove creek boat rides.",
+    highlights: ["Limestone Caves", "Mud Volcanoes", "Mangrove Creek", "Parrot Island"],
+    tags: ["caves", "adventure", "mangroves"]
+  },
+  {
+    _id: "i5",
+    name: "Diglipur Island",
+    tagline: "Northernmost paradise",
+    image: "/assests/andaman1.jpg",
+    description: "Remote northern island offering pristine beaches, turtle nesting sites, and the highest peak of Andaman.",
+    highlights: ["Ross & Smith Islands", "Turtle Nesting", "Saddle Peak", "Kalipur Beach"],
+    tags: ["remote", "turtles", "trekking"]
+  },
+  {
+    _id: "i6",
+    name: "Barren Island",
+    tagline: "India's only active volcano",
+    image: "/assests/andaman2.jpg",
+    description: "Unique volcanic island with India's only active volcano, accessible only by special permits and boat trips.",
+    highlights: ["Active Volcano", "Volcanic Rocks", "Marine Life", "Boat Trips"],
+    tags: ["volcano", "unique", "marine"]
+  },
+  {
+    _id: "i7",
+    name: "Mayabunder",
+    tagline: "Serene coastal town",
+    image: "/assests/andaman3.jpg",
+    description: "Peaceful coastal town known for its beautiful beaches, coconut plantations, and German Jetty.",
+    highlights: ["German Jetty", "Coconut Plantations", "Avis Island", "Karmatang Beach"],
+    tags: ["coastal", "plantations", "jetty"]
+  },
+  {
+    _id: "i8",
+    name: "Little Andaman",
+    tagline: "Surfing and waterfalls paradise",
+    image: "/assests/andaman4.jpeg",
+    description: "Southern island paradise famous for surfing, waterfalls, and pristine beaches with fewer crowds.",
+    highlights: ["White Surf Waterfall", "Butler Bay Beach", "Surfing", "Elephant Training Camp"],
+    tags: ["surfing", "waterfalls", "pristine"]
+  },
+  {
+    _id: "i9",
+    name: "Rangat Island",
+    tagline: "Middle Andaman's hidden gem",
+    image: "/assests/andaman5.jpeg",
+    description: "Central island known for its lush forests, beautiful beaches, and the famous Amkunj Beach turtle nesting site.",
+    highlights: ["Amkunj Beach", "Turtle Nesting", "Yerrata Mangrove Creek", "Dhani Nallah Beach"],
+    tags: ["forests", "turtles", "hidden"]
   }
 ];
 

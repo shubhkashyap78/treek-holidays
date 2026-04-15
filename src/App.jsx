@@ -442,7 +442,7 @@ function HomePage() {
           <div className="testimonial-card">
             <div className="testimonial-rating">★★★★★</div>
             <p className="testimonial-text">
-              "Amazing experience! The team at My Andaman Tour made our honeymoon absolutely perfect. From the beautiful resorts to the exciting water activities, everything was well-organized and memorable."
+              "We had lovely time at Andaman Islands. Andaman is a must visit place. We would like to thanks Mr. Vikash from My Andaman Tour for conducting our package. He has taken at most care of us. In case we come to Andaman again, we would like to opt for My Andaman Tour only."
             </p>
             <div className="testimonial-author">
               <div className="testimonial-avatar">R</div>
@@ -456,7 +456,7 @@ function HomePage() {
           <div className="testimonial-card">
             <div className="testimonial-rating">★★★★★</div>
             <p className="testimonial-text">
-              "Our family trip was fantastic! The kids loved the water sports and beach activities. The itinerary was perfect for all age groups. Highly recommend for family vacations!"
+              "My Andaman Tour" made our trip so memorable and Happy. Mainly i would like to thank Vikas bhai for Guiding anf Helping us through out the trip. For sure i will recommend my friends and relatives to opt "My Andaman Tour" for their future trips to Andaman."
             </p>
             <div className="testimonial-author">
               <div className="testimonial-avatar">S</div>
@@ -470,7 +470,7 @@ function HomePage() {
           <div className="testimonial-card">
             <div className="testimonial-rating">★★★★★</div>
             <p className="testimonial-text">
-              "Professional service and great value for money. The LTC package was exactly what we needed with all proper documentation. Will definitely book again!"
+              "It was a nice experience with this company, and Vikashji coordinating the entire tour and making it hassle free for us, despite the pandemic imposed restrictions. Our tour was planned between 2nd Jan 2021 to 8th Jan 2021, for a short span of 6 nights and 7 days, for a family of 2 adults and one kid. We had Portblair, North Bay, Ross Island visit, Havelock Island Neil Island in our itenary. All transfers were taken well care of (this included govt. operated cruises this time since Mackruzz and Green ocean private cruises weren't yet operational post lockdowns, but it was nevertheless an experience in itself with an open to sky deck and helpful crew on board); the package was customised exactly as per our requirement.."
             </p>
             <div className="testimonial-author">
               <div className="testimonial-avatar">A</div>
@@ -484,7 +484,7 @@ function HomePage() {
           <div className="testimonial-card">
             <div className="testimonial-rating">★★★★★</div>
             <p className="testimonial-text">
-              "Best group tour ever! Our corporate team had an amazing time. The activities were well-planned and the accommodations were excellent. Thank you for the wonderful experience!"
+              "We had a very good time at Andaman. Our travel agent Mr. Vikass of My Andaman Tour gave a great support. Thanks My Andaman Tour for the lovely memories."
             </p>
             <div className="testimonial-author">
               <div className="testimonial-avatar">M</div>

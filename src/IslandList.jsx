@@ -11,9 +11,7 @@ export default function IslandList() {
 
   async function loadIslands() {
     setLoading(true);
-    // Temporarily using fallback data to avoid 404 errors
-    // const data = await fetchList("/api/islands", filters, fallbackIslands);
-    const data = fallbackIslands;
+    const data = await fetchList("/api/islands", filters, fallbackIslands);
     setIslands(data);
     setLoading(false);
   }

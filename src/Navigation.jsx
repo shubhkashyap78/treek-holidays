@@ -133,7 +133,7 @@ export default function Navigation({ isAdmin = false }) {
       </button>
       <nav className={`nav ${showMobileMenu ? 'mobile-open' : ''}`}>
         <Link to="/" onClick={() => setShowMobileMenu(false)}>Home</Link>
-        <a href="/#about" onClick={(e) => { e.preventDefault(); window.location.href = '/#about'; setShowMobileMenu(false); }}>About</a>
+        <Link to="/about" onClick={() => setShowMobileMenu(false)}>About</Link>
         <div 
           className="nav-dropdown"
           onMouseEnter={handlePackageEnter}
@@ -264,12 +264,10 @@ export default function Navigation({ isAdmin = false }) {
             </div>
           )}
         </div>
-        <a href="/#contact" onClick={(e) => { e.preventDefault(); window.location.href = '/#contact'; setShowMobileMenu(false); }}>Contact</a>
+        <Link to="/contact" onClick={() => setShowMobileMenu(false)}>Contact</Link>
       </nav>
       <div style={{ display: "flex", gap: 8 }}>
-        {isAdmin && (
-          <button className="ghost" onClick={() => window.location.href = "/admin"}>Admin</button>
-        )}
+        <Link to="/admin" className="ghost" style={{ textDecoration: 'none', display: 'inline-block', padding: '8px 16px' }}>Admin</Link>
         <button className="cta" onClick={() => window.location.href = "/#contact"}>Book Now</button>
       </div>
     </header>

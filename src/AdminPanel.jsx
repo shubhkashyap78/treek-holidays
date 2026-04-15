@@ -382,7 +382,7 @@ export default function AdminPanel({ onLogout }) {
                         <div><strong>Email:</strong> {adminItems.find(item => item._id === adminForm._id)?.email || 'N/A'}</div>
                         <div><strong>Phone:</strong> {adminItems.find(item => item._id === adminForm._id)?.phone || 'N/A'}</div>
                         <div><strong>Package:</strong> {adminItems.find(item => item._id === adminForm._id)?.packageType || 'N/A'}</div>
-                        <div><strong>Travel Month:</strong> {adminItems.find(item => item._id === adminForm._id)?.travelMonth || 'N/A'}</div>
+                        <div><strong>Travel Date:</strong> {adminItems.find(item => item._id === adminForm._id)?.travelMonth ? new Date(adminItems.find(item => item._id === adminForm._id)?.travelMonth).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : 'N/A'}</div>
                         <div><strong>Travelers:</strong> {adminItems.find(item => item._id === adminForm._id)?.numberOfTravelers || 'N/A'}</div>
                         <div><strong>Message:</strong> {adminItems.find(item => item._id === adminForm._id)?.message || 'N/A'}</div>
                       </div>

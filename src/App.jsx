@@ -17,6 +17,8 @@ import IslandList from "./IslandList.jsx";
 import IslandDetail from "./IslandDetail.jsx";
 import FerryList from "./FerryList.jsx";
 import FerryDetail from "./FerryDetail.jsx";
+import ContactPage from "./ContactPage.jsx";
+import AboutPage from "./AboutPage.jsx";
 import AdminLogin from "./AdminLogin.jsx";
 import AdminPanel from "./AdminPanel.jsx";
 
@@ -35,10 +37,29 @@ function HomePage() {
   const [group,      setGroup]      = useState([]);
   const [ferry,      setFerry]      = useState([]);
   const [loading,    setLoading]    = useState(true);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   const [packageFilters,  setPackageFilters]  = useState({ q: "", category: "", minPrice: "", maxPrice: "" });
   const [activityFilters, setActivityFilters] = useState({ q: "", category: "", location: "", minPrice: "", maxPrice: "" });
   const [islandFilters,   setIslandFilters]   = useState({ q: "" });
+
+  // Hero carousel images
+  const heroImages = [
+    "/assests/andaman1.jpg",
+    "/assests/andaman2.jpg", 
+    "/assests/andaman3.jpg",
+    "/assests/Elephant-beach-2.jpg",
+    "/assests/honeymoon1.jpeg",
+    "/assests/family1.jpeg"
+  ];
+
+  // Auto-slide carousel
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroImages.length);
+    }, 5000); // Change slide every 5 seconds
+    return () => clearInterval(interval);
+  }, [heroImages.length]);
 
   async function loadAll() {
     setLoading(true);
@@ -89,6 +110,28 @@ function HomePage() {
       <Navigation isAdmin={false} />
 
       <section className="hero">
+        {/* Hero Carousel */}
+        <div className="hero-carousel">
+          {heroImages.map((image, index) => (
+            <div 
+              key={index}
+              className={`hero-slide ${index === currentSlide ? 'active' : ''}`}
+              style={{ backgroundImage: `url(${image})` }}
+            />
+          ))}
+          
+          {/* Carousel Navigation Dots */}
+          <div className="hero-carousel-dots">
+            {heroImages.map((_, index) => (
+              <button
+                key={index}
+                className={`carousel-dot ${index === currentSlide ? 'active' : ''}`}
+                onClick={() => setCurrentSlide(index)}
+              />
+            ))}
+          </div>
+        </div>
+        
         <div className="hero-overlay"></div>
         <div className="hero-content-wrapper">
           <div className="hero-content">
@@ -169,7 +212,7 @@ function HomePage() {
                 <option value="custom">Custom Package</option>
               </select>
               <div className="hero-input-row">
-                <input className="hero-input" name="travelMonth" placeholder="Travel Month" />
+                <input className="hero-input" name="travelMonth" type="date" placeholder="Travel Date" />
                 <input className="hero-input" name="numberOfTravelers" type="number" placeholder="Travelers" min="1" />
               </div>
               <textarea className="hero-input" name="message" rows="3" placeholder="Tell us about your dream trip..."></textarea>
@@ -428,7 +471,7 @@ function HomePage() {
             </div>
           </div>
           <div className="about-image">
-            <img src="/assests/andaman3.jpg" alt="Andaman Islands" />
+            <img src="/assests/aboutus.jpg" alt="About My Andaman Tour" />
           </div>
         </div>
       </section>
@@ -665,7 +708,7 @@ I along with my wife really had a blast at Andaman.I thank My Andaman Tour for w
               <option value="ltc">LTC</option>
               <option value="custom">Custom Package</option>
             </select>
-            <input className="input" name="travelMonth" placeholder="Travel Month" />
+            <input className="input" name="travelMonth" type="date" placeholder="Travel Date" />
             <input className="input" name="numberOfTravelers" type="number" placeholder="Number of Travelers" min="1" />
             <textarea className="input" name="message" rows="4" placeholder="Tell us about your travel plans..."></textarea>
             <button className="cta block" type="submit">Send Enquiry</button>
@@ -736,6 +779,8 @@ export default function App() {
         <Route path="/ltc/:id" element={<LtcDetail />} />
         <Route path="/group" element={<GroupList />} />
         <Route path="/group/:id" element={<GroupDetail />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/contact" element={<ContactPage />} />
         <Route path="/admin" element={<AdminLogin />} />
         <Route path="/admin-panel" element={<AdminPanel />} />
       </Routes>

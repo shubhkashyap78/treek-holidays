@@ -140,7 +140,7 @@ function HomePage() {
             <p>Experience crystal-clear waters, pristine beaches, and unforgettable adventures. Your dream tropical escape awaits.</p>
             <div className="hero-actions">
               <button className="cta" onClick={() => document.getElementById('packages').scrollIntoView({ behavior: 'smooth' })}>Explore Packages</button>
-              <a href="https://wa.me/919531944080" className="ghost" style={{ textDecoration: 'none', display: 'inline-block' }}>WhatsApp Us</a>
+              <a href="https://wa.me/919679527880" className="ghost" style={{ textDecoration: 'none', display: 'inline-block' }}>WhatsApp Us</a>
             </div>
             <div className="hero-stats">
               <div><div className="stat-value">{loading ? "..." : packages.length + honeymoon.length + family.length + ltc.length + group.length}+</div><div className="stat-label">Tour Packages</div></div>
@@ -200,9 +200,58 @@ function HomePage() {
                 submitButton.disabled = false;
               }
             }}>
-              <input className="hero-input" name="name" placeholder="Your Name *" required />
+              <input 
+                className="hero-input" 
+                name="name" 
+                placeholder="Your Name *" 
+                required 
+                pattern="[a-zA-Z\s]+" 
+                title="Please enter only letters and spaces"
+                onKeyPress={(e) => {
+                  const char = String.fromCharCode(e.which);
+                  if (!/[a-zA-Z\s]/.test(char)) {
+                    e.preventDefault();
+                  }
+                }}
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(/[^a-zA-Z\s]/g, '');
+                }}
+                onPaste={(e) => {
+                  e.preventDefault();
+                  const paste = (e.clipboardData || window.clipboardData).getData('text');
+                  const cleanPaste = paste.replace(/[^a-zA-Z\s]/g, '');
+                  e.target.value = cleanPaste;
+                }}
+              />
               <input className="hero-input" name="email" type="email" placeholder="Email Address *" required />
-              <input className="hero-input" name="phone" type="tel" placeholder="Phone Number *" required />
+              <input 
+                className="hero-input" 
+                name="phone" 
+                type="tel" 
+                placeholder="Phone Number (10 digits) *" 
+                required 
+                pattern="[0-9]{10}" 
+                maxLength="10"
+                title="Please enter exactly 10 digits"
+                onKeyPress={(e) => {
+                  const char = String.fromCharCode(e.which);
+                  if (!/[0-9]/.test(char)) {
+                    e.preventDefault();
+                  }
+                }}
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                  if (e.target.value.length > 10) {
+                    e.target.value = e.target.value.slice(0, 10);
+                  }
+                }}
+                onPaste={(e) => {
+                  e.preventDefault();
+                  const paste = (e.clipboardData || window.clipboardData).getData('text');
+                  const cleanPaste = paste.replace(/[^0-9]/g, '').slice(0, 10);
+                  e.target.value = cleanPaste;
+                }}
+              />
               <select className="hero-input" name="packageType" required>
                 <option value="">Select Package Type</option>
                 <option value="honeymoon">Honeymoon</option>
@@ -213,7 +262,18 @@ function HomePage() {
               </select>
               <div className="hero-input-row">
                 <input className="hero-input" name="travelMonth" type="date" placeholder="Travel Date" />
-                <input className="hero-input" name="numberOfTravelers" type="number" placeholder="Travelers" min="1" />
+                <input 
+                  className="hero-input" 
+                  name="numberOfTravelers" 
+                  type="number" 
+                  placeholder="Travelers" 
+                  min="1" 
+                  max="50"
+                  onInput={(e) => {
+                    if (e.target.value < 1) e.target.value = 1;
+                    if (e.target.value > 50) e.target.value = 50;
+                  }}
+                />
               </div>
               <textarea className="hero-input" name="message" rows="3" placeholder="Tell us about your dream trip..."></textarea>
               <button className="hero-submit" type="submit">Get Free Quote</button>
@@ -576,7 +636,7 @@ I along with my wife really had a blast at Andaman.I thank My Andaman Tour for w
           <p className="contact-cta-text">Get in touch with our travel experts and let us create your perfect island getaway</p>
           <div className="contact-cta-buttons">
             <button className="cta" onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}>Plan My Trip</button>
-            <a href="https://wa.me/919531944080" className="ghost" style={{ textDecoration: 'none', display: 'inline-block' }}>💬 WhatsApp Us</a>
+            <a href="https://wa.me/919679527880" className="ghost" style={{ textDecoration: 'none', display: 'inline-block' }}>💬 WhatsApp Us</a>
           </div>
         </div>
       </section>
@@ -602,9 +662,9 @@ I along with my wife really had a blast at Andaman.I thank My Andaman Tour for w
                 <span className="contact-icon">💬</span>
                 <div>
                   <div className="contact-label">WhatsApp</div>
-                  <a href="https://wa.me/919531944080" className="contact-value">+91-95319-44080</a>
+                  <a href="https://wa.me/919679527880" className="contact-value">+91-96795-27880</a>
                   <div style={{ fontSize: 13, color: "var(--muted)", marginTop: 2 }}>
-                    <a href="https://wa.me/919679527880" style={{ color: "inherit", textDecoration: "none" }}>+91-96795-27880</a>
+                    <a href="https://wa.me/919883077781" style={{ color: "inherit", textDecoration: "none" }}>+91-98830-77781</a>
                   </div>
                 </div>
               </div>
@@ -697,9 +757,65 @@ I along with my wife really had a blast at Andaman.I thank My Andaman Tour for w
             }
           }}>
             <div className="form-title">Send us a message</div>
-            <input className="input" name="name" placeholder="Your Name *" required />
+            <input 
+              className="input" 
+              name="name" 
+              placeholder="Your Name *" 
+              required 
+              pattern="[a-zA-Z\s]+" 
+              title="Please enter only letters and spaces"
+              onKeyPress={(e) => {
+                // Block numbers and special characters
+                const char = String.fromCharCode(e.which);
+                if (!/[a-zA-Z\s]/.test(char)) {
+                  e.preventDefault();
+                }
+              }}
+              onInput={(e) => {
+                // Remove any non-letter characters except spaces
+                e.target.value = e.target.value.replace(/[^a-zA-Z\s]/g, '');
+              }}
+              onPaste={(e) => {
+                // Handle paste events
+                e.preventDefault();
+                const paste = (e.clipboardData || window.clipboardData).getData('text');
+                const cleanPaste = paste.replace(/[^a-zA-Z\s]/g, '');
+                e.target.value = cleanPaste;
+              }}
+            />
             <input className="input" name="email" type="email" placeholder="Email Address *" required />
-            <input className="input" name="phone" type="tel" placeholder="Phone Number *" required />
+            <input 
+              className="input" 
+              name="phone" 
+              type="tel" 
+              placeholder="Phone Number (10 digits) *" 
+              required 
+              pattern="[0-9]{10}" 
+              maxLength="10"
+              title="Please enter exactly 10 digits"
+              onKeyPress={(e) => {
+                // Block non-numeric characters
+                const char = String.fromCharCode(e.which);
+                if (!/[0-9]/.test(char)) {
+                  e.preventDefault();
+                }
+              }}
+              onInput={(e) => {
+                // Remove any non-numeric characters
+                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                // Limit to 10 digits
+                if (e.target.value.length > 10) {
+                  e.target.value = e.target.value.slice(0, 10);
+                }
+              }}
+              onPaste={(e) => {
+                // Handle paste events
+                e.preventDefault();
+                const paste = (e.clipboardData || window.clipboardData).getData('text');
+                const cleanPaste = paste.replace(/[^0-9]/g, '').slice(0, 10);
+                e.target.value = cleanPaste;
+              }}
+            />
             <select className="input" name="packageType" required>
               <option value="">Select Package Type</option>
               <option value="honeymoon">Honeymoon</option>
@@ -709,7 +825,18 @@ I along with my wife really had a blast at Andaman.I thank My Andaman Tour for w
               <option value="custom">Custom Package</option>
             </select>
             <input className="input" name="travelMonth" type="date" placeholder="Travel Date" />
-            <input className="input" name="numberOfTravelers" type="number" placeholder="Number of Travelers" min="1" />
+            <input 
+              className="input" 
+              name="numberOfTravelers" 
+              type="number" 
+              placeholder="Number of Travelers" 
+              min="1" 
+              max="50"
+              onInput={(e) => {
+                if (e.target.value < 1) e.target.value = 1;
+                if (e.target.value > 50) e.target.value = 50;
+              }}
+            />
             <textarea className="input" name="message" rows="4" placeholder="Tell us about your travel plans..."></textarea>
             <button className="cta block" type="submit">Send Enquiry</button>
           </form>
@@ -746,7 +873,7 @@ I along with my wife really had a blast at Andaman.I thank My Andaman Tour for w
             <div className="footer-title">Contact Us</div>
             <a href="tel:+919679527880" className="footer-link">📞 +91-96795-27880</a>
             <a href="tel:+919531944080" className="footer-link">📞 +91-95319-44080</a>
-            <a href="https://wa.me/919531944080" className="footer-link">💬 WhatsApp: +91-95319-44080</a>
+            <a href="https://wa.me/919679527880" className="footer-link">💬 WhatsApp: +91-95319-44080</a>
             <a href="mailto:myandamantour@gmail.com" className="footer-link">✉️ myandamantour@gmail.com</a>
             <div className="footer-link">📍 22/4, Church Lane, Goalghar, Port Blair</div>
           </div>

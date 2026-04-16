@@ -3172,3 +3172,71 @@ body {
     font-size: 14px;
   }
 }
+/* ── Contact Page Map Styles ── */
+.map-container {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(15, 20, 24, 0.15);
+}
+
+.map-overlay {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 8px 30px rgba(15, 20, 24, 0.2);
+  max-width: 300px;
+}
+
+.map-info h3 {
+  font-family: "Fraunces", serif;
+  font-size: 20px;
+  color: var(--accent-dark);
+  margin: 0 0 12px;
+  font-weight: 700;
+}
+
+.map-info p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0 0 16px;
+}
+
+.map-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.map-actions .cta,
+.map-actions .ghost {
+  padding: 10px 16px;
+  font-size: 14px;
+  border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+  .map-overlay {
+    position: static;
+    max-width: none;
+    margin: 16px;
+    margin-top: -60px;
+    z-index: 10;
+  }
+  
+  .map-actions {
+    flex-direction: column;
+  }
+  
+  .map-actions .cta,
+  .map-actions .ghost {
+    text-align: center;
+  }
+}

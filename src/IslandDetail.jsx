@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fallbackIslands } from "./fallbackData.js";
+import Navigation from "./Navigation.jsx";
 
 export default function IslandDetail() {
   const { id } = useParams();
@@ -42,8 +43,6 @@ export default function IslandDetail() {
       });
   }, [id]);
 
-  const isAdmin = !!localStorage.getItem("admin_token");
-
   if (loading) return <div className="detail-loading">Loading...</div>;
   if (error) return (
     <div className="detail-loading">
@@ -66,27 +65,7 @@ export default function IslandDetail() {
 
   return (
     <div className="page">
-      <header className="topbar">
-        <div className="brand">
-          <span className="brand-mark">AB</span>
-          <div>
-            <div className="brand-title">My Andaman Tour</div>
-            <div className="brand-sub">Tours and Experiences</div>
-          </div>
-        </div>
-        <nav className="nav">
-          <a href="/">Home</a>
-          <a href="/#packages">Packages</a>
-          <a href="/activities">Activities</a>
-          <a href="/islands">Islands</a>
-          <a href="/ferries">Ferry</a>
-          <a href="/#contact">Contact</a>
-        </nav>
-        <div style={{ display: "flex", gap: 8 }}>
-          {isAdmin && <button className="ghost" onClick={() => window.location.href = "/admin"}>Admin</button>}
-          <button className="cta" onClick={() => window.location.href = "/#contact"}>Book Now</button>
-        </div>
-      </header>
+      <Navigation isAdmin={false} />
 
       <div className="detail-hero" style={{ backgroundImage: `url(${item.image})` }}>
         <div className="detail-hero-overlay">
@@ -185,23 +164,23 @@ export default function IslandDetail() {
         <div className="footer-content">
           <div className="footer-section">
             <div className="footer-brand">
-              <span className="brand-mark">AB</span>
+              <img src="/assests/logo tour.png" alt="My Andaman Tour" style={{ height: 44, width: 'auto', borderRadius: 8 }} />
               <div>
                 <div className="brand-title">My Andaman Tour</div>
                 <div className="brand-sub">Tours and Experiences</div>
               </div>
             </div>
-            <p className="footer-desc">Your trusted partner for unforgettable Andaman adventures.</p>
+            <p className="footer-desc">Your trusted partner for unforgettable Andaman adventures. Creating memories since 2015.</p>
           </div>
           <div className="footer-section">
             <div className="footer-title">Quick Links</div>
-            <a href="/activities" className="footer-link">Activities</a>
-            <a href="/islands" className="footer-link">Islands</a>
-            <a href="/ferries" className="footer-link">Ferry Services</a>
-            <a href="/#contact" className="footer-link">Contact</a>
+            <a href="/#packages" className="footer-link">Packages</a>
+            <a href="/#activities" className="footer-link">Activities</a>
+            <a href="/#islands" className="footer-link">Islands</a>
+            <a href="/#ferry" className="footer-link">Ferry Services</a>
           </div>
           <div className="footer-section">
-            <div className="footer-title">Packages</div>
+            <div className="footer-title">Categories</div>
             <a href="/honeymoon" className="footer-link">Honeymoon</a>
             <a href="/family" className="footer-link">Family</a>
             <a href="/group" className="footer-link">Group Tours</a>
@@ -209,9 +188,11 @@ export default function IslandDetail() {
           </div>
           <div className="footer-section">
             <div className="footer-title">Contact Us</div>
-            <a href="tel:+919000000000" className="footer-link">📞 +91-90000-00000</a>
-            <a href="mailto:hello@andamantreekholidays.com" className="footer-link">✉️ hello@andamantreekholidays.com</a>
-            <div className="footer-link">📍 Port Blair, Andaman</div>
+            <a href="tel:+919679527880" className="footer-link">📞 +91-96795-27880</a>
+            <a href="tel:+919531944080" className="footer-link">📞 +91-95319-44080</a>
+            <a href="https://wa.me/919679527880" className="footer-link">💬 WhatsApp: +91-95319-44080</a>
+            <a href="mailto:myandamantour@gmail.com" className="footer-link">✉️ myandamantour@gmail.com</a>
+            <div className="footer-link">📍 22/4, Church Lane, Goalghar, Port Blair</div>
           </div>
         </div>
         <div className="footer-bottom">

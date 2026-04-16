@@ -208,7 +208,7 @@ export default function HoneymoonDetail() {
               <span className="detail-info-value">Honeymoon</span>
             </div>
             <div className="detail-btn-group">
-              <a href="https://wa.me/919531944080" className="cta block" style={{ textDecoration: 'none', textAlign: 'center' }}>Book on WhatsApp</a>
+              <a href="https://wa.me/919679527880" className="cta block" style={{ textDecoration: 'none', textAlign: 'center' }}>Book on WhatsApp</a>
               <button className="ghost" onClick={() => window.location.href = "/#contact"}>Send Enquiry</button>
             </div>
           </div>
@@ -245,7 +245,7 @@ export default function HoneymoonDetail() {
             <div className="footer-title">Contact Us</div>
             <a href="tel:+919679527880" className="footer-link">📞 +91-96795-27880</a>
             <a href="tel:+919531944080" className="footer-link">📞 +91-95319-44080</a>
-            <a href="https://wa.me/919531944080" className="footer-link">💬 WhatsApp: +91-95319-44080</a>
+            <a href="https://wa.me/919679527880" className="footer-link">💬 WhatsApp: +91-95319-44080</a>
             <a href="mailto:myandamantour@gmail.com" className="footer-link">✉️ myandamantour@gmail.com</a>
             <div className="footer-link">📍 22/4, Church Lane, Goalghar, Port Blair</div>
           </div>

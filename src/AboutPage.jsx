@@ -213,7 +213,7 @@ export default function AboutPage() {
           <p className="contact-cta-text">Let our experienced team help you plan the perfect island adventure tailored just for you</p>
           <div className="contact-cta-buttons">
             <a href="/contact" className="cta" style={{ textDecoration: 'none', display: 'inline-block' }}>Plan My Trip</a>
-            <a href="https://wa.me/919531944080" className="ghost" style={{ textDecoration: 'none', display: 'inline-block' }}>💬 WhatsApp Us</a>
+            <a href="https://wa.me/919679527880" className="ghost" style={{ textDecoration: 'none', display: 'inline-block' }}>💬 WhatsApp Us</a>
           </div>
         </div>
       </section>
@@ -249,7 +249,7 @@ export default function AboutPage() {
             <div className="footer-title">Contact Us</div>
             <a href="tel:+919679527880" className="footer-link">📞 +91-96795-27880</a>
             <a href="tel:+919531944080" className="footer-link">📞 +91-95319-44080</a>
-            <a href="https://wa.me/919531944080" className="footer-link">💬 WhatsApp: +91-95319-44080</a>
+            <a href="https://wa.me/919679527880" className="footer-link">💬 WhatsApp: +91-95319-44080</a>
             <a href="mailto:myandamantour@gmail.com" className="footer-link">✉️ myandamantour@gmail.com</a>
             <div className="footer-link">📍 22/4, Church Lane, Goalghar, Port Blair</div>
           </div>

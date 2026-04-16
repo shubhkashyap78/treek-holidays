@@ -40,9 +40,9 @@ export default function ContactPage() {
                 <span className="contact-icon">💬</span>
                 <div>
                   <div className="contact-label">WhatsApp</div>
-                  <a href="https://wa.me/919531944080" className="contact-value">+91-95319-44080</a>
+                  <a href="https://wa.me/919679527880" className="contact-value">+91-96795-27880</a>
                   <div style={{ fontSize: 13, color: "var(--muted)", marginTop: 2 }}>
-                    <a href="https://wa.me/919679527880" style={{ color: "inherit", textDecoration: "none" }}>+91-96795-27880</a>
+                    <a href="https://wa.me/919883077781" style={{ color: "inherit", textDecoration: "none" }}>+91-98830-77781</a>
                   </div>
                 </div>
               </div>
@@ -133,9 +133,58 @@ export default function ContactPage() {
             }
           }}>
             <div className="form-title">Send us a message</div>
-            <input className="input" name="name" placeholder="Your Name *" required />
+            <input 
+              className="input" 
+              name="name" 
+              placeholder="Your Name *" 
+              required 
+              pattern="[a-zA-Z\s]+" 
+              title="Please enter only letters and spaces"
+              onKeyPress={(e) => {
+                const char = String.fromCharCode(e.which);
+                if (!/[a-zA-Z\s]/.test(char)) {
+                  e.preventDefault();
+                }
+              }}
+              onInput={(e) => {
+                e.target.value = e.target.value.replace(/[^a-zA-Z\s]/g, '');
+              }}
+              onPaste={(e) => {
+                e.preventDefault();
+                const paste = (e.clipboardData || window.clipboardData).getData('text');
+                const cleanPaste = paste.replace(/[^a-zA-Z\s]/g, '');
+                e.target.value = cleanPaste;
+              }}
+            />
             <input className="input" name="email" type="email" placeholder="Email Address *" required />
-            <input className="input" name="phone" type="tel" placeholder="Phone Number *" required />
+            <input 
+              className="input" 
+              name="phone" 
+              type="tel" 
+              placeholder="Phone Number (10 digits) *" 
+              required 
+              pattern="[0-9]{10}" 
+              maxLength="10"
+              title="Please enter exactly 10 digits"
+              onKeyPress={(e) => {
+                const char = String.fromCharCode(e.which);
+                if (!/[0-9]/.test(char)) {
+                  e.preventDefault();
+                }
+              }}
+              onInput={(e) => {
+                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                if (e.target.value.length > 10) {
+                  e.target.value = e.target.value.slice(0, 10);
+                }
+              }}
+              onPaste={(e) => {
+                e.preventDefault();
+                const paste = (e.clipboardData || window.clipboardData).getData('text');
+                const cleanPaste = paste.replace(/[^0-9]/g, '').slice(0, 10);
+                e.target.value = cleanPaste;
+              }}
+            />
             <select className="input" name="packageType" required>
               <option value="">Select Package Type</option>
               <option value="honeymoon">Honeymoon</option>
@@ -145,7 +194,18 @@ export default function ContactPage() {
               <option value="custom">Custom Package</option>
             </select>
             <input className="input" name="travelMonth" type="date" placeholder="Travel Date" />
-            <input className="input" name="numberOfTravelers" type="number" placeholder="Number of Travelers" min="1" />
+            <input 
+              className="input" 
+              name="numberOfTravelers" 
+              type="number" 
+              placeholder="Number of Travelers" 
+              min="1" 
+              max="50"
+              onInput={(e) => {
+                if (e.target.value < 1) e.target.value = 1;
+                if (e.target.value > 50) e.target.value = 50;
+              }}
+            />
             <textarea className="input" name="message" rows="4" placeholder="Tell us about your travel plans..."></textarea>
             <button className="cta block" type="submit" disabled={formSubmitting}>
               {formSubmitting ? 'Sending...' : 'Send Enquiry'}
@@ -200,7 +260,7 @@ export default function ContactPage() {
           <h2 className="contact-cta-title">Need Immediate Assistance?</h2>
           <p className="contact-cta-text">Our travel experts are available to help you plan your perfect Andaman getaway</p>
           <div className="contact-cta-buttons">
-            <a href="https://wa.me/919531944080" className="cta" style={{ textDecoration: 'none', display: 'inline-block' }}>💬 WhatsApp Now</a>
+            <a href="https://wa.me/919679527880" className="cta" style={{ textDecoration: 'none', display: 'inline-block' }}>💬 WhatsApp Now</a>
             <a href="tel:+919679527880" className="ghost" style={{ textDecoration: 'none', display: 'inline-block' }}>📞 Call Now</a>
           </div>
         </div>
@@ -237,7 +297,7 @@ export default function ContactPage() {
             <div className="footer-title">Contact Us</div>
             <a href="tel:+919679527880" className="footer-link">📞 +91-96795-27880</a>
             <a href="tel:+919531944080" className="footer-link">📞 +91-95319-44080</a>
-            <a href="https://wa.me/919531944080" className="footer-link">💬 WhatsApp: +91-95319-44080</a>
+            <a href="https://wa.me/919679527880" className="footer-link">💬 WhatsApp: +91-95319-44080</a>
             <a href="mailto:myandamantour@gmail.com" className="footer-link">✉️ myandamantour@gmail.com</a>
             <div className="footer-link">📍 22/4, Church Lane, Goalghar, Port Blair</div>
           </div>
